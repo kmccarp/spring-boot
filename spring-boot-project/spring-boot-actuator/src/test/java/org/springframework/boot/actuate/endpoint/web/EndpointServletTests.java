@@ -135,6 +135,8 @@ class EndpointServletTests {
 
 	static class TestServlet extends GenericServlet {
 
+		private static final long serialVersionUID = 1;
+
 		@Override
 		public void service(ServletRequest req, ServletResponse res) {
 		}

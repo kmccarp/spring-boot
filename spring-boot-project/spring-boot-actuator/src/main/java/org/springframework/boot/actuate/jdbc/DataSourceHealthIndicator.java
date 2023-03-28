@@ -114,7 +114,7 @@ public class DataSourceHealthIndicator extends AbstractHealthIndicator implement
 		else {
 			builder.withDetail("validationQuery", "isValid()");
 			boolean valid = isConnectionValid();
-			builder.status((valid) ? Status.UP : Status.DOWN);
+			builder.status(valid ? Status.UP : Status.DOWN);
 		}
 	}
 

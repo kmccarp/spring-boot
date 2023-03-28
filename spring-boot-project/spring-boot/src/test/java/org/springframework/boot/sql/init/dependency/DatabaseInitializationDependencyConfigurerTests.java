@@ -79,7 +79,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 	@Test
 	void beanFactoryPostProcessorHasOrderAllowingSubsequentPostProcessorsToFineTuneDependencies() {
 		performDetection(Arrays.asList(MockDatabaseInitializerDetector.class,
-				MockedDependsOnDatabaseInitializationDetector.class), (context) -> {
+				MockedDependsOnDatabaseInitializationDetector.class), context -> {
 					BeanDefinition alpha = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 					BeanDefinition bravo = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 					context.register(DependsOnCaptor.class);
@@ -92,7 +92,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 						.willReturn(Collections.singleton("bravo"));
 					context.refresh();
 					assertThat(DependsOnCaptor.dependsOn).hasEntrySatisfying("bravo",
-							(dependencies) -> assertThat(dependencies).containsExactly("alpha"));
+							dependencies -> assertThat(dependencies).containsExactly("alpha"));
 					assertThat(DependsOnCaptor.dependsOn).doesNotContainKey("alpha");
 				});
 	}
@@ -100,7 +100,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 	@Test
 	void whenDetectorsAreCreatedThenTheEnvironmentCanBeInjected() {
 		performDetection(Arrays.asList(ConstructorInjectionDatabaseInitializerDetector.class,
-				ConstructorInjectionDependsOnDatabaseInitializationDetector.class), (context) -> {
+				ConstructorInjectionDependsOnDatabaseInitializationDetector.class), context -> {
 					BeanDefinition alpha = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 					context.registerBeanDefinition("alpha", alpha);
 					context.register(DependencyConfigurerConfiguration.class);
@@ -116,7 +116,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 		BeanDefinition alpha = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 		BeanDefinition bravo = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 		performDetection(Arrays.asList(MockDatabaseInitializerDetector.class,
-				MockedDependsOnDatabaseInitializationDetector.class), (context) -> {
+				MockedDependsOnDatabaseInitializationDetector.class), context -> {
 					context.registerBeanDefinition("alpha", alpha);
 					context.registerBeanDefinition("bravo", bravo);
 					given(MockDatabaseInitializerDetector.instance.detect(context.getBeanFactory()))
@@ -145,7 +145,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 				Arrays.asList(MockDatabaseInitializerDetector.class, OrderedLowestMockDatabaseInitializerDetector.class,
 						OrderedNearLowestMockDatabaseInitializerDetector.class,
 						MockedDependsOnDatabaseInitializationDetector.class),
-				(context) -> {
+				context -> {
 					given(MockDatabaseInitializerDetector.instance.detect(context.getBeanFactory()))
 						.willReturn(Collections.singleton("alpha"));
 					given(OrderedNearLowestMockDatabaseInitializerDetector.instance.detect(context.getBeanFactory()))
@@ -175,7 +175,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 			BeanDefinition alpha = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 			BeanDefinition bravo = BeanDefinitionBuilder.rootBeanDefinition(String.class).getBeanDefinition();
 			performDetection(Arrays.asList(MockDatabaseInitializerDetector.class,
-					MockedDependsOnDatabaseInitializationDetector.class), (context) -> {
+					MockedDependsOnDatabaseInitializationDetector.class), context -> {
 						context.registerBeanDefinition("alpha", alpha);
 						context.registerBeanDefinition("bravo", bravo);
 						context.register(DependencyConfigurerConfiguration.class);
@@ -217,7 +217,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 
 	static class ConstructorInjectionDatabaseInitializerDetector implements DatabaseInitializerDetector {
 
-		private static Environment environment;
+		private static final Environment environment;
 
 		ConstructorInjectionDatabaseInitializerDetector(Environment environment) {
 			ConstructorInjectionDatabaseInitializerDetector.environment = environment;
@@ -233,7 +233,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 	static class ConstructorInjectionDependsOnDatabaseInitializationDetector
 			implements DependsOnDatabaseInitializationDetector {
 
-		private static Environment environment;
+		private static final Environment environment;
 
 		ConstructorInjectionDependsOnDatabaseInitializationDetector(Environment environment) {
 			ConstructorInjectionDependsOnDatabaseInitializationDetector.environment = environment;
@@ -359,7 +359,7 @@ class DatabaseInitializationDependencyConfigurerTests {
 
 		@Bean
 		static BeanFactoryPostProcessor dependsOnCapturingPostProcessor() {
-			return (beanFactory) -> {
+			return beanFactory -> {
 				dependsOn.clear();
 				for (String name : beanFactory.getBeanDefinitionNames()) {
 					storeDependsOn(name, beanFactory);

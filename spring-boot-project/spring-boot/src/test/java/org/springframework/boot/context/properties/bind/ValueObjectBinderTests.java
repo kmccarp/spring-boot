@@ -378,7 +378,7 @@ class ValueObjectBinderTests {
 					@org.springframework.boot.context.properties.bind.DefaultValue("default-value-2") String property2) {
 				}
 				""";
-		TestCompiler.forSystem().withSources(SourceFile.of(recordProperties)).compile((compiled) -> {
+		TestCompiler.forSystem().withSources(SourceFile.of(recordProperties)).compile(compiled -> {
 			try {
 				ClassLoader cl = compiled.getClassLoader();
 				Object bean = this.binder.bind("test.record", Class.forName("RecordProperties", true, cl)).get();

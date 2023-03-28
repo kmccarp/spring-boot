@@ -65,7 +65,7 @@ class UndertowWebServerFactoryDelegate {
 
 	private String accessLogSuffix;
 
-	private boolean accessLogEnabled = false;
+	private boolean accessLogEnabled;
 
 	private boolean accessLogRotate = true;
 
@@ -198,7 +198,7 @@ class UndertowWebServerFactoryDelegate {
 			factories.add(Handlers::proxyPeerAddress);
 		}
 		if (StringUtils.hasText(serverHeader)) {
-			factories.add((next) -> Handlers.header(next, "Server", serverHeader));
+			factories.add(next -> Handlers.header(next, "Server", serverHeader));
 		}
 		if (shutdown == Shutdown.GRACEFUL) {
 			factories.add(Handlers::gracefulShutdown);

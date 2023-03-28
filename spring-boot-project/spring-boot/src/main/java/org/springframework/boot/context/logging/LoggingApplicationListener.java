@@ -191,7 +191,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private boolean parseArgs = true;
 
-	private LogLevel springBootLogging = null;
+	private LogLevel springBootLogging;
 
 	@Override
 	public boolean supportsEventType(ResolvableType resolvableType) {
@@ -318,7 +318,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private boolean isSet(ConfigurableEnvironment environment, String property) {
 		String value = environment.getProperty(property);
-		return (value != null && !value.equals("false"));
+		return value != null && !"false".equals(value);
 	}
 
 	private void initializeSystem(ConfigurableEnvironment environment, LoggingSystem system, LogFile logFile) {
@@ -378,7 +378,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	protected void initializeSpringBootLogging(LoggingSystem system, LogLevel springBootLogging) {
 		BiConsumer<String, LogLevel> configurer = getLogLevelConfigurer(system);
 		SPRING_BOOT_LOGGING_LOGGERS.getOrDefault(springBootLogging, Collections.emptyList())
-			.forEach((name) -> configureLogLevel(name, springBootLogging, configurer));
+			.forEach(name -> configureLogLevel(name, springBootLogging, configurer));
 	}
 
 	/**

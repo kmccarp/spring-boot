@@ -41,7 +41,7 @@ public interface LoggingSystemFactory {
 	 */
 	static LoggingSystemFactory fromSpringFactories() {
 		return new DelegatingLoggingSystemFactory(
-				(classLoader) -> SpringFactoriesLoader.loadFactories(LoggingSystemFactory.class, classLoader));
+				classLoader -> SpringFactoriesLoader.loadFactories(LoggingSystemFactory.class, classLoader));
 	}
 
 }

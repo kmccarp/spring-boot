@@ -60,7 +60,7 @@ public class BufferingApplicationStartup implements ApplicationStartup {
 
 	private final AtomicInteger idSeq = new AtomicInteger();
 
-	private Predicate<StartupStep> filter = (step) -> true;
+	private Predicate<StartupStep> filter = step -> true;
 
 	private final AtomicReference<BufferedStartupStep> current = new AtomicReference<>();
 

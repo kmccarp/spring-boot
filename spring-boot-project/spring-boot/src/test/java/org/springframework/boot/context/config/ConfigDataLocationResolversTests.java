@@ -167,7 +167,7 @@ class ConfigDataLocationResolversTests {
 		ConfigDataLocation location = ConfigDataLocation.of("Missing:test");
 		assertThatExceptionOfType(UnsupportedConfigDataLocationException.class)
 			.isThrownBy(() -> resolvers.resolve(this.context, location, null))
-			.satisfies((ex) -> assertThat(ex.getLocation()).isEqualTo(location));
+			.satisfies(ex -> assertThat(ex.getLocation()).isEqualTo(location));
 	}
 
 	@Test

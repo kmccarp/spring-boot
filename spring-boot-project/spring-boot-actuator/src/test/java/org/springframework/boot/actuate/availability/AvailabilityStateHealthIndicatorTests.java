@@ -44,7 +44,7 @@ class AvailabilityStateHealthIndicatorTests {
 	@Test
 	void createWhenApplicationAvailabilityIsNullThrowsException() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> new AvailabilityStateHealthIndicator(null, LivenessState.class, (statusMappings) -> {
+			.isThrownBy(() -> new AvailabilityStateHealthIndicator(null, LivenessState.class, statusMappings -> {
 			}))
 			.withMessage("ApplicationAvailability must not be null");
 	}
@@ -52,7 +52,7 @@ class AvailabilityStateHealthIndicatorTests {
 	@Test
 	void createWhenStateTypeIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> new AvailabilityStateHealthIndicator(this.applicationAvailability, null, (statusMappings) -> {
+				() -> new AvailabilityStateHealthIndicator(this.applicationAvailability, null, statusMappings -> {
 				}))
 			.withMessage("StateType must not be null");
 	}
@@ -69,14 +69,14 @@ class AvailabilityStateHealthIndicatorTests {
 	void createWhenStatusMappingDoesNotCoverAllEnumsThrowsException() {
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> new AvailabilityStateHealthIndicator(this.applicationAvailability, LivenessState.class,
-					(statusMappings) -> statusMappings.add(LivenessState.CORRECT, Status.UP)))
+					statusMappings -> statusMappings.add(LivenessState.CORRECT, Status.UP)))
 			.withMessage("StatusMappings does not include BROKEN");
 	}
 
 	@Test
 	void healthReturnsMappedStatus() {
 		AvailabilityStateHealthIndicator indicator = new AvailabilityStateHealthIndicator(this.applicationAvailability,
-				LivenessState.class, (statusMappings) -> {
+				LivenessState.class, statusMappings -> {
 					statusMappings.add(LivenessState.CORRECT, Status.UP);
 					statusMappings.add(LivenessState.BROKEN, Status.DOWN);
 				});
@@ -87,7 +87,7 @@ class AvailabilityStateHealthIndicatorTests {
 	@Test
 	void healthReturnsDefaultStatus() {
 		AvailabilityStateHealthIndicator indicator = new AvailabilityStateHealthIndicator(this.applicationAvailability,
-				LivenessState.class, (statusMappings) -> {
+				LivenessState.class, statusMappings -> {
 					statusMappings.add(LivenessState.CORRECT, Status.UP);
 					statusMappings.addDefaultStatus(Status.UNKNOWN);
 				});
@@ -98,7 +98,7 @@ class AvailabilityStateHealthIndicatorTests {
 	@Test
 	void healthWhenNotEnumReturnsMappedStatus() {
 		AvailabilityStateHealthIndicator indicator = new AvailabilityStateHealthIndicator(this.applicationAvailability,
-				TestAvailabilityState.class, (statusMappings) -> {
+				TestAvailabilityState.class, statusMappings -> {
 					statusMappings.add(TestAvailabilityState.ONE, Status.UP);
 					statusMappings.addDefaultStatus(Status.DOWN);
 				});

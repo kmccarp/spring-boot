@@ -701,7 +701,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 		@SuppressWarnings("unchecked")
 		SimpleDataSourceProperties() {
 			add(DataSourceProperty.URL, SimpleDriverDataSource::getUrl, SimpleDriverDataSource::setUrl);
-			add(DataSourceProperty.DRIVER_CLASS_NAME, Class.class, (dataSource) -> dataSource.getDriver().getClass(),
+			add(DataSourceProperty.DRIVER_CLASS_NAME, Class.class, dataSource -> dataSource.getDriver().getClass(),
 					SimpleDriverDataSource::setDriverClass);
 			add(DataSourceProperty.USERNAME, SimpleDriverDataSource::getUsername, SimpleDriverDataSource::setUsername);
 			add(DataSourceProperty.PASSWORD, SimpleDriverDataSource::getPassword, SimpleDriverDataSource::setPassword);

@@ -94,7 +94,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		if (resolve) {
 			resolveClass(resultClass);
 		}
-		return (resultClass);
+		return resultClass;
 	}
 
 	@Override

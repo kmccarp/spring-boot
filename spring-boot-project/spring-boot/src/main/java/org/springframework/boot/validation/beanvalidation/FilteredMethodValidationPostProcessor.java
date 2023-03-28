@@ -35,6 +35,8 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  */
 public class FilteredMethodValidationPostProcessor extends MethodValidationPostProcessor {
 
+	private static final long serialVersionUID = 1;
+
 	private final Collection<MethodValidationExcludeFilter> excludeFilters;
 
 	/**

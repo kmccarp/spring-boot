@@ -39,7 +39,7 @@ class ReactiveHealthIndicatorImplementationTests {
 	@Test
 	void healthUp(CapturedOutput output) {
 		StepVerifier.create(new SimpleReactiveHealthIndicator().health())
-			.consumeNextWith((health) -> assertThat(health).isEqualTo(Health.up().build()))
+			.consumeNextWith(health -> assertThat(health).isEqualTo(Health.up().build()))
 			.verifyComplete();
 		assertThat(output).doesNotContain("Health check failed for simple");
 	}
@@ -48,7 +48,7 @@ class ReactiveHealthIndicatorImplementationTests {
 	void healthDownWithCustomErrorMessage(CapturedOutput output) {
 		StepVerifier.create(new CustomErrorMessageReactiveHealthIndicator().health())
 			.consumeNextWith(
-					(health) -> assertThat(health).isEqualTo(Health.down(new UnsupportedOperationException()).build()))
+					health -> assertThat(health).isEqualTo(Health.down(new UnsupportedOperationException()).build()))
 			.verifyComplete();
 		assertThat(output).contains("Health check failed for custom");
 	}
@@ -56,7 +56,7 @@ class ReactiveHealthIndicatorImplementationTests {
 	@Test
 	void healthDownWithCustomErrorMessageFunction(CapturedOutput output) {
 		StepVerifier.create(new CustomErrorMessageFunctionReactiveHealthIndicator().health())
-			.consumeNextWith((health) -> assertThat(health).isEqualTo(Health.down(new RuntimeException()).build()))
+			.consumeNextWith(health -> assertThat(health).isEqualTo(Health.down(new RuntimeException()).build()))
 			.verifyComplete();
 		assertThat(output).contains("Health check failed with RuntimeException");
 	}
@@ -91,7 +91,7 @@ class ReactiveHealthIndicatorImplementationTests {
 			extends AbstractReactiveHealthIndicator {
 
 		CustomErrorMessageFunctionReactiveHealthIndicator() {
-			super((ex) -> "Health check failed with " + ex.getClass().getSimpleName());
+			super(ex -> "Health check failed with " + ex.getClass().getSimpleName());
 		}
 
 		@Override

@@ -292,6 +292,8 @@ class SpringIterableConfigurationPropertySourceTests {
 
 		private class KeySet extends LinkedHashSet<K> {
 
+			private static final long serialVersionUID = 1;
+
 			KeySet(Set<K> keySet) {
 				super(keySet);
 			}

@@ -61,7 +61,7 @@ class FilteredConfigurationPropertiesSourceTests {
 	void containsDescendantOfWhenSourceReturnsEmptyShouldReturnEmpty() {
 		ConfigurationPropertyName name = ConfigurationPropertyName.of("foo");
 		ConfigurationPropertySource source = new KnownAncestorsConfigurationPropertySource().unknown(name);
-		ConfigurationPropertySource filtered = source.filter((n) -> true);
+		ConfigurationPropertySource filtered = source.filter(n -> true);
 		assertThat(filtered.containsDescendantOf(name)).isEqualTo(ConfigurationPropertyState.UNKNOWN);
 	}
 
@@ -69,7 +69,7 @@ class FilteredConfigurationPropertiesSourceTests {
 	void containsDescendantOfWhenSourceReturnsFalseShouldReturnFalse() {
 		ConfigurationPropertyName name = ConfigurationPropertyName.of("foo");
 		ConfigurationPropertySource source = new KnownAncestorsConfigurationPropertySource().absent(name);
-		ConfigurationPropertySource filtered = source.filter((n) -> true);
+		ConfigurationPropertySource filtered = source.filter(n -> true);
 		assertThat(filtered.containsDescendantOf(name)).isEqualTo(ConfigurationPropertyState.ABSENT);
 	}
 
@@ -77,7 +77,7 @@ class FilteredConfigurationPropertiesSourceTests {
 	void containsDescendantOfWhenSourceReturnsTrueShouldReturnEmpty() {
 		ConfigurationPropertyName name = ConfigurationPropertyName.of("foo");
 		ConfigurationPropertySource source = new KnownAncestorsConfigurationPropertySource().present(name);
-		ConfigurationPropertySource filtered = source.filter((n) -> true);
+		ConfigurationPropertySource filtered = source.filter(n -> true);
 		assertThat(filtered.containsDescendantOf(name)).isEqualTo(ConfigurationPropertyState.UNKNOWN);
 	}
 

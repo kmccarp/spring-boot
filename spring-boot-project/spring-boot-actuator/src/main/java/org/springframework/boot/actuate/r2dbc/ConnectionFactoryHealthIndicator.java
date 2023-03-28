@@ -71,7 +71,7 @@ public class ConnectionFactoryHealthIndicator extends AbstractReactiveHealthIndi
 	@Override
 	protected final Mono<Health> doHealthCheck(Builder builder) {
 		return validate(builder).defaultIfEmpty(builder.build())
-			.onErrorResume(Exception.class, (ex) -> Mono.just(builder.down(ex).build()));
+			.onErrorResume(Exception.class, ex -> Mono.just(builder.down(ex).build()));
 	}
 
 	private Mono<Health> validate(Builder builder) {
@@ -83,19 +83,19 @@ public class ConnectionFactoryHealthIndicator extends AbstractReactiveHealthIndi
 	private Mono<Health> validateWithQuery(Builder builder) {
 		builder.withDetail("validationQuery", this.validationQuery);
 		Mono<Object> connectionValidation = Mono.usingWhen(this.connectionFactory.create(),
-				(conn) -> Flux.from(conn.createStatement(this.validationQuery).execute())
-					.flatMap((it) -> it.map(this::extractResult))
+				conn -> Flux.from(conn.createStatement(this.validationQuery).execute())
+					.flatMap(it -> it.map(this::extractResult))
 					.next(),
 				Connection::close, (o, throwable) -> o.close(), Connection::close);
-		return connectionValidation.map((result) -> builder.up().withDetail("result", result).build());
+		return connectionValidation.map(result -> builder.up().withDetail("result", result).build());
 	}
 
 	private Mono<Health> validateWithConnectionValidation(Builder builder) {
 		builder.withDetail("validationQuery", "validate(REMOTE)");
 		Mono<Boolean> connectionValidation = Mono.usingWhen(this.connectionFactory.create(),
-				(connection) -> Mono.from(connection.validate(ValidationDepth.REMOTE)), Connection::close,
+				connection -> Mono.from(connection.validate(ValidationDepth.REMOTE)), Connection::close,
 				(connection, ex) -> connection.close(), Connection::close);
-		return connectionValidation.map((valid) -> builder.status((valid) ? Status.UP : Status.DOWN).build());
+		return connectionValidation.map(valid -> builder.status(valid ? Status.UP : Status.DOWN).build());
 	}
 
 	private Object extractResult(Row row, RowMetadata metadata) {

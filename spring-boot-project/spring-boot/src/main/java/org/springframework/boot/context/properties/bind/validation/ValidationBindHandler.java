@@ -147,6 +147,8 @@ public class ValidationBindHandler extends AbstractBindHandler {
 	 */
 	private class ValidationResult extends BeanPropertyBindingResult {
 
+		private static final long serialVersionUID = 1;
+
 		private final ConfigurationPropertyName name;
 
 		protected ValidationResult(ConfigurationPropertyName name, Object target) {
@@ -236,7 +238,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 
 		ValidationErrors getValidationErrors() {
 			Set<ConfigurationProperty> boundProperties = ValidationBindHandler.this.boundProperties.stream()
-				.filter((property) -> this.name.isAncestorOf(property.getName()))
+				.filter(property -> this.name.isAncestorOf(property.getName()))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 			return new ValidationErrors(this.name, boundProperties, getAllErrors());
 		}

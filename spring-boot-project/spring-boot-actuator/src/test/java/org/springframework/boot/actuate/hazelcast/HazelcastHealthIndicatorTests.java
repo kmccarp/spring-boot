@@ -43,7 +43,7 @@ class HazelcastHealthIndicatorTests {
 	void hazelcastUp() {
 		new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(HazelcastAutoConfiguration.class))
 			.withPropertyValues("spring.hazelcast.config=hazelcast.xml")
-			.run((context) -> {
+			.run(context -> {
 				HazelcastInstance hazelcast = context.getBean(HazelcastInstance.class);
 				Health health = new HazelcastHealthIndicator(hazelcast).health();
 				assertThat(health.getStatus()).isEqualTo(Status.UP);

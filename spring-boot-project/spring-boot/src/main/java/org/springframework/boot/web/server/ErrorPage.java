@@ -101,7 +101,7 @@ public class ErrorPage {
 	 * @return if this is a global error page
 	 */
 	public boolean isGlobal() {
-		return (this.status == null && this.exception == null);
+		return this.status == null && this.exception == null;
 	}
 
 	@Override

@@ -306,7 +306,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 			for (ImportPhase importPhase : ImportPhase.values()) {
 				if (contributor.getChildren(importPhase)
 					.stream()
-					.anyMatch((child) -> child.hasConfigDataOption(ConfigData.Option.PROFILE_SPECIFIC))) {
+					.anyMatch(child -> child.hasConfigDataOption(ConfigData.Option.PROFILE_SPECIFIC))) {
 					return true;
 				}
 			}
@@ -470,7 +470,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 		/**
 		 * A valid location that contained nothing to load.
 		 */
-		EMPTY_LOCATION;
+		EMPTY_LOCATION
 
 	}
 

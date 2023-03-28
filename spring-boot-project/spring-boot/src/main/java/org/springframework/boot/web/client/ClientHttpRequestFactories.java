@@ -208,10 +208,10 @@ public final class ClientHttpRequestFactories {
 				ClientHttpRequestFactorySettings settings) {
 			ClientHttpRequestFactory unwrapped = unwrapRequestFactoryIfNecessary(requestFactory);
 			PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-			map.from(settings::connectTimeout).to((connectTimeout) -> setConnectTimeout(unwrapped, connectTimeout));
-			map.from(settings::readTimeout).to((readTimeout) -> setReadTimeout(unwrapped, readTimeout));
+			map.from(settings::connectTimeout).to(connectTimeout -> setConnectTimeout(unwrapped, connectTimeout));
+			map.from(settings::readTimeout).to(readTimeout -> setReadTimeout(unwrapped, readTimeout));
 			map.from(settings::bufferRequestBody)
-				.to((bufferRequestBody) -> setBufferRequestBody(unwrapped, bufferRequestBody));
+				.to(bufferRequestBody -> setBufferRequestBody(unwrapped, bufferRequestBody));
 		}
 
 		private static ClientHttpRequestFactory unwrapRequestFactoryIfNecessary(

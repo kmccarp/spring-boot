@@ -184,7 +184,7 @@ public enum DurationStyle {
 		/**
 		 * Microseconds.
 		 */
-		MICROS(ChronoUnit.MICROS, "us", (duration) -> duration.toNanos() / 1000L),
+		MICROS(ChronoUnit.MICROS, "us", duration -> duration.toNanos() / 1000L),
 
 		/**
 		 * Milliseconds.

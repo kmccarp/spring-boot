@@ -51,7 +51,7 @@ import org.springframework.util.ObjectUtils;
  */
 class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmentContributor> {
 
-	private static final Predicate<ConfigDataEnvironmentContributor> NO_CONTRIBUTOR_FILTER = (contributor) -> true;
+	private static final Predicate<ConfigDataEnvironmentContributor> NO_CONTRIBUTOR_FILTER = contributor -> true;
 
 	private final Log logger;
 
@@ -128,7 +128,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 			return "Nothing imported";
 		}
 		StringBuilder message = new StringBuilder();
-		message.append("Imported " + results.size() + " resource" + ((results.size() != 1) ? "s " : " "));
+		message.append("Imported ").append(results.size()).append(" resource").append((results.size() != 1) ? "s " : " ");
 		message.append(results.stream().map(ConfigDataResolutionResult::getResource).toList());
 		return message;
 	}
@@ -212,7 +212,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 			Predicate<ConfigDataEnvironmentContributor> filter, Set<BinderOption> options) {
 		boolean failOnInactiveSource = options.contains(BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		Iterable<ConfigurationPropertySource> sources = () -> getBinderSources(
-				filter.and((contributor) -> failOnInactiveSource || contributor.isActive(activationContext)));
+				filter.and(contributor -> failOnInactiveSource || contributor.isActive(activationContext)));
 		PlaceholdersResolver placeholdersResolver = new ConfigDataEnvironmentContributorPlaceholdersResolver(this.root,
 				activationContext, null, failOnInactiveSource);
 		BindHandler bindHandler = !failOnInactiveSource ? null : new InactiveSourceChecker(activationContext);
@@ -326,7 +326,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		/**
 		 * Throw an exception if an inactive contributor contains a bound value.
 		 */
-		FAIL_ON_BIND_TO_INACTIVE_SOURCE;
+		FAIL_ON_BIND_TO_INACTIVE_SOURCE
 
 	}
 

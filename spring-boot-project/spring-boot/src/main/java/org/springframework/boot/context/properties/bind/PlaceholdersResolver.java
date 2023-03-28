@@ -32,7 +32,7 @@ public interface PlaceholdersResolver {
 	/**
 	 * No-op {@link PropertyResolver}.
 	 */
-	PlaceholdersResolver NONE = (value) -> value;
+	PlaceholdersResolver NONE = value -> value;
 
 	/**
 	 * Called to resolve any placeholders in the given value.

@@ -88,7 +88,7 @@ public class DispatcherServletsMappingDescriptionProvider implements MappingDesc
 
 	private Map<String, DispatcherServlet> determineDispatcherServlets(WebApplicationContext context) {
 		Map<String, DispatcherServlet> dispatcherServlets = new LinkedHashMap<>();
-		context.getBeansOfType(ServletRegistrationBean.class).values().forEach((registration) -> {
+		context.getBeansOfType(ServletRegistrationBean.class).values().forEach(registration -> {
 			Servlet servlet = registration.getServlet();
 			if (servlet instanceof DispatcherServlet && !dispatcherServlets.containsValue(servlet)) {
 				dispatcherServlets.put(registration.getServletName(), (DispatcherServlet) servlet);

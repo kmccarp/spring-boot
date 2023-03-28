@@ -145,7 +145,7 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 		if (operation.getType() == OperationType.WRITE) {
 			ReactiveWebOperation reactiveWebOperation = wrapReactiveWebOperation(endpoint, operation,
 					new ReactiveWebOperationAdapter(operation));
-			registerMapping(requestMappingInfo, new WriteOperationHandler((reactiveWebOperation)),
+			registerMapping(requestMappingInfo, new WriteOperationHandler(reactiveWebOperation),
 					this.handleWriteMethod);
 		}
 		else {
@@ -157,7 +157,7 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 			WebOperation operation) {
 		ReactiveWebOperation reactiveWebOperation = wrapReactiveWebOperation(endpoint, operation,
 				new ReactiveWebOperationAdapter(operation));
-		registerMapping(requestMappingInfo, new ReadOperationHandler((reactiveWebOperation)), this.handleReadMethod);
+		registerMapping(requestMappingInfo, new ReadOperationHandler(reactiveWebOperation), this.handleReadMethod);
 	}
 
 	/**
@@ -307,7 +307,7 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 
 		Mono<? extends SecurityContext> springSecurityContext() {
 			return ReactiveSecurityContextHolder.getContext()
-				.map((securityContext) -> new ReactiveSecurityContext(securityContext.getAuthentication()))
+				.map(securityContext -> new ReactiveSecurityContext(securityContext.getAuthentication()))
 				.switchIfEmpty(Mono.just(new ReactiveSecurityContext(null)));
 		}
 
@@ -322,11 +322,11 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 				.of(WebServerNamespace.class, () -> WebServerNamespace
 					.from(WebServerApplicationContext.getServerNamespace(exchange.getApplicationContext())));
 			return this.securityContextSupplier.get()
-				.map((securityContext) -> new InvocationContext(securityContext, arguments,
+				.map(securityContext -> new InvocationContext(securityContext, arguments,
 						serverNamespaceArgumentResolver,
 						new ProducibleOperationArgumentResolver(
 								() -> exchange.getRequest().getHeaders().get("Accept"))))
-				.flatMap((invocationContext) -> handleResult((Publisher<?>) this.invoker.invoke(invocationContext),
+				.flatMap(invocationContext -> handleResult((Publisher<?>) this.invoker.invoke(invocationContext),
 						exchange.getRequest().getMethod()));
 		}
 
@@ -378,7 +378,7 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 			return Mono.from(result)
 				.map(this::toResponseEntity)
 				.onErrorMap(InvalidEndpointRequestException.class,
-						(ex) -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getReason()))
+						ex -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getReason()))
 				.defaultIfEmpty(new ResponseEntity<>(
 						(httpMethod != HttpMethod.GET) ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND));
 		}

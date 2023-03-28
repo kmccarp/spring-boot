@@ -523,7 +523,7 @@ class JavaBeanBinderTests {
 				int stringSetter = -1;
 				for (int i = 0; i < declaredMethods.length; i++) {
 					Method method = declaredMethods[i];
-					if (method.getName().equals("setProperty")) {
+					if ("setProperty".equals(method.getName())) {
 						if (method.getParameters()[0].getType().equals(int.class)) {
 							intSetter = i;
 						}

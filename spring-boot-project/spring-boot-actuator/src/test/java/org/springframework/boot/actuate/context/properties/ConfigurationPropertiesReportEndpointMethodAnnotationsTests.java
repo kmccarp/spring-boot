@@ -44,7 +44,7 @@ class ConfigurationPropertiesReportEndpointMethodAnnotationsTests {
 	void testNaming() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
 			.withPropertyValues("other.name:foo", "first.name:bar");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -64,7 +64,7 @@ class ConfigurationPropertiesReportEndpointMethodAnnotationsTests {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(OverriddenPrefix.class)
 			.withPropertyValues("other.name:foo");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();

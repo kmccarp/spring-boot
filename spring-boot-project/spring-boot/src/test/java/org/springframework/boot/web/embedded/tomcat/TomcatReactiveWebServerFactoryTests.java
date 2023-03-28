@@ -73,7 +73,7 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 	void tomcatCustomizers() {
 		TomcatReactiveWebServerFactory factory = getFactory();
 		TomcatContextCustomizer[] customizers = new TomcatContextCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(TomcatContextCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(TomcatContextCustomizer.class));
 		factory.setTomcatContextCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addContextCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer(mock(HttpHandler.class));
@@ -109,7 +109,7 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 	void tomcatListeners() {
 		TomcatReactiveWebServerFactory factory = getFactory();
 		LifecycleListener[] listeners = new LifecycleListener[4];
-		Arrays.setAll(listeners, (i) -> mock(LifecycleListener.class));
+		Arrays.setAll(listeners, i -> mock(LifecycleListener.class));
 		factory.setContextLifecycleListeners(Arrays.asList(listeners[0], listeners[1]));
 		factory.addContextLifecycleListeners(listeners[2], listeners[3]);
 		this.webServer = factory.getWebServer(mock(HttpHandler.class));
@@ -154,7 +154,7 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 		TomcatReactiveWebServerFactory factory = getFactory();
 		HttpHandler handler = mock(HttpHandler.class);
 		TomcatConnectorCustomizer[] customizers = new TomcatConnectorCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(TomcatConnectorCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(TomcatConnectorCustomizer.class));
 		factory.setTomcatConnectorCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addConnectorCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer(handler);
@@ -170,7 +170,7 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 		TomcatReactiveWebServerFactory factory = getFactory();
 		HttpHandler handler = mock(HttpHandler.class);
 		TomcatProtocolHandlerCustomizer<AbstractHttp11Protocol<?>>[] customizers = new TomcatProtocolHandlerCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(TomcatProtocolHandlerCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(TomcatProtocolHandlerCustomizer.class));
 		factory.setTomcatProtocolHandlerCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addProtocolHandlerCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer(handler);
@@ -184,7 +184,7 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 	void tomcatAdditionalConnectors() {
 		TomcatReactiveWebServerFactory factory = getFactory();
 		Connector[] connectors = new Connector[4];
-		Arrays.setAll(connectors, (i) -> new Connector());
+		Arrays.setAll(connectors, i -> new Connector());
 		factory.addAdditionalTomcatConnectors(connectors);
 		this.webServer = factory.getWebServer(mock(HttpHandler.class));
 		Map<Service, Connector[]> connectorsByService = ((TomcatWebServer) this.webServer).getServiceConnectors();
@@ -221,12 +221,12 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 
 	@Test
 	void portClashOfPrimaryConnectorResultsInPortInUseException() throws Exception {
-		doWithBlockedPort((port) -> assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
+		doWithBlockedPort(port -> assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
 			AbstractReactiveWebServerFactory factory = getFactory();
 			factory.setPort(port);
 			this.webServer = factory.getWebServer(mock(HttpHandler.class));
 			this.webServer.start();
-		}).satisfies((ex) -> handleExceptionCausedByBlockedPortOnPrimaryConnector(ex, port)));
+		}).satisfies(ex -> handleExceptionCausedByBlockedPortOnPrimaryConnector(ex, port)));
 	}
 
 	@Override
@@ -242,7 +242,7 @@ class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServerFacto
 		this.webServer = factory.getWebServer(blockingHandler);
 		this.webServer.start();
 		WebClient webClient = getWebClient(this.webServer.getPort()).build();
-		this.webServer.shutDownGracefully((result) -> {
+		this.webServer.shutDownGracefully(result -> {
 		});
 		Awaitility.await().atMost(Duration.ofSeconds(30)).until(() -> {
 			blockingHandler.stopBlocking();

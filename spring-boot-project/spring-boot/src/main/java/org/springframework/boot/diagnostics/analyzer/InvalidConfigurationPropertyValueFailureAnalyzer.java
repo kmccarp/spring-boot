@@ -61,8 +61,8 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 	}
 
 	private List<Descriptor> getDescriptors(String propertyName) {
-		return getPropertySources().filter((source) -> source.containsProperty(propertyName))
-			.map((source) -> Descriptor.get(source, propertyName))
+		return getPropertySources().filter(source -> source.containsProperty(propertyName))
+			.map(source -> Descriptor.get(source, propertyName))
 			.toList();
 	}
 
@@ -72,7 +72,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 		}
 		return this.environment.getPropertySources()
 			.stream()
-			.filter((source) -> !ConfigurationPropertySources.isAttachedConfigurationPropertySource(source));
+			.filter(source -> !ConfigurationPropertySources.isAttachedConfigurationPropertySource(source));
 	}
 
 	private void appendDetails(StringBuilder message, InvalidConfigurationPropertyValueException cause,

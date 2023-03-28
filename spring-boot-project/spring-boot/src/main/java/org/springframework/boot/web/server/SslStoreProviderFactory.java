@@ -35,7 +35,7 @@ public final class SslStoreProviderFactory {
 	 */
 	public static SslStoreProvider from(Ssl ssl) {
 		SslStoreProvider sslStoreProvider = CertificateFileSslStoreProvider.from(ssl);
-		return ((sslStoreProvider != null) ? sslStoreProvider : JavaKeyStoreSslStoreProvider.from(ssl));
+		return (sslStoreProvider != null) ? sslStoreProvider : JavaKeyStoreSslStoreProvider.from(ssl);
 	}
 
 }

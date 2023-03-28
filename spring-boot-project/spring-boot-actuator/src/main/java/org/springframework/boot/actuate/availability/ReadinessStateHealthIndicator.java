@@ -32,7 +32,7 @@ import org.springframework.boot.availability.ReadinessState;
 public class ReadinessStateHealthIndicator extends AvailabilityStateHealthIndicator {
 
 	public ReadinessStateHealthIndicator(ApplicationAvailability availability) {
-		super(availability, ReadinessState.class, (statusMappings) -> {
+		super(availability, ReadinessState.class, statusMappings -> {
 			statusMappings.add(ReadinessState.ACCEPTING_TRAFFIC, Status.UP);
 			statusMappings.add(ReadinessState.REFUSING_TRAFFIC, Status.OUT_OF_SERVICE);
 		});

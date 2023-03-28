@@ -91,7 +91,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolverTests {
 	}
 
 	private Consumer<InactiveConfigDataAccessException> propertyNameAndOriginOf(String propertyName, String origin) {
-		return (ex) -> {
+		return ex -> {
 			assertThat(ex.getPropertyName()).isEqualTo(propertyName);
 			assertThat(((PropertySourceOrigin) (ex.getOrigin())).getPropertySource().getName()).isEqualTo(origin);
 		};

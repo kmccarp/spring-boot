@@ -38,7 +38,7 @@ class AuditEventsEndpointWebIntegrationTests {
 	@WebEndpointTest
 	void allEvents(WebTestClient client) {
 		client.get()
-			.uri((builder) -> builder.path("/actuator/auditevents").build())
+			.uri(builder -> builder.path("/actuator/auditevents").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -50,7 +50,7 @@ class AuditEventsEndpointWebIntegrationTests {
 	@WebEndpointTest
 	void eventsAfter(WebTestClient client) {
 		client.get()
-			.uri((builder) -> builder.path("/actuator/auditevents")
+			.uri(builder -> builder.path("/actuator/auditevents")
 				.queryParam("after", "2016-11-01T13:00:00%2B00:00")
 				.build())
 			.exchange()
@@ -64,7 +64,7 @@ class AuditEventsEndpointWebIntegrationTests {
 	@WebEndpointTest
 	void eventsWithPrincipal(WebTestClient client) {
 		client.get()
-			.uri((builder) -> builder.path("/actuator/auditevents").queryParam("principal", "user").build())
+			.uri(builder -> builder.path("/actuator/auditevents").queryParam("principal", "user").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -76,7 +76,7 @@ class AuditEventsEndpointWebIntegrationTests {
 	@WebEndpointTest
 	void eventsWithType(WebTestClient client) {
 		client.get()
-			.uri((builder) -> builder.path("/actuator/auditevents").queryParam("type", "logout").build())
+			.uri(builder -> builder.path("/actuator/auditevents").queryParam("type", "logout").build())
 			.exchange()
 			.expectStatus()
 			.isOk()

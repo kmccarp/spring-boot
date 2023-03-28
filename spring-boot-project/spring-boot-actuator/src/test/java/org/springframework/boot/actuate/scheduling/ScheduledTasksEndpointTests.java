@@ -60,7 +60,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void cronScheduledMethodIsReported() {
-		run(CronScheduledMethod.class, (tasks) -> {
+		run(CronScheduledMethod.class, tasks -> {
 			assertThat(tasks.getFixedDelay()).isEmpty();
 			assertThat(tasks.getFixedRate()).isEmpty();
 			assertThat(tasks.getCustom()).isEmpty();
@@ -73,7 +73,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void cronTriggerIsReported() {
-		run(CronTriggerTask.class, (tasks) -> {
+		run(CronTriggerTask.class, tasks -> {
 			assertThat(tasks.getFixedRate()).isEmpty();
 			assertThat(tasks.getFixedDelay()).isEmpty();
 			assertThat(tasks.getCustom()).isEmpty();
@@ -86,7 +86,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void fixedDelayScheduledMethodIsReported() {
-		run(FixedDelayScheduledMethod.class, (tasks) -> {
+		run(FixedDelayScheduledMethod.class, tasks -> {
 			assertThat(tasks.getCron()).isEmpty();
 			assertThat(tasks.getFixedRate()).isEmpty();
 			assertThat(tasks.getCustom()).isEmpty();
@@ -101,7 +101,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void fixedDelayTriggerIsReported() {
-		run(FixedDelayTriggerTask.class, (tasks) -> {
+		run(FixedDelayTriggerTask.class, tasks -> {
 			assertThat(tasks.getCron()).isEmpty();
 			assertThat(tasks.getFixedRate()).isEmpty();
 			assertThat(tasks.getCustom()).isEmpty();
@@ -115,7 +115,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void fixedRateScheduledMethodIsReported() {
-		run(FixedRateScheduledMethod.class, (tasks) -> {
+		run(FixedRateScheduledMethod.class, tasks -> {
 			assertThat(tasks.getCron()).isEmpty();
 			assertThat(tasks.getFixedDelay()).isEmpty();
 			assertThat(tasks.getCustom()).isEmpty();
@@ -130,7 +130,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void fixedRateTriggerIsReported() {
-		run(FixedRateTriggerTask.class, (tasks) -> {
+		run(FixedRateTriggerTask.class, tasks -> {
 			assertThat(tasks.getCron()).isEmpty();
 			assertThat(tasks.getFixedDelay()).isEmpty();
 			assertThat(tasks.getCustom()).isEmpty();
@@ -144,7 +144,7 @@ class ScheduledTasksEndpointTests {
 
 	@Test
 	void taskWithCustomTriggerIsReported() {
-		run(CustomTriggerTask.class, (tasks) -> {
+		run(CustomTriggerTask.class, tasks -> {
 			assertThat(tasks.getCron()).isEmpty();
 			assertThat(tasks.getFixedDelay()).isEmpty();
 			assertThat(tasks.getFixedRate()).isEmpty();
@@ -171,7 +171,7 @@ class ScheduledTasksEndpointTests {
 
 	private void run(Class<?> configuration, Consumer<ScheduledTasksDescriptor> consumer) {
 		this.contextRunner.withUserConfiguration(configuration)
-			.run((context) -> consumer.accept(context.getBean(ScheduledTasksEndpoint.class).scheduledTasks()));
+			.run(context -> consumer.accept(context.getBean(ScheduledTasksEndpoint.class).scheduledTasks()));
 	}
 
 	@Configuration(proxyBeanMethods = false)
@@ -246,7 +246,7 @@ class ScheduledTasksEndpointTests {
 
 	static class CustomTriggerTask implements SchedulingConfigurer {
 
-		private static final Trigger trigger = (context) -> Instant.now();
+		private static final Trigger trigger = context -> Instant.now();
 
 		@Override
 		public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {

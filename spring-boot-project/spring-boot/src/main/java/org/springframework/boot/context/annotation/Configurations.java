@@ -58,7 +58,7 @@ import org.springframework.util.ClassUtils;
 public abstract class Configurations {
 
 	private static final Comparator<Object> COMPARATOR = OrderComparator.INSTANCE
-		.thenComparing((other) -> other.getClass().getName());
+		.thenComparing(other -> other.getClass().getName());
 
 	private final Set<Class<?>> classes;
 

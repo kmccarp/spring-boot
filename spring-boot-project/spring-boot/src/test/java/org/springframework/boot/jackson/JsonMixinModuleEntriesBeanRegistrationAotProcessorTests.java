@@ -109,7 +109,7 @@ class JsonMixinModuleEntriesBeanRegistrationAotProcessorTests {
 	@SuppressWarnings("unchecked")
 	private void compile(BiConsumer<GenericApplicationContext, Compiled> result) {
 		ClassName className = processAheadOfTime();
-		TestCompiler.forSystem().with(this.generationContext).compile((compiled) -> {
+		TestCompiler.forSystem().with(this.generationContext).compile(compiled -> {
 			GenericApplicationContext freshApplicationContext = new GenericApplicationContext();
 			ApplicationContextInitializer<GenericApplicationContext> initializer = compiled
 				.getInstance(ApplicationContextInitializer.class, className.toString());

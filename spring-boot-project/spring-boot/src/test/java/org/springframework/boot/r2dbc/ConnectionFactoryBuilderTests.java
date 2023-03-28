@@ -127,7 +127,7 @@ class ConnectionFactoryBuilderTests {
 	@Test
 	void buildOptionsWithDriverPropertiesShouldExposeOptions() {
 		ConnectionFactoryOptions options = ConnectionFactoryBuilder.withUrl("r2dbc:simple://user:password@myhost")
-			.configure((o) -> o.option(Option.valueOf("simpleOne"), "one").option(Option.valueOf("simpleTwo"), "two"))
+			.configure(o -> o.option(Option.valueOf("simpleOne"), "one").option(Option.valueOf("simpleTwo"), "two"))
 			.buildOptions();
 		assertThat(options.getRequiredValue(Option.<String>valueOf("simpleOne"))).isEqualTo("one");
 		assertThat(options.getRequiredValue(Option.<String>valueOf("simpleTwo"))).isEqualTo("two");
@@ -208,7 +208,7 @@ class ConnectionFactoryBuilderTests {
 		String url = "r2dbc:pool:h2:mem:///" + UUID.randomUUID();
 		ExpectedOption expectedOption = ExpectedOption.get(option);
 		ConnectionFactoryOptions options = ConnectionFactoryBuilder.withUrl(url)
-			.configure((builder) -> builder.option(PoolingConnectionFactoryProvider.POOL_NAME, "defaultName")
+			.configure(builder -> builder.option(PoolingConnectionFactoryProvider.POOL_NAME, "defaultName")
 				.option(option, expectedOption.value))
 			.buildOptions();
 		ConnectionPoolConfiguration configuration = new PoolingAwareOptionsCapableWrapper()
@@ -217,7 +217,7 @@ class ConnectionFactoryBuilderTests {
 	}
 
 	private static Iterable<Arguments> poolingConnectionProviderOptions() {
-		return extractPoolingConnectionProviderOptions((field) -> Option.class.equals(field.getType()));
+		return extractPoolingConnectionProviderOptions(field -> Option.class.equals(field.getType()));
 	}
 
 	@ParameterizedTest
@@ -227,7 +227,7 @@ class ConnectionFactoryBuilderTests {
 		String url = "r2dbc:pool:h2:mem:///" + UUID.randomUUID();
 		ExpectedOption expectedOption = ExpectedOption.get(option);
 		ConnectionFactoryOptions options = ConnectionFactoryBuilder.withUrl(url)
-			.configure((builder) -> builder.option(PoolingConnectionFactoryProvider.POOL_NAME, "defaultName")
+			.configure(builder -> builder.option(PoolingConnectionFactoryProvider.POOL_NAME, "defaultName")
 				.option(option, expectedOption.value.toString()))
 			.buildOptions();
 		ConnectionPoolConfiguration configuration = new PoolingAwareOptionsCapableWrapper()
@@ -236,20 +236,20 @@ class ConnectionFactoryBuilderTests {
 	}
 
 	private static Iterable<Arguments> primitivePoolingConnectionProviderOptions() {
-		return extractPoolingConnectionProviderOptions((field) -> {
+		return extractPoolingConnectionProviderOptions(field -> {
 			ResolvableType type = ResolvableType.forField(field);
 			if (!type.toClass().equals(Option.class)) {
 				return false;
 			}
 			Class<?> valueType = type.as(Option.class).getGenerics()[0].toClass();
-			return valueType.getPackage().getName().equals("java.lang");
+			return "java.lang".equals(valueType.getPackage().getName());
 		});
 	}
 
 	private static Iterable<Arguments> extractPoolingConnectionProviderOptions(FieldFilter filter) {
 		List<Arguments> arguments = new ArrayList<>();
 		ReflectionUtils.doWithFields(PoolingConnectionFactoryProvider.class,
-				(field) -> arguments.add(Arguments.of(ReflectionUtils.getField(field, null))), filter);
+				field -> arguments.add(Arguments.of(ReflectionUtils.getField(field, null))), filter);
 		return arguments;
 	}
 

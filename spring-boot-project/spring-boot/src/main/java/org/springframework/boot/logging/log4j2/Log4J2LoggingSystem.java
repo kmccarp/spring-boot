@@ -309,7 +309,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		}
 		AuthorizationProvider authorizationProvider = ConfigurationFactory
 			.authorizationProvider(PropertiesUtil.getProperties());
-		SslConfiguration sslConfiguration = url.getProtocol().equals("https")
+		SslConfiguration sslConfiguration = "https".equals(url.getProtocol())
 				? SslConfigurationFactory.getSslConfiguration() : null;
 		URLConnection connection = UrlConnectionFactory.createConnection(url, 0, sslConfiguration,
 				authorizationProvider);
@@ -408,7 +408,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		for (Logger logger : getLoggerContext().getLoggers()) {
 			addLogger(loggers, logger.getName());
 		}
-		getLoggerContext().getConfiguration().getLoggers().keySet().forEach((name) -> addLogger(loggers, name));
+		getLoggerContext().getConfiguration().getLoggers().keySet().forEach(name -> addLogger(loggers, name));
 		return loggers;
 	}
 
@@ -437,7 +437,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 			name = ROOT_LOGGER_NAME;
 		}
 		boolean isLoggerConfigured = loggerConfig.getName().equals(name);
-		LogLevel configuredLevel = (isLoggerConfigured) ? level : null;
+		LogLevel configuredLevel = isLoggerConfigured ? level : null;
 		return new LoggerConfiguration(name, configuredLevel, level);
 	}
 

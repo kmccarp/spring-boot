@@ -74,19 +74,19 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenNoEndpointBeansShouldReturnEmptyCollection() {
-		load(EmptyConfiguration.class, (discoverer) -> assertThat(discoverer.getEndpoints()).isEmpty());
+		load(EmptyConfiguration.class, discoverer -> assertThat(discoverer.getEndpoints()).isEmpty());
 	}
 
 	@Test
 	void getEndpointsWhenWebExtensionIsMissingEndpointShouldThrowException() {
 		load(TestWebEndpointExtensionConfiguration.class,
-				(discoverer) -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
+				discoverer -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
 					.withMessageContaining("Invalid extension 'endpointExtension': no endpoint found with id 'test'"));
 	}
 
 	@Test
 	void getEndpointsWhenHasFilteredEndpointShouldOnlyDiscoverWebEndpoints() {
-		load(MultipleEndpointsConfiguration.class, (discoverer) -> {
+		load(MultipleEndpointsConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("test"));
 		});
@@ -94,7 +94,7 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenHasWebExtensionShouldOverrideStandardEndpoint() {
-		load(OverriddenOperationWebEndpointExtensionConfiguration.class, (discoverer) -> {
+		load(OverriddenOperationWebEndpointExtensionConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("test"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("test"));
@@ -105,7 +105,7 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenExtensionAddsOperationShouldHaveBothOperations() {
-		load(AdditionalOperationWebEndpointConfiguration.class, (discoverer) -> {
+		load(AdditionalOperationWebEndpointConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("test"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("test"));
@@ -117,7 +117,7 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenPredicateForWriteOperationThatReturnsVoidShouldHaveNoProducedMediaTypes() {
-		load(VoidWriteOperationEndpointConfiguration.class, (discoverer) -> {
+		load(VoidWriteOperationEndpointConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("voidwrite"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("voidwrite"));
@@ -129,7 +129,7 @@ class WebEndpointDiscovererTests {
 	@Test
 	void getEndpointsWhenTwoExtensionsHaveTheSameEndpointTypeShouldThrowException() {
 		load(ClashingWebEndpointConfiguration.class,
-				(discoverer) -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
+				discoverer -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
 					.withMessageContaining("Found multiple extensions for the endpoint bean "
 							+ "testEndpoint (testExtensionOne, testExtensionTwo)"));
 	}
@@ -137,14 +137,14 @@ class WebEndpointDiscovererTests {
 	@Test
 	void getEndpointsWhenTwoStandardEndpointsHaveTheSameIdShouldThrowException() {
 		load(ClashingStandardEndpointConfiguration.class,
-				(discoverer) -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
+				discoverer -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
 					.withMessageContaining("Found two endpoints with the id 'test': "));
 	}
 
 	@Test
 	void getEndpointsWhenWhenEndpointHasTwoOperationsWithTheSameNameShouldThrowException() {
 		load(ClashingOperationsEndpointConfiguration.class,
-				(discoverer) -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
+				discoverer -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
 					.withMessageContaining("Unable to map duplicate endpoint operations: "
 							+ "[web request predicate GET to path 'test' "
 							+ "produces: application/json] to clashingOperationsEndpoint"));
@@ -153,7 +153,7 @@ class WebEndpointDiscovererTests {
 	@Test
 	void getEndpointsWhenExtensionIsNotCompatibleWithTheEndpointTypeShouldThrowException() {
 		load(InvalidWebExtensionConfiguration.class,
-				(discoverer) -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
+				discoverer -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
 					.withMessageContaining("Endpoint bean 'nonWebEndpoint' cannot support the "
 							+ "extension bean 'nonWebWebEndpointExtension'"));
 	}
@@ -161,14 +161,14 @@ class WebEndpointDiscovererTests {
 	@Test
 	void getEndpointsWhenWhenExtensionHasTwoOperationsWithTheSameNameShouldThrowException() {
 		load(ClashingSelectorsWebEndpointExtensionConfiguration.class,
-				(discoverer) -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
+				discoverer -> assertThatIllegalStateException().isThrownBy(discoverer::getEndpoints)
 					.withMessageContaining("Unable to map duplicate endpoint operations")
 					.withMessageContaining("to testEndpoint (clashingSelectorsExtension)"));
 	}
 
 	@Test
 	void getEndpointsWhenHasCacheWithTtlShouldCacheReadOperationWithTtlValue() {
-		load((id) -> 500L, EndpointId::toString, TestEndpointConfiguration.class, (discoverer) -> {
+		load(id -> 500L, EndpointId::toString, TestEndpointConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("test"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("test"));
@@ -182,7 +182,7 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenOperationReturnsResourceShouldProduceApplicationOctetStream() {
-		load(ResourceEndpointConfiguration.class, (discoverer) -> {
+		load(ResourceEndpointConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("resource"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("resource"));
@@ -195,7 +195,7 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenHasCustomMediaTypeShouldProduceCustomMediaType() {
-		load(CustomMediaTypesEndpointConfiguration.class, (discoverer) -> {
+		load(CustomMediaTypesEndpointConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("custommediatypes"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("custommediatypes"));
@@ -210,7 +210,7 @@ class WebEndpointDiscovererTests {
 
 	@Test
 	void getEndpointsWhenHasCustomPathShouldReturnCustomPath() {
-		load((id) -> null, (id) -> "custom/" + id, AdditionalOperationWebEndpointConfiguration.class, (discoverer) -> {
+		load(id -> null, id -> "custom/" + id, AdditionalOperationWebEndpointConfiguration.class, discoverer -> {
 			Map<EndpointId, ExposableWebEndpoint> endpoints = mapEndpoints(discoverer.getEndpoints());
 			assertThat(endpoints).containsOnlyKeys(EndpointId.of("test"));
 			ExposableWebEndpoint endpoint = endpoints.get(EndpointId.of("test"));
@@ -234,7 +234,7 @@ class WebEndpointDiscovererTests {
 	}
 
 	private void load(Class<?> configuration, Consumer<WebEndpointDiscoverer> consumer) {
-		load((id) -> null, EndpointId::toString, configuration, consumer);
+		load(id -> null, EndpointId::toString, configuration, consumer);
 	}
 
 	private void load(Function<EndpointId, Long> timeToLive, PathMapper endpointPathMapper, Class<?> configuration,
@@ -253,7 +253,7 @@ class WebEndpointDiscovererTests {
 
 	private Map<EndpointId, ExposableWebEndpoint> mapEndpoints(Collection<ExposableWebEndpoint> endpoints) {
 		Map<EndpointId, ExposableWebEndpoint> endpointById = new HashMap<>();
-		endpoints.forEach((endpoint) -> endpointById.put(endpoint.getEndpointId(), endpoint));
+		endpoints.forEach(endpoint -> endpointById.put(endpoint.getEndpointId(), endpoint));
 		return endpointById;
 	}
 
@@ -263,15 +263,15 @@ class WebEndpointDiscovererTests {
 
 	private Condition<List<? extends WebOperationRequestPredicate>> requestPredicates(
 			RequestPredicateMatcher... matchers) {
-		return new Condition<>((predicates) -> {
+		return new Condition<>(predicates -> {
 			if (predicates.size() != matchers.length) {
 				return false;
 			}
 			Map<WebOperationRequestPredicate, Long> matchCounts = new HashMap<>();
 			for (WebOperationRequestPredicate predicate : predicates) {
-				matchCounts.put(predicate, Stream.of(matchers).filter((matcher) -> matcher.matches(predicate)).count());
+				matchCounts.put(predicate, Stream.of(matchers).filter(matcher -> matcher.matches(predicate)).count());
 			}
-			return matchCounts.values().stream().noneMatch((count) -> count != 1);
+			return matchCounts.values().stream().noneMatch(count -> count != 1);
 		}, Arrays.toString(matchers));
 	}
 

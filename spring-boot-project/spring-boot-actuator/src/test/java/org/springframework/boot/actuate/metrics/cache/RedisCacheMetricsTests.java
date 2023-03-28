@@ -102,7 +102,7 @@ class RedisCacheMetricsTests {
 
 	@Test
 	void cacheMetricsMatchCacheStatistics() {
-		this.contextRunner.run((context) -> {
+		this.contextRunner.run(context -> {
 			RedisCache cache = getTestCache(context);
 			RedisCacheMetrics cacheMetrics = new RedisCacheMetrics(cache, TAGS);
 			assertThat(cacheMetrics.hitCount()).isEqualTo(cache.getStatistics().getHits());
@@ -115,7 +115,7 @@ class RedisCacheMetricsTests {
 
 	private ContextConsumer<AssertableApplicationContext> withCacheMetrics(
 			BiConsumer<RedisCache, MeterRegistry> stats) {
-		return (context) -> {
+		return context -> {
 			RedisCache cache = getTestCache(context);
 			SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
 			new RedisCacheMetrics(cache, Tags.of("app", "test")).bindTo(meterRegistry);

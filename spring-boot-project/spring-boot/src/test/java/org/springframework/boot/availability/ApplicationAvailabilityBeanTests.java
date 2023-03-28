@@ -157,7 +157,7 @@ class ApplicationAvailabilityBeanTests {
 			MockLog log = mock(MockLog.class);
 			given(log.isDebugEnabled()).willReturn(true);
 			given(log.getLogged()).willReturn(logged);
-			willAnswer((invocation) -> logged.add("" + invocation.getArguments()[0])).given(log).debug(any());
+			willAnswer(invocation -> logged.add("" + invocation.getArguments()[0])).given(log).debug(any());
 			return log;
 		}
 

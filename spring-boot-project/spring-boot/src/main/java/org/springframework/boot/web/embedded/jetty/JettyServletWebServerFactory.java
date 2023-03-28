@@ -291,8 +291,8 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 		File docBase = (root != null) ? root : createTempDir("jetty-docbase");
 		try {
 			List<Resource> resources = new ArrayList<>();
-			Resource rootResource = (docBase.isDirectory() ? Resource.newResource(docBase.getCanonicalFile())
-					: JarResource.newJarResource(Resource.newResource(docBase)));
+			Resource rootResource = docBase.isDirectory() ? Resource.newResource(docBase.getCanonicalFile())
+					: JarResource.newJarResource(Resource.newResource(docBase));
 			resources.add((root != null) ? new LoaderHidingResource(rootResource) : rootResource);
 			for (URL resourceJarUrl : getUrlsOfJarsWithMetaInfResources()) {
 				Resource resource = createResource(resourceJarUrl);

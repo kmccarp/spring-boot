@@ -209,7 +209,7 @@ public class CachingOperationInvoker implements OperationInvoker {
 		}
 
 		static boolean containsType(Class<?> type) {
-			return Arrays.stream(CacheKey.CACHEABLE_TYPES).anyMatch((c) -> c.isAssignableFrom(type));
+			return Arrays.stream(CacheKey.CACHEABLE_TYPES).anyMatch(c -> c.isAssignableFrom(type));
 		}
 
 		@Override

@@ -93,7 +93,7 @@ public class InMemoryAuditEventRepository implements AuditEventRepository {
 	}
 
 	private AuditEvent resolveTailEvent(int offset) {
-		int index = ((this.tail + this.events.length - offset) % this.events.length);
+		int index = (this.tail + this.events.length - offset) % this.events.length;
 		return this.events[index];
 	}
 

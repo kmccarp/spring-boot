@@ -27,6 +27,8 @@ import org.springframework.context.ApplicationEvent;
  */
 public class ExitCodeEvent extends ApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final int exitCode;
 
 	/**

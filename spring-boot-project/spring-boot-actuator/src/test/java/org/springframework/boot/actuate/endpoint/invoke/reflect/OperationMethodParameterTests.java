@@ -52,7 +52,7 @@ class OperationMethodParameterTests {
 	private final Method exampleJsr305NonNull = ReflectionUtils.findMethod(getClass(), "exampleJsr305NonNull",
 			String.class, String.class);
 
-	private Method exampleAnnotation = ReflectionUtils.findMethod(getClass(), "exampleAnnotation", String.class);
+	private final Method exampleAnnotation = ReflectionUtils.findMethod(getClass(), "exampleAnnotation", String.class);
 
 	@Test
 	void getNameShouldReturnName() {

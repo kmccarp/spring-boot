@@ -72,7 +72,7 @@ class PlainTextThreadDumpFormatter {
 	}
 
 	private List<MonitorInfo> lockedMonitorsForDepth(MonitorInfo[] lockedMonitors, int depth) {
-		return Stream.of(lockedMonitors).filter((candidate) -> candidate.getLockedStackDepth() == depth).toList();
+		return Stream.of(lockedMonitors).filter(candidate -> candidate.getLockedStackDepth() == depth).toList();
 	}
 
 	private void writeStackTraceElement(PrintWriter writer, StackTraceElement element, ThreadInfo info,
@@ -80,7 +80,7 @@ class PlainTextThreadDumpFormatter {
 		writer.printf("\tat %s%n", element.toString());
 		LockInfo lockInfo = info.getLockInfo();
 		if (firstElement && lockInfo != null) {
-			if (element.getClassName().equals(Object.class.getName()) && element.getMethodName().equals("wait")) {
+			if (element.getClassName().equals(Object.class.getName()) && "wait".equals(element.getMethodName())) {
 				writer.printf("\t- waiting on %s%n", format(lockInfo));
 			}
 			else {

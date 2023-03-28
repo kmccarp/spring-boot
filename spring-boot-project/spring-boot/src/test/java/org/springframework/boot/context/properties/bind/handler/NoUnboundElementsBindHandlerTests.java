@@ -76,7 +76,7 @@ class NoUnboundElementsBindHandlerTests {
 		assertThatExceptionOfType(BindException.class)
 			.isThrownBy(
 					() -> this.binder.bind("example", Bindable.of(Example.class), new NoUnboundElementsBindHandler()))
-			.satisfies((ex) -> assertThat(ex.getCause().getMessage())
+			.satisfies(ex -> assertThat(ex.getCause().getMessage())
 				.contains("The elements [example.baz] were left unbound"));
 	}
 
@@ -100,7 +100,7 @@ class NoUnboundElementsBindHandlerTests {
 		this.sources.add(source);
 		this.binder = new Binder(this.sources);
 		NoUnboundElementsBindHandler handler = new NoUnboundElementsBindHandler(BindHandler.DEFAULT,
-				((configurationPropertySource) -> false));
+				(configurationPropertySource -> false));
 		Example bound = this.binder.bind("example", Bindable.of(Example.class), handler).get();
 		assertThat(bound.getFoo()).isEqualTo("bar");
 	}
@@ -129,7 +129,7 @@ class NoUnboundElementsBindHandlerTests {
 		assertThatExceptionOfType(BindException.class)
 			.isThrownBy(
 					() -> this.binder.bind("example", Bindable.of(Example.class), new NoUnboundElementsBindHandler()))
-			.satisfies((ex) -> assertThat(ex.getCause().getMessage())
+			.satisfies(ex -> assertThat(ex.getCause().getMessage())
 				.contains("The elements [example.foo[0]] were left unbound"));
 	}
 
@@ -165,7 +165,7 @@ class NoUnboundElementsBindHandlerTests {
 		assertThatExceptionOfType(BindException.class)
 			.isThrownBy(() -> this.binder.bind("example", Bindable.of(ExampleWithNestedList.class),
 					new NoUnboundElementsBindHandler()))
-			.satisfies((ex) -> assertThat(ex.getCause().getMessage())
+			.satisfies(ex -> assertThat(ex.getCause().getMessage())
 				.contains("The elements [example.nested[1].invalid] were left unbound"));
 	}
 

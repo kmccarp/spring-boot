@@ -48,7 +48,7 @@ class CompositeHealthContributorTests {
 		HealthIndicator downIndicator = () -> Health.down().build();
 		HealthIndicator upIndicator = () -> Health.up().build();
 		map.put("test", downIndicator);
-		CompositeHealthContributor composite = CompositeHealthContributor.fromMap(map, (value) -> upIndicator);
+		CompositeHealthContributor composite = CompositeHealthContributor.fromMap(map, value -> upIndicator);
 		assertThat(composite).isInstanceOf(CompositeHealthContributorMapAdapter.class);
 		NamedContributor<HealthContributor> namedContributor = composite.iterator().next();
 		assertThat(namedContributor.getName()).isEqualTo("test");

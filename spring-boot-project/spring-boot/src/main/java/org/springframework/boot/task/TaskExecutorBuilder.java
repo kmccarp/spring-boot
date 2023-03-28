@@ -312,7 +312,7 @@ public class TaskExecutorBuilder {
 		map.from(this.threadNamePrefix).whenHasText().to(taskExecutor::setThreadNamePrefix);
 		map.from(this.taskDecorator).to(taskExecutor::setTaskDecorator);
 		if (!CollectionUtils.isEmpty(this.customizers)) {
-			this.customizers.forEach((customizer) -> customizer.customize(taskExecutor));
+			this.customizers.forEach(customizer -> customizer.customize(taskExecutor));
 		}
 		return taskExecutor;
 	}

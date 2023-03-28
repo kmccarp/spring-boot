@@ -150,13 +150,13 @@ class OriginTrackedYamlLoaderTests {
 		int size = 500;
 		yaml.append("defs:\n");
 		for (int i = 0; i < size; i++) {
-			yaml.append(" - def" + i + ": &def" + i + "\n");
-			yaml.append("    - value: " + i + "\n");
+			yaml.append(" - def").append(i).append(": &def").append(i).append("\n");
+			yaml.append("    - value: ").append(i).append("\n");
 		}
 		yaml.append("refs:\n");
 		for (int i = 0; i < size; i++) {
-			yaml.append("  ref" + i + ":\n");
-			yaml.append("   - value: *def" + i + "\n");
+			yaml.append("  ref").append(i).append(":\n");
+			yaml.append("   - value: *def").append(i).append("\n");
 		}
 		Resource resource = new ByteArrayResource(yaml.toString().getBytes(StandardCharsets.UTF_8));
 		this.loader = new OriginTrackedYamlLoader(resource);

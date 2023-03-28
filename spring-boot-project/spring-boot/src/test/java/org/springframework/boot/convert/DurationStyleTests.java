@@ -208,7 +208,7 @@ class DurationStyleTests {
 	@Test
 	void parseSimpleWhenUnknownUnitShouldThrowException() {
 		assertThatIllegalArgumentException().isThrownBy(() -> DurationStyle.SIMPLE.parse("10mb"))
-			.satisfies((ex) -> assertThat(ex.getCause().getMessage()).isEqualTo("Unknown unit 'mb'"));
+			.satisfies(ex -> assertThat(ex.getCause().getMessage()).isEqualTo("Unknown unit 'mb'"));
 	}
 
 	@Test

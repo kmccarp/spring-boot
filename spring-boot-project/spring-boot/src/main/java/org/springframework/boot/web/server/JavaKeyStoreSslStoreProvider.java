@@ -61,7 +61,7 @@ final class JavaKeyStoreSslStoreProvider implements SslStoreProvider {
 		type = (type != null) ? type : "JKS";
 		char[] passwordChars = (password != null) ? password.toCharArray() : null;
 		KeyStore store = (provider != null) ? KeyStore.getInstance(type, provider) : KeyStore.getInstance(type);
-		if (type.equalsIgnoreCase("PKCS11")) {
+		if ("PKCS11".equalsIgnoreCase(type)) {
 			Assert.state(!StringUtils.hasText(location),
 					() -> "KeyStore location is '" + location + "', but must be empty or null for PKCS11 key stores");
 			store.load(null, passwordChars);

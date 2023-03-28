@@ -86,7 +86,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 */
 	public boolean isLastElementIndexed() {
 		int size = getNumberOfElements();
-		return (size > 0 && isIndexed(size - 1));
+		return size > 0 && isIndexed(size - 1);
 	}
 
 	/**

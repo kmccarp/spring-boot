@@ -75,7 +75,7 @@ class ConfigDataTests {
 		MapPropertySource source2 = new MapPropertySource("test", Collections.emptyMap());
 		Options options1 = Options.of(Option.IGNORE_IMPORTS);
 		Options options2 = Options.of(Option.IGNORE_PROFILES);
-		PropertySourceOptions propertySourceOptions = (source) -> (source != source1) ? options2 : options1;
+		PropertySourceOptions propertySourceOptions = source -> (source != source1) ? options2 : options1;
 		ConfigData configData = new ConfigData(Arrays.asList(source1, source2), propertySourceOptions);
 		assertThat(configData.getOptions(source1)).isEqualTo(options1);
 		assertThat(configData.getOptions(source2)).isEqualTo(options2);
@@ -84,7 +84,7 @@ class ConfigDataTests {
 	@Test
 	void getOptionsWhenPropertySourceOptionsReturnsNullReturnsNone() {
 		MapPropertySource source = new MapPropertySource("test", Collections.emptyMap());
-		PropertySourceOptions propertySourceOptions = (propertySource) -> null;
+		PropertySourceOptions propertySourceOptions = propertySource -> null;
 		ConfigData configData = new ConfigData(Collections.singleton(source), propertySourceOptions);
 		assertThat(configData.getOptions(source)).isEqualTo(Options.NONE);
 	}

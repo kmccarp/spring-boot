@@ -100,7 +100,7 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 		entries.accept(map);
 		Set<String> configuredNames = map.entrySet()
 			.stream()
-			.filter((entry) -> entry.getValue() != null)
+			.filter(entry -> entry.getValue() != null)
 			.map(Map.Entry::getKey)
 			.collect(Collectors.toCollection(LinkedHashSet::new));
 		if (configuredNames.size() > 1) {

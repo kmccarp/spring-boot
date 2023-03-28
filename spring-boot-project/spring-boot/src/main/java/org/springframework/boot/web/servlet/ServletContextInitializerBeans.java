@@ -86,7 +86,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		addAdaptableBeans(beanFactory);
 		this.sortedList = this.initializers.values()
 			.stream()
-			.flatMap((value) -> value.stream().sorted(AnnotationAwareOrderComparator.INSTANCE))
+			.flatMap(value -> value.stream().sorted(AnnotationAwareOrderComparator.INSTANCE))
 			.toList();
 		logMappings(this.initializers);
 	}

@@ -76,7 +76,7 @@ class RabbitHealthIndicatorTests {
 	}
 
 	private void givenTemplateExecutionWillInvokeCallback() {
-		given(this.rabbitTemplate.execute(any())).willAnswer((invocation) -> {
+		given(this.rabbitTemplate.execute(any())).willAnswer(invocation -> {
 			ChannelCallback<?> callback = invocation.getArgument(0);
 			return callback.doInRabbit(this.channel);
 		});

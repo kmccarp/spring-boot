@@ -48,7 +48,7 @@ class StartupEndpointTests {
 	@Test
 	void startupEventsAreFound() {
 		BufferingApplicationStartup applicationStartup = new BufferingApplicationStartup(256);
-		testStartupEndpoint(applicationStartup, (startupEndpoint) -> {
+		testStartupEndpoint(applicationStartup, startupEndpoint -> {
 			StartupDescriptor startup = startupEndpoint.startup();
 			assertThat(startup.getSpringBootVersion()).isEqualTo(SpringBootVersion.getVersion());
 			assertThat(startup.getTimeline().getStartTime())
@@ -59,7 +59,7 @@ class StartupEndpointTests {
 	@Test
 	void bufferWithGetIsNotDrained() {
 		BufferingApplicationStartup applicationStartup = new BufferingApplicationStartup(256);
-		testStartupEndpoint(applicationStartup, (startupEndpoint) -> {
+		testStartupEndpoint(applicationStartup, startupEndpoint -> {
 			StartupDescriptor startup = startupEndpoint.startupSnapshot();
 			assertThat(startup.getTimeline().getEvents()).isNotEmpty();
 			assertThat(applicationStartup.getBufferedTimeline().getEvents()).isNotEmpty();
@@ -69,7 +69,7 @@ class StartupEndpointTests {
 	@Test
 	void bufferWithPostIsDrained() {
 		BufferingApplicationStartup applicationStartup = new BufferingApplicationStartup(256);
-		testStartupEndpoint(applicationStartup, (startupEndpoint) -> {
+		testStartupEndpoint(applicationStartup, startupEndpoint -> {
 			StartupDescriptor startup = startupEndpoint.startup();
 			assertThat(startup.getTimeline().getEvents()).isNotEmpty();
 			assertThat(applicationStartup.getBufferedTimeline().getEvents()).isEmpty();
@@ -92,9 +92,9 @@ class StartupEndpointTests {
 
 	private void testStartupEndpoint(ApplicationStartup applicationStartup, Consumer<StartupEndpoint> startupEndpoint) {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-			.withInitializer((context) -> context.setApplicationStartup(applicationStartup))
+			.withInitializer(context -> context.setApplicationStartup(applicationStartup))
 			.withUserConfiguration(EndpointConfiguration.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			assertThat(context).hasSingleBean(StartupEndpoint.class);
 			startupEndpoint.accept(context.getBean(StartupEndpoint.class));
 		});

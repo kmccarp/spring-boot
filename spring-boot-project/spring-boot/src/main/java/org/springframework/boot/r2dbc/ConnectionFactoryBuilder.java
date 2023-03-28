@@ -129,7 +129,7 @@ public final class ConnectionFactoryBuilder {
 	 * @return this for method chaining
 	 */
 	public ConnectionFactoryBuilder username(String username) {
-		return configure((options) -> options.option(ConnectionFactoryOptions.USER, username));
+		return configure(options -> options.option(ConnectionFactoryOptions.USER, username));
 	}
 
 	/**
@@ -138,7 +138,7 @@ public final class ConnectionFactoryBuilder {
 	 * @return this for method chaining
 	 */
 	public ConnectionFactoryBuilder password(CharSequence password) {
-		return configure((options) -> options.option(ConnectionFactoryOptions.PASSWORD, password));
+		return configure(options -> options.option(ConnectionFactoryOptions.PASSWORD, password));
 	}
 
 	/**
@@ -147,7 +147,7 @@ public final class ConnectionFactoryBuilder {
 	 * @return this for method chaining
 	 */
 	public ConnectionFactoryBuilder hostname(String host) {
-		return configure((options) -> options.option(ConnectionFactoryOptions.HOST, host));
+		return configure(options -> options.option(ConnectionFactoryOptions.HOST, host));
 	}
 
 	/**
@@ -156,7 +156,7 @@ public final class ConnectionFactoryBuilder {
 	 * @return this for method chaining
 	 */
 	public ConnectionFactoryBuilder port(int port) {
-		return configure((options) -> options.option(ConnectionFactoryOptions.PORT, port));
+		return configure(options -> options.option(ConnectionFactoryOptions.PORT, port));
 	}
 
 	/**
@@ -165,7 +165,7 @@ public final class ConnectionFactoryBuilder {
 	 * @return this for method chaining
 	 */
 	public ConnectionFactoryBuilder database(String database) {
-		return configure((options) -> options.option(ConnectionFactoryOptions.DATABASE, database));
+		return configure(options -> options.option(ConnectionFactoryOptions.DATABASE, database));
 	}
 
 	/**
@@ -262,10 +262,10 @@ public final class ConnectionFactoryBuilder {
 				.to(builder::minIdle);
 			map.from(options.getValue(PoolingConnectionFactoryProvider.POOL_NAME)).as(this::toString).to(builder::name);
 			map.from(options.getValue(PoolingConnectionFactoryProvider.PRE_RELEASE))
-				.to((function) -> builder
+				.to(function -> builder
 					.preRelease((Function<? super Connection, ? extends Publisher<Void>>) function));
 			map.from(options.getValue(PoolingConnectionFactoryProvider.POST_ALLOCATE))
-				.to((function) -> builder
+				.to(function -> builder
 					.postAllocate((Function<? super Connection, ? extends Publisher<Void>>) function));
 			map.from(options.getValue(PoolingConnectionFactoryProvider.REGISTER_JMX))
 				.as(this::toBoolean)
@@ -297,7 +297,7 @@ public final class ConnectionFactoryBuilder {
 
 		private ValidationDepth toValidationDepth(Object object) {
 			return toType(ValidationDepth.class, object,
-					(string) -> ValidationDepth.valueOf(string.toUpperCase(Locale.ENGLISH)));
+					string -> ValidationDepth.valueOf(string.toUpperCase(Locale.ENGLISH)));
 		}
 
 		private <T> T toType(Class<T> type, Object object, Function<String, T> converter) {

@@ -28,6 +28,8 @@ import org.springframework.validation.FieldError;
  */
 final class OriginTrackedFieldError extends FieldError implements OriginProvider {
 
+	private static final long serialVersionUID = 1;
+
 	private final Origin origin;
 
 	private OriginTrackedFieldError(FieldError fieldError, Origin origin) {

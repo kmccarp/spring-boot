@@ -272,7 +272,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		}
 
 		private <K, T> void add(Map<K, Set<T>> map, K key, T value) {
-			map.computeIfAbsent(key, (k) -> new HashSet<>()).add(value);
+			map.computeIfAbsent(key, k -> new HashSet<>()).add(value);
 		}
 
 		Set<String> getMapped(ConfigurationPropertyName configurationPropertyName) {
@@ -318,7 +318,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private final ConfigurationPropertyName[] names;
 
-		private int index = 0;
+		private int index;
 
 		ConfigurationPropertyNamesIterator(ConfigurationPropertyName[] names) {
 			this.names = names;

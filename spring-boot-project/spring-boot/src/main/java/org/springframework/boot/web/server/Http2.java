@@ -24,7 +24,7 @@ package org.springframework.boot.web.server;
  */
 public class Http2 {
 
-	private boolean enabled = false;
+	private boolean enabled;
 
 	/**
 	 * Return whether to enable HTTP/2 support, if the current environment supports it.

@@ -57,7 +57,7 @@ class Neo4jReactiveHealthIndicatorTests {
 		ResultSummary resultSummary = ResultSummaryMock.createResultSummary("My Home", "test");
 		Driver driver = mockDriver(resultSummary, "4711", "ultimate collectors edition");
 		Neo4jReactiveHealthIndicator healthIndicator = new Neo4jReactiveHealthIndicator(driver);
-		healthIndicator.health().as(StepVerifier::create).consumeNextWith((health) -> {
+		healthIndicator.health().as(StepVerifier::create).consumeNextWith(health -> {
 			assertThat(health.getStatus()).isEqualTo(Status.UP);
 			assertThat(health.getDetails()).containsEntry("server", "4711@My Home");
 			assertThat(health.getDetails()).containsEntry("edition", "ultimate collectors edition");
@@ -70,7 +70,7 @@ class Neo4jReactiveHealthIndicatorTests {
 		ReactiveSession session = mock(ReactiveSession.class);
 		ReactiveResult statementResult = mockStatementResult(resultSummary, "4711", "some edition");
 		AtomicInteger count = new AtomicInteger();
-		given(session.run(anyString())).will((invocation) -> {
+		given(session.run(anyString())).will(invocation -> {
 			if (count.compareAndSet(0, 1)) {
 				return Flux.error(new SessionExpiredException("Session expired"));
 			}
@@ -79,7 +79,7 @@ class Neo4jReactiveHealthIndicatorTests {
 		Driver driver = mock(Driver.class);
 		given(driver.session(eq(ReactiveSession.class), any(SessionConfig.class))).willReturn(session);
 		Neo4jReactiveHealthIndicator healthIndicator = new Neo4jReactiveHealthIndicator(driver);
-		healthIndicator.health().as(StepVerifier::create).consumeNextWith((health) -> {
+		healthIndicator.health().as(StepVerifier::create).consumeNextWith(health -> {
 			assertThat(health.getStatus()).isEqualTo(Status.UP);
 			assertThat(health.getDetails()).containsEntry("server", "4711@My Home");
 			assertThat(health.getDetails()).containsEntry("edition", "some edition");
@@ -93,7 +93,7 @@ class Neo4jReactiveHealthIndicatorTests {
 		given(driver.session(eq(ReactiveSession.class), any(SessionConfig.class)))
 			.willThrow(ServiceUnavailableException.class);
 		Neo4jReactiveHealthIndicator healthIndicator = new Neo4jReactiveHealthIndicator(driver);
-		healthIndicator.health().as(StepVerifier::create).consumeNextWith((health) -> {
+		healthIndicator.health().as(StepVerifier::create).consumeNextWith(health -> {
 			assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 			assertThat(health.getDetails()).containsKeys("error");
 		}).verifyComplete();

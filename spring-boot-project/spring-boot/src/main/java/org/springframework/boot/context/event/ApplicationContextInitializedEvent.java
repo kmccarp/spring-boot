@@ -31,6 +31,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SuppressWarnings("serial")
 public class ApplicationContextInitializedEvent extends SpringApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final ConfigurableApplicationContext context;
 
 	/**

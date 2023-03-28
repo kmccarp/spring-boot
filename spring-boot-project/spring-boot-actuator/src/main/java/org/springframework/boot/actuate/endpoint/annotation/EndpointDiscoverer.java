@@ -226,7 +226,7 @@ public abstract class EndpointDiscoverer<E extends ExposableEndpoint<O>, O exten
 	private void assertNoDuplicateOperations(EndpointBean endpointBean, MultiValueMap<OperationKey, O> indexed) {
 		List<OperationKey> duplicates = indexed.entrySet()
 			.stream()
-			.filter((entry) -> entry.getValue().size() > 1)
+			.filter(entry -> entry.getValue().size() > 1)
 			.map(Map.Entry::getKey)
 			.toList();
 		if (!duplicates.isEmpty()) {
@@ -304,7 +304,7 @@ public abstract class EndpointDiscoverer<E extends ExposableEndpoint<O>, O exten
 	private boolean isFilterMatch(EndpointFilter<E> filter, E endpoint) {
 		return LambdaSafe.callback(EndpointFilter.class, filter, endpoint)
 			.withLogger(EndpointDiscoverer.class)
-			.invokeAnd((f) -> f.match(endpoint))
+			.invokeAnd(f -> f.match(endpoint))
 			.get();
 	}
 

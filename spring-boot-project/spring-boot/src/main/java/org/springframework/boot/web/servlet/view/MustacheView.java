@@ -68,7 +68,7 @@ public class MustacheView extends AbstractTemplateView {
 	@Override
 	public boolean checkResource(Locale locale) throws Exception {
 		Resource resource = getApplicationContext().getResource(getUrl());
-		return (resource != null && resource.exists());
+		return resource != null && resource.exists();
 	}
 
 	@Override

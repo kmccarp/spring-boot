@@ -36,6 +36,8 @@ import org.springframework.util.Assert;
  */
 public class JsonMixinModule extends SimpleModule {
 
+	private static final long serialVersionUID = 1;
+
 	public JsonMixinModule() {
 	}
 

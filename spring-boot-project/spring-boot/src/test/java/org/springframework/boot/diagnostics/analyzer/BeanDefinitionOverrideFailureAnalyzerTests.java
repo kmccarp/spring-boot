@@ -48,7 +48,7 @@ class BeanDefinitionOverrideFailureAnalyzerTests {
 
 	@Test
 	void analyzeBeanDefinitionOverrideExceptionWithDefinitionsWithNoResourceDescription() {
-		FailureAnalysis analysis = performAnalysis((context) -> {
+		FailureAnalysis analysis = performAnalysis(context -> {
 			context.registerBean("testBean", String.class, (Supplier<String>) String::new);
 			context.registerBean("testBean", String.class, (Supplier<String>) String::new);
 		});

@@ -370,7 +370,7 @@ class DataSourceBuilderTests {
 			.build();
 		assertThat(built.getUser()).isEqualTo("test2");
 		assertThat(built).extracting("password")
-			.extracting((opaque) -> ((OpaqueString) opaque).get())
+			.extracting(opaque -> ((OpaqueString) opaque).get())
 			.isEqualTo("secret2");
 		assertThat(built.getURL()).isEqualTo("example.com");
 	}
@@ -385,7 +385,7 @@ class DataSourceBuilderTests {
 		PoolDataSource built = (PoolDataSource) builder.username("test2").password("secret2").build();
 		assertThat(built.getUser()).isEqualTo("test2");
 		assertThat(built).extracting("password")
-			.extracting((opaque) -> ((oracle.ucp.util.OpaqueString) opaque).get())
+			.extracting(opaque -> ((oracle.ucp.util.OpaqueString) opaque).get())
 			.isEqualTo("secret2");
 		assertThat(built.getURL()).isEqualTo("example.com");
 	}

@@ -188,7 +188,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 
 		private final List<Resource> resources;
 
-		private boolean continueOnError = false;
+		private boolean continueOnError;
 
 		private String separator = ";";
 

@@ -71,7 +71,7 @@ public class HttpWebServiceMessageSenderBuilder {
 	public HttpWebServiceMessageSenderBuilder requestFactory(
 			Supplier<ClientHttpRequestFactory> requestFactorySupplier) {
 		Assert.notNull(requestFactorySupplier, "RequestFactorySupplier must not be null");
-		this.requestFactory = (settings) -> ClientHttpRequestFactories.get(requestFactorySupplier, settings);
+		this.requestFactory = settings -> ClientHttpRequestFactories.get(requestFactorySupplier, settings);
 		return this;
 	}
 

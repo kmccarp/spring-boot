@@ -46,6 +46,8 @@ import org.springframework.util.Assert;
 @JsonInclude(Include.NON_EMPTY)
 public class AuditEvent implements Serializable {
 
+	private static final long serialVersionUID = 1;
+
 	private final Instant timestamp;
 
 	private final String principal;

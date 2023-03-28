@@ -47,7 +47,7 @@ class BeansEndpointTests {
 	void beansAreFound() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(EndpointConfiguration.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			BeansDescriptor result = context.getBean(BeansEndpoint.class).beans();
 			ContextBeansDescriptor descriptor = result.getContexts().get(context.getId());
 			assertThat(descriptor.getParentId()).isNull();
@@ -61,11 +61,11 @@ class BeansEndpointTests {
 	void infrastructureBeansAreOmitted() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(EndpointConfiguration.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurableListableBeanFactory factory = (ConfigurableListableBeanFactory) context
 				.getAutowireCapableBeanFactory();
 			List<String> infrastructureBeans = Stream.of(context.getBeanDefinitionNames())
-				.filter((name) -> BeanDefinition.ROLE_INFRASTRUCTURE == factory.getBeanDefinition(name).getRole())
+				.filter(name -> BeanDefinition.ROLE_INFRASTRUCTURE == factory.getBeanDefinition(name).getRole())
 				.toList();
 			BeansDescriptor result = context.getBean(BeansEndpoint.class).beans();
 			ContextBeansDescriptor contextDescriptor = result.getContexts().get(context.getId());
@@ -80,7 +80,7 @@ class BeansEndpointTests {
 	void lazyBeansAreOmitted() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(EndpointConfiguration.class, LazyBeanConfiguration.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			BeansDescriptor result = context.getBean(BeansEndpoint.class).beans();
 			ContextBeansDescriptor contextDescriptor = result.getContexts().get(context.getId());
 			assertThat(context).hasBean("lazyBean");
@@ -92,10 +92,10 @@ class BeansEndpointTests {
 	void beansInParentContextAreFound() {
 		ApplicationContextRunner parentRunner = new ApplicationContextRunner()
 			.withUserConfiguration(BeanConfiguration.class);
-		parentRunner.run((parent) -> {
+		parentRunner.run(parent -> {
 			new ApplicationContextRunner().withUserConfiguration(EndpointConfiguration.class)
 				.withParent(parent)
-				.run((child) -> {
+				.run(child -> {
 					BeansDescriptor result = child.getBean(BeansEndpoint.class).beans();
 					assertThat(result.getContexts().get(parent.getId()).getBeans()).containsKey("bean");
 					assertThat(result.getContexts().get(child.getId()).getBeans()).containsKey("endpoint");

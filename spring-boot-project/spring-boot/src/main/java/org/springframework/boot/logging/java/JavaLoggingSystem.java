@@ -150,7 +150,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		}
 		LogLevel level = LEVELS.convertNativeToSystem(logger.getLevel());
 		LogLevel effectiveLevel = LEVELS.convertNativeToSystem(getEffectiveLevel(logger));
-		String name = (StringUtils.hasLength(logger.getName()) ? logger.getName() : ROOT_LOGGER_NAME);
+		String name = StringUtils.hasLength(logger.getName()) ? logger.getName() : ROOT_LOGGER_NAME;
 		return new LoggerConfiguration(name, level, effectiveLevel);
 	}
 

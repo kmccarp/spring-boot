@@ -107,7 +107,7 @@ class HttpExchangesFilterTests {
 					}
 
 				})))
-			.satisfies((ex) -> {
+			.satisfies(ex -> {
 				assertThat(this.repository.findAll()).hasSize(1);
 				assertThat(this.repository.findAll().get(0).getResponse().getStatus()).isEqualTo(500);
 			});

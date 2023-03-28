@@ -78,7 +78,7 @@ class ServletContextInitializerBeansTests {
 		assertThat(initializerBeans).hasSize(1);
 		assertThat(initializerBeans).first()
 			.isInstanceOf(ServletListenerRegistrationBean.class)
-			.extracting((initializer) -> ((ServletListenerRegistrationBean<?>) initializer).getListener())
+			.extracting(initializer -> ((ServletListenerRegistrationBean<?>) initializer).getListener())
 			.isInstanceOf(HttpSessionIdListener.class);
 	}
 
@@ -133,6 +133,8 @@ class ServletContextInitializerBeansTests {
 	}
 
 	static class TestServlet extends HttpServlet implements ServletContextInitializer {
+
+		private static final long serialVersionUID = 1;
 
 		@Override
 		public void onStartup(ServletContext servletContext) {

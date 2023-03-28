@@ -97,7 +97,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 			.map(JsonPropertyValue::get)
 			.filter(Objects::nonNull)
 			.findFirst()
-			.ifPresent((v) -> processJson(environment, v));
+			.ifPresent(v -> processJson(environment, v));
 	}
 
 	private void processJson(ConfigurableEnvironment environment, JsonPropertyValue propertyValue) {
@@ -163,7 +163,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 	private String findPropertySource(MutablePropertySources sources) {
 		if (ClassUtils.isPresent(SERVLET_ENVIRONMENT_CLASS, null)) {
 			PropertySource<?> servletPropertySource = sources.stream()
-				.filter((source) -> SERVLET_ENVIRONMENT_PROPERTY_SOURCES.contains(source.getName()))
+				.filter(source -> SERVLET_ENVIRONMENT_PROPERTY_SOURCES.contains(source.getName()))
 				.findFirst()
 				.orElse(null);
 			if (servletPropertySource != null) {

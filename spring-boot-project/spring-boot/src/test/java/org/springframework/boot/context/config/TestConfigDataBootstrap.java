@@ -61,7 +61,7 @@ class TestConfigDataBootstrap {
 		public ConfigData load(ConfigDataLoaderContext context, Resource location) throws IOException {
 			context.getBootstrapContext()
 				.registerIfAbsent(LoaderHelper.class,
-						(bootstrapContext) -> new LoaderHelper(location, () -> bootstrapContext.get(Binder.class)));
+						bootstrapContext -> new LoaderHelper(location, () -> bootstrapContext.get(Binder.class)));
 			LoaderHelper helper = context.getBootstrapContext().get(LoaderHelper.class);
 			context.getBootstrapContext().addCloseListener(helper);
 			return new ConfigData(

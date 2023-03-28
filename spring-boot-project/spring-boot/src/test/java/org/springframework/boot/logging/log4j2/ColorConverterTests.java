@@ -148,6 +148,8 @@ class ColorConverterTests {
 
 	static class TestLogEvent extends AbstractLogEvent {
 
+		private static final long serialVersionUID = 1;
+
 		private Level level;
 
 		@Override

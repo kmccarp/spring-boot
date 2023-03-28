@@ -113,7 +113,7 @@ class CollectionBinderTests {
 		source.put("foo[3]", "3");
 		this.sources.add(source);
 		assertThatExceptionOfType(BindException.class).isThrownBy(() -> this.binder.bind("foo", INTEGER_LIST))
-			.satisfies((ex) -> {
+			.satisfies(ex -> {
 				Set<ConfigurationProperty> unbound = ((UnboundConfigurationPropertiesException) ex.getCause())
 					.getUnboundProperties();
 				assertThat(unbound).hasSize(1);
@@ -132,7 +132,7 @@ class CollectionBinderTests {
 		this.sources.add(source);
 		Bindable<List<JavaBean>> target = Bindable.listOf(JavaBean.class);
 		assertThatExceptionOfType(BindException.class).isThrownBy(() -> this.binder.bind("foo", target))
-			.satisfies((ex) -> {
+			.satisfies(ex -> {
 				Set<ConfigurationProperty> unbound = ((UnboundConfigurationPropertiesException) ex.getCause())
 					.getUnboundProperties();
 				assertThat(unbound).hasSize(1);
@@ -471,6 +471,8 @@ class CollectionBinderTests {
 
 	static class MyCustomNoDefaultConstructorList extends ArrayList<String> {
 
+		private static final long serialVersionUID = 1;
+
 		MyCustomNoDefaultConstructorList(List<String> items) {
 			addAll(items);
 		}
@@ -493,6 +495,7 @@ class CollectionBinderTests {
 	}
 
 	static class MyCustomWithDefaultConstructorList extends ArrayList<String> {
+		private static final long serialVersionUID = 1;
 
 	}
 

@@ -30,6 +30,8 @@ import org.springframework.context.ApplicationEvent;
 @SuppressWarnings("serial")
 public abstract class WebServerInitializedEvent extends ApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	protected WebServerInitializedEvent(WebServer webServer) {
 		super(webServer);
 	}

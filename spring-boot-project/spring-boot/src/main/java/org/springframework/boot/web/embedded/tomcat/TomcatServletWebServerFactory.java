@@ -359,7 +359,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 	private void invokeProtocolHandlerCustomizers(ProtocolHandler protocolHandler) {
 		LambdaSafe
 			.callbacks(TomcatProtocolHandlerCustomizer.class, this.tomcatProtocolHandlerCustomizers, protocolHandler)
-			.invoke((customizer) -> customizer.customize(protocolHandler));
+			.invoke(customizer -> customizer.customize(protocolHandler));
 	}
 
 	private void customizeSsl(Connector connector) {
@@ -871,7 +871,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 		public Set<String> listWebAppPaths(String path) {
 			return this.delegate.listWebAppPaths(path)
 				.stream()
-				.filter((webAppPath) -> !webAppPath.startsWith("/org/springframework/boot"))
+				.filter(webAppPath -> !webAppPath.startsWith("/org/springframework/boot"))
 				.collect(Collectors.toSet());
 		}
 

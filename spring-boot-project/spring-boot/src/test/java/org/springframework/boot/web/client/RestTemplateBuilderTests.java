@@ -346,7 +346,7 @@ class RestTemplateBuilderTests {
 	@Test
 	void requestCustomizersAddsCustomizers() {
 		RestTemplate template = this.builder
-			.requestCustomizers((request) -> request.getHeaders().add("spring", "framework"))
+			.requestCustomizers(request -> request.getHeaders().add("spring", "framework"))
 			.build();
 		ClientHttpRequest request = createRequest(template);
 		assertThat(request.getHeaders()).contains(entry("spring", Collections.singletonList("framework")));
@@ -355,8 +355,8 @@ class RestTemplateBuilderTests {
 	@Test
 	void additionalRequestCustomizersAddsCustomizers() {
 		RestTemplate template = this.builder
-			.requestCustomizers((request) -> request.getHeaders().add("spring", "framework"))
-			.additionalRequestCustomizers((request) -> request.getHeaders().add("for", "java"))
+			.requestCustomizers(request -> request.getHeaders().add("spring", "framework"))
+			.additionalRequestCustomizers(request -> request.getHeaders().add("for", "java"))
 			.build();
 		ClientHttpRequest request = createRequest(template);
 		assertThat(request.getHeaders()).contains(entry("spring", Collections.singletonList("framework")))
@@ -387,7 +387,7 @@ class RestTemplateBuilderTests {
 	void customizersShouldBeAppliedLast() {
 		RestTemplate template = spy(new RestTemplate());
 		this.builder.additionalCustomizers(
-				(restTemplate) -> then(restTemplate).should().setRequestFactory(any(ClientHttpRequestFactory.class)));
+				restTemplate -> then(restTemplate).should().setRequestFactory(any(ClientHttpRequestFactory.class)));
 		this.builder.configure(template);
 	}
 
@@ -436,7 +436,7 @@ class RestTemplateBuilderTests {
 			.errorHandler(errorHandler)
 			.basicAuthentication("spring", "boot")
 			.requestFactory(() -> requestFactory)
-			.customizers((restTemplate) -> {
+			.customizers(restTemplate -> {
 				assertThat(restTemplate.getInterceptors()).hasSize(1);
 				assertThat(restTemplate.getMessageConverters()).contains(this.messageConverter);
 				assertThat(restTemplate.getUriTemplateHandler()).isInstanceOf(RootUriTemplateHandler.class);

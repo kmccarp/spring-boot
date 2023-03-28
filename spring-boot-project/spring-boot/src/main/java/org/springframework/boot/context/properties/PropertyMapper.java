@@ -58,7 +58,7 @@ import org.springframework.util.function.SingletonSupplier;
  */
 public final class PropertyMapper {
 
-	private static final Predicate<?> ALWAYS = (t) -> true;
+	private static final Predicate<?> ALWAYS = t -> true;
 
 	private static final PropertyMapper INSTANCE = new PropertyMapper(null, null);
 
@@ -192,7 +192,7 @@ public final class PropertyMapper {
 		public <R> Source<R> as(Function<T, R> adapter) {
 			Assert.notNull(adapter, "Adapter must not be null");
 			Supplier<Boolean> test = () -> this.predicate.test(this.supplier.get());
-			Predicate<R> predicate = (t) -> test.get();
+			Predicate<R> predicate = t -> test.get();
 			Supplier<R> supplier = () -> {
 				if (test.get()) {
 					return adapter.apply(this.supplier.get());
@@ -235,7 +235,7 @@ public final class PropertyMapper {
 		 * @return a new filtered source instance
 		 */
 		public Source<T> whenHasText() {
-			return when((value) -> StringUtils.hasText(Objects.toString(value, null)));
+			return when(value -> StringUtils.hasText(Objects.toString(value, null)));
 		}
 
 		/**

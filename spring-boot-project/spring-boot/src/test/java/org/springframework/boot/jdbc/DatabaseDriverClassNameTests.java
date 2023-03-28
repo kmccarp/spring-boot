@@ -73,21 +73,21 @@ class DatabaseDriverClassNameTests {
 	static Stream<? extends Arguments> databaseClassIsOfRequiredType() {
 		return Stream.concat(argumentsForType(Driver.class, DatabaseDriver::getDriverClassName),
 				argumentsForType(XADataSource.class,
-						(databaseDriver) -> databaseDriver.getXaDataSourceClassName() != null,
+						databaseDriver -> databaseDriver.getXaDataSourceClassName() != null,
 						DatabaseDriver::getXaDataSourceClassName));
 	}
 
 	private static Stream<? extends Arguments> argumentsForType(Class<?> clazz,
 			Function<DatabaseDriver, String> classNameExtractor) {
-		return argumentsForType(clazz, (databaseDriver) -> true, classNameExtractor);
+		return argumentsForType(clazz, databaseDriver -> true, classNameExtractor);
 	}
 
 	private static Stream<? extends Arguments> argumentsForType(Class<?> clazz, Predicate<DatabaseDriver> predicate,
 			Function<DatabaseDriver, String> classNameExtractor) {
 		return Stream.of(DatabaseDriver.values())
-			.filter((databaseDriver) -> !EXCLUDED_DRIVERS.contains(databaseDriver))
+			.filter(databaseDriver -> !EXCLUDED_DRIVERS.contains(databaseDriver))
 			.filter(predicate)
-			.map((databaseDriver) -> Arguments.of(databaseDriver, classNameExtractor.apply(databaseDriver), clazz));
+			.map(databaseDriver -> Arguments.of(databaseDriver, classNameExtractor.apply(databaseDriver), clazz));
 	}
 
 }

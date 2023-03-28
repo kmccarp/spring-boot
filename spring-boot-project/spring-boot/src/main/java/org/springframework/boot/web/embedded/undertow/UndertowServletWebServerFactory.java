@@ -102,7 +102,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 	private boolean eagerFilterInit = true;
 
-	private boolean preservePathOnForward = false;
+	private boolean preservePathOnForward;
 
 	/**
 	 * Create a new {@link UndertowServletWebServerFactory} instance.
@@ -332,7 +332,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		}
 		SessionManager sessionManager = manager.getDeployment().getSessionManager();
 		Duration timeoutDuration = getSession().getTimeout();
-		int sessionTimeout = (isZeroOrLess(timeoutDuration) ? -1 : (int) timeoutDuration.getSeconds());
+		int sessionTimeout = isZeroOrLess(timeoutDuration) ? -1 : (int) timeoutDuration.getSeconds();
 		sessionManager.setDefaultSessionTimeout(sessionTimeout);
 		return manager;
 	}
@@ -383,8 +383,8 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		List<URL> metaInfResourceUrls = getUrlsOfJarsWithMetaInfResources();
 		List<URL> resourceJarUrls = new ArrayList<>();
 		List<ResourceManager> managers = new ArrayList<>();
-		ResourceManager rootManager = (docBase.isDirectory() ? new FileResourceManager(docBase, 0)
-				: new JarResourceManager(docBase));
+		ResourceManager rootManager = docBase.isDirectory() ? new FileResourceManager(docBase, 0)
+				: new JarResourceManager(docBase);
 		if (root != null) {
 			rootManager = new LoaderHidingResourceManager(rootManager);
 		}
@@ -486,7 +486,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		if (!CollectionUtils.isEmpty(getCookieSameSiteSuppliers())) {
 			suppliers.addAll(getCookieSameSiteSuppliers());
 		}
-		return (!suppliers.isEmpty()) ? (next) -> new SuppliedSameSiteCookieHandler(next, suppliers) : null;
+		return (!suppliers.isEmpty()) ? next -> new SuppliedSameSiteCookieHandler(next, suppliers) : null;
 	}
 
 	/**

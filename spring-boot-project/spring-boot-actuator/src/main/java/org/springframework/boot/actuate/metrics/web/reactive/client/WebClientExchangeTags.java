@@ -75,7 +75,7 @@ public final class WebClientExchangeTags {
 
 	private static String extractPath(String url) {
 		String path = PATTERN_BEFORE_PATH.matcher(url).replaceFirst("");
-		return (path.startsWith("/") ? path : "/" + path);
+		return path.startsWith("/") ? path : "/" + path;
 	}
 
 	/**

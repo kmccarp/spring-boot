@@ -97,7 +97,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 
 	@Override
 	protected void addConnector(int port, AbstractServletWebServerFactory factory) {
-		((JettyServletWebServerFactory) factory).addServerCustomizers((server) -> {
+		((JettyServletWebServerFactory) factory).addServerCustomizers(server -> {
 			ServerConnector connector = new ServerConnector(server);
 			connector.setPort(port);
 			server.addConnector(connector);
@@ -185,7 +185,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 	void jettyCustomizations() {
 		JettyServletWebServerFactory factory = getFactory();
 		JettyServerCustomizer[] configurations = new JettyServerCustomizer[4];
-		Arrays.setAll(configurations, (i) -> mock(JettyServerCustomizer.class));
+		Arrays.setAll(configurations, i -> mock(JettyServerCustomizer.class));
 		factory.setServerCustomizers(Arrays.asList(configurations[0], configurations[1]));
 		factory.addServerCustomizers(configurations[2], configurations[3]);
 		this.webServer = factory.getWebServer();
@@ -282,7 +282,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 			registration.setAsyncSupported(true);
@@ -291,7 +291,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 		int port = this.webServer.getPort();
 		Future<Object> request = initiateGetRequest(port, "/blocking");
 		blockingServlet.awaitQueue();
-		this.webServer.shutDownGracefully((result) -> {
+		this.webServer.shutDownGracefully(result -> {
 		});
 		Future<Object> unconnectableRequest = initiateGetRequest(port, "/");
 		blockingServlet.admitOne();
@@ -307,7 +307,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 			registration.setAsyncSupported(true);
@@ -322,7 +322,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 		assertThat(response).isInstanceOf(HttpResponse.class);
 		assertThat(((HttpResponse) response).getCode()).isEqualTo(200);
 		assertThat(((HttpResponse) response).getFirstHeader("Connection")).isNull();
-		this.webServer.shutDownGracefully((result) -> {
+		this.webServer.shutDownGracefully(result -> {
 		});
 		request = initiateGetRequest(client, port, "/blocking");
 		blockingServlet.awaitQueue();
@@ -342,7 +342,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 			registration.setAsyncSupported(true);
@@ -381,7 +381,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 	@Test
 	void wrappedHandlers() throws Exception {
 		JettyServletWebServerFactory factory = getFactory();
-		factory.setServerCustomizers(Collections.singletonList((server) -> {
+		factory.setServerCustomizers(Collections.singletonList(server -> {
 			Handler handler = server.getHandler();
 			HandlerWrapper wrapper = new HandlerWrapper();
 			wrapper.setHandler(handler);
@@ -427,7 +427,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 	@Test
 	void startFailsWhenThreadPoolIsTooSmall() {
 		JettyServletWebServerFactory factory = getFactory();
-		factory.addServerCustomizers((server) -> {
+		factory.addServerCustomizers(server -> {
 			QueuedThreadPool threadPool = server.getBean(QueuedThreadPool.class);
 			threadPool.setMaxThreads(2);
 			threadPool.setMinThreads(2);
@@ -466,7 +466,7 @@ class JettyServletWebServerFactoryTests extends AbstractServletWebServerFactoryT
 	@Test
 	void faultyListenerCausesStartFailure() {
 		JettyServletWebServerFactory factory = getFactory();
-		factory.addServerCustomizers((JettyServerCustomizer) (server) -> {
+		factory.addServerCustomizers((JettyServerCustomizer) server -> {
 			Collection<WebAppContext> contexts = server.getBeans(WebAppContext.class);
 			EventListener eventListener = new ServletContextListener() {
 

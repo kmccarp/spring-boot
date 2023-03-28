@@ -48,11 +48,11 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 	private final Function<ConfigurationPropertySource, Boolean> filter;
 
 	NoUnboundElementsBindHandler() {
-		this(BindHandler.DEFAULT, (configurationPropertySource) -> true);
+		this(BindHandler.DEFAULT, configurationPropertySource -> true);
 	}
 
 	public NoUnboundElementsBindHandler(BindHandler parent) {
-		this(parent, (configurationPropertySource) -> true);
+		this(parent, configurationPropertySource -> true);
 	}
 
 	public NoUnboundElementsBindHandler(BindHandler parent, Function<ConfigurationPropertySource, Boolean> filter) {
@@ -103,11 +103,11 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 
 	private void collectUnbound(ConfigurationPropertyName name, Set<ConfigurationProperty> unbound,
 			IterableConfigurationPropertySource source) {
-		IterableConfigurationPropertySource filtered = source.filter((candidate) -> isUnbound(name, candidate));
+		IterableConfigurationPropertySource filtered = source.filter(candidate -> isUnbound(name, candidate));
 		for (ConfigurationPropertyName unboundName : filtered) {
 			try {
 				unbound.add(
-						source.filter((candidate) -> isUnbound(name, candidate)).getConfigurationProperty(unboundName));
+						source.filter(candidate -> isUnbound(name, candidate)).getConfigurationProperty(unboundName));
 			}
 			catch (Exception ex) {
 			}

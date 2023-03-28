@@ -92,7 +92,7 @@ public class Instantiator<T> {
 
 			@Override
 			public void add(Class<?> type, Object instance) {
-				result.put(type, (factoryType) -> instance);
+				result.put(type, factoryType -> instance);
 			}
 
 			@Override
@@ -124,7 +124,7 @@ public class Instantiator<T> {
 	 */
 	public List<T> instantiate(ClassLoader classLoader, Collection<String> names) {
 		Assert.notNull(names, "Names must not be null");
-		return instantiate(names.stream().map((name) -> TypeSupplier.forName(classLoader, name)));
+		return instantiate(names.stream().map(name -> TypeSupplier.forName(classLoader, name)));
 	}
 
 	/**

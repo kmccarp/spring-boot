@@ -104,7 +104,7 @@ public class Profiles implements Iterable<String> {
 			if (!type.isMergeWithEnvironmentProfiles() || !boundProfiles.isBound()) {
 				return environmentProfiles;
 			}
-			return boundProfiles.map((bound) -> merge(environmentProfiles, bound)).get();
+			return boundProfiles.map(bound -> merge(environmentProfiles, bound)).get();
 		}
 		return boundProfiles.orElse(type.getDefaultValue());
 	}

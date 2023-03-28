@@ -43,7 +43,7 @@ class DelegatingLoggingSystemFactoryTests {
 
 	@Test
 	void getLoggingSystemWhenDelegatesFunctionReturnsNullReturnsNull() {
-		DelegatingLoggingSystemFactory factory = new DelegatingLoggingSystemFactory((cl) -> null);
+		DelegatingLoggingSystemFactory factory = new DelegatingLoggingSystemFactory(cl -> null);
 		assertThat(factory.getLoggingSystem(this.classLoader)).isNull();
 	}
 
@@ -55,7 +55,7 @@ class DelegatingLoggingSystemFactoryTests {
 		delegates.add(mock(LoggingSystemFactory.class));
 		LoggingSystem result = mock(LoggingSystem.class);
 		given(delegates.get(1).getLoggingSystem(this.classLoader)).willReturn(result);
-		DelegatingLoggingSystemFactory factory = new DelegatingLoggingSystemFactory((cl) -> delegates);
+		DelegatingLoggingSystemFactory factory = new DelegatingLoggingSystemFactory(cl -> delegates);
 		assertThat(factory.getLoggingSystem(this.classLoader)).isSameAs(result);
 		then(delegates.get(0)).should().getLoggingSystem(this.classLoader);
 		then(delegates.get(1)).should().getLoggingSystem(this.classLoader);

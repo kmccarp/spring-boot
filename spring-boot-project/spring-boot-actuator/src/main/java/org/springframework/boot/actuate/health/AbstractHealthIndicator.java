@@ -61,7 +61,7 @@ public abstract class AbstractHealthIndicator implements HealthIndicator {
 	 * @since 2.0.0
 	 */
 	protected AbstractHealthIndicator(String healthCheckFailedMessage) {
-		this.healthCheckFailedMessage = (ex) -> healthCheckFailedMessage;
+		this.healthCheckFailedMessage = ex -> healthCheckFailedMessage;
 	}
 
 	/**

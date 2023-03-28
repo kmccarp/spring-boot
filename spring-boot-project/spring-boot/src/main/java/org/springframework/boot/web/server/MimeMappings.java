@@ -82,7 +82,7 @@ public sealed class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 */
 	MimeMappings(MimeMappings mappings, boolean mutable) {
 		Assert.notNull(mappings, "Mappings must not be null");
-		this.map = (mutable ? new LinkedHashMap<>(mappings.map) : Collections.unmodifiableMap(mappings.map));
+		this.map = mutable ? new LinkedHashMap<>(mappings.map) : Collections.unmodifiableMap(mappings.map);
 	}
 
 	/**
@@ -370,7 +370,7 @@ public sealed class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 		private void copyIfNecessary() {
 			if (this.copied.compareAndSet(false, true)) {
-				this.source.forEach((mapping) -> add(mapping.getExtension(), mapping.getMimeType()));
+				this.source.forEach(mapping -> add(mapping.getExtension(), mapping.getMimeType()));
 			}
 		}
 

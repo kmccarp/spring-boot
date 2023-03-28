@@ -199,20 +199,20 @@ class SpringApplicationTests {
 
 	@Test
 	void sourcesMustNotBeNull() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new SpringApplication((Class<?>[]) null).run())
+		assertThatIllegalArgumentException().isThrownBy(new SpringApplication((Class<?>[]) null)::run)
 			.withMessageContaining("PrimarySources must not be null");
 	}
 
 	@Test
 	void sourcesMustNotBeEmpty() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new SpringApplication().run())
+		assertThatIllegalArgumentException().isThrownBy(new SpringApplication()::run)
 			.withMessageContaining("Sources must not be empty");
 	}
 
 	@Test
 	void sourcesMustBeAccessible() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> new SpringApplication(InaccessibleConfiguration.class).run())
+			.isThrownBy(new SpringApplication(InaccessibleConfiguration.class)::run)
 			.withMessageContaining("No visible constructors");
 	}
 
@@ -524,10 +524,10 @@ class SpringApplicationTests {
 			.get("commandLineArgs");
 		assertThat(composite.getPropertySources()).hasSize(2);
 		assertThat(composite.getPropertySources()).first()
-			.matches((source) -> source.getName().equals("springApplicationCommandLineArgs"),
+			.matches(source -> "springApplicationCommandLineArgs".equals(source.getName()),
 					"is named springApplicationCommandLineArgs");
 		assertThat(composite.getPropertySources()).element(1)
-			.matches((source) -> source.getName().equals("commandLineArgs"), "is named commandLineArgs");
+			.matches(source -> "commandLineArgs".equals(source.getName()), "is named commandLineArgs");
 	}
 
 	@Test
@@ -634,13 +634,13 @@ class SpringApplicationTests {
 		SpringApplication application = new SpringApplication(ExampleConfig.class);
 		ApplicationRunner applicationRunner = mock(ApplicationRunner.class);
 		CommandLineRunner commandLineRunner = mock(CommandLineRunner.class);
-		application.addInitializers((context) -> {
+		application.addInitializers(context -> {
 			ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
-			beanFactory.registerSingleton("commandLineRunner", (CommandLineRunner) (args) -> {
+			beanFactory.registerSingleton("commandLineRunner", (CommandLineRunner) args -> {
 				assertThat(output).contains("Started");
 				commandLineRunner.run(args);
 			});
-			beanFactory.registerSingleton("applicationRunner", (ApplicationRunner) (args) -> {
+			beanFactory.registerSingleton("applicationRunner", (ApplicationRunner) args -> {
 				assertThat(output).contains("Started");
 				applicationRunner.run(args);
 			});
@@ -667,7 +667,7 @@ class SpringApplicationTests {
 		ApplicationRunner runner = mock(ApplicationRunner.class);
 		Exception failure = new Exception();
 		willThrow(failure).given(runner).run(isA(ApplicationArguments.class));
-		application.addInitializers((context) -> context.getBeanFactory().registerSingleton("runner", runner));
+		application.addInitializers(context -> context.getBeanFactory().registerSingleton("runner", runner));
 		assertThatIllegalStateException().isThrownBy(application::run).withCause(failure);
 		then(listener).should().onApplicationEvent(isA(ApplicationStartedEvent.class));
 		then(listener).should().onApplicationEvent(isA(ApplicationFailedEvent.class));
@@ -684,7 +684,7 @@ class SpringApplicationTests {
 		CommandLineRunner runner = mock(CommandLineRunner.class);
 		Exception failure = new Exception();
 		willThrow(failure).given(runner).run();
-		application.addInitializers((context) -> context.getBeanFactory().registerSingleton("runner", runner));
+		application.addInitializers(context -> context.getBeanFactory().registerSingleton("runner", runner));
 		assertThatIllegalStateException().isThrownBy(application::run).withCause(failure);
 		then(listener).should().onApplicationEvent(isA(ApplicationStartedEvent.class));
 		then(listener).should().onApplicationEvent(isA(ApplicationFailedEvent.class));
@@ -963,7 +963,7 @@ class SpringApplicationTests {
 	void applicationListenerFromContextIsCalledWhenContextFailsRefreshBeforeListenerRegistration() {
 		final ApplicationListener<ApplicationEvent> listener = mock(ApplicationListener.class);
 		SpringApplication application = new SpringApplication(ExampleConfig.class);
-		application.addInitializers((applicationContext) -> applicationContext.addApplicationListener(listener));
+		application.addInitializers(applicationContext -> applicationContext.addApplicationListener(listener));
 		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(application::run);
 		then(listener).should().onApplicationEvent(isA(ApplicationFailedEvent.class));
 		then(listener).shouldHaveNoMoreInteractions();
@@ -975,7 +975,7 @@ class SpringApplicationTests {
 		ApplicationListener<ApplicationEvent> listener = mock(ApplicationListener.class);
 		SpringApplication application = new SpringApplication(BrokenPostConstructConfig.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
-		application.addInitializers((applicationContext) -> applicationContext.addApplicationListener(listener));
+		application.addInitializers(applicationContext -> applicationContext.addApplicationListener(listener));
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(application::run);
 		then(listener).should().onApplicationEvent(isA(ApplicationFailedEvent.class));
 		then(listener).shouldHaveNoMoreInteractions();
@@ -1020,7 +1020,7 @@ class SpringApplicationTests {
 	@Test
 	void webApplicationSwitchedOffInListener() {
 		TestSpringApplication application = new TestSpringApplication(ExampleConfig.class);
-		application.addListeners((ApplicationListener<ApplicationEnvironmentPreparedEvent>) (event) -> {
+		application.addListeners((ApplicationListener<ApplicationEnvironmentPreparedEvent>) event -> {
 			assertThat(event.getEnvironment().getClass().getName()).endsWith("ApplicationServletEnvironment");
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(event.getEnvironment(), "foo=bar");
 			event.getSpringApplication().setWebApplicationType(WebApplicationType.NONE);
@@ -1090,7 +1090,7 @@ class SpringApplicationTests {
 	@Test
 	void beanDefinitionOverridingIsDisabledByDefault() {
 		assertThatExceptionOfType(BeanDefinitionOverrideException.class)
-			.isThrownBy(() -> new SpringApplication(ExampleConfig.class, OverrideConfig.class).run());
+			.isThrownBy(new SpringApplication(ExampleConfig.class, OverrideConfig.class)::run);
 	}
 
 	@Test
@@ -1171,11 +1171,11 @@ class SpringApplicationTests {
 		then(applicationStartup).should().start("spring.boot.application.ready");
 		long startCount = mockingDetails(applicationStartup).getInvocations()
 			.stream()
-			.filter((invocation) -> invocation.getMethod().toString().contains("start("))
+			.filter(invocation -> invocation.getMethod().toString().contains("start("))
 			.count();
 		long endCount = mockingDetails(startupStep).getInvocations()
 			.stream()
-			.filter((invocation) -> invocation.getMethod().toString().contains("end("))
+			.filter(invocation -> invocation.getMethod().toString().contains("end("))
 			.count();
 		assertThat(startCount).isEqualTo(endCount);
 	}
@@ -1196,11 +1196,11 @@ class SpringApplicationTests {
 		then(applicationStartup).should().start("spring.boot.application.failed");
 		long startCount = mockingDetails(applicationStartup).getInvocations()
 			.stream()
-			.filter((invocation) -> invocation.getMethod().toString().contains("start("))
+			.filter(invocation -> invocation.getMethod().toString().contains("start("))
 			.count();
 		long endCount = mockingDetails(startupStep).getInvocations()
 			.stream()
-			.filter((invocation) -> invocation.getMethod().toString().contains("end("))
+			.filter(invocation -> invocation.getMethod().toString().contains("end("))
 			.count();
 		assertThat(startCount).isEqualTo(endCount);
 	}
@@ -1210,7 +1210,7 @@ class SpringApplicationTests {
 		SpringApplication application = new SpringApplication(ExampleConfig.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
 		application.addBootstrapRegistryInitializer(
-				(bootstrapContext) -> bootstrapContext.register(String.class, InstanceSupplier.of("boot")));
+				bootstrapContext -> bootstrapContext.register(String.class, InstanceSupplier.of("boot")));
 		TestApplicationListener listener = new TestApplicationListener();
 		application.addListeners(listener);
 		application.run();
@@ -1225,9 +1225,9 @@ class SpringApplicationTests {
 	void addBootstrapRegistryInitializerCanRegisterBeans() {
 		SpringApplication application = new SpringApplication(ExampleConfig.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
-		application.addBootstrapRegistryInitializer((bootstrapContext) -> {
+		application.addBootstrapRegistryInitializer(bootstrapContext -> {
 			bootstrapContext.register(String.class, InstanceSupplier.of("boot"));
-			bootstrapContext.addCloseListener((event) -> event.getApplicationContext()
+			bootstrapContext.addCloseListener(event -> event.getApplicationContext()
 				.getBeanFactory()
 				.registerSingleton("test", event.getBootstrapContext().get(String.class)));
 		});
@@ -1269,7 +1269,7 @@ class SpringApplicationTests {
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(application::run);
 		assertThat(events).hasAtLeastOneElementOfType(ApplicationFailedEvent.class);
 		ApplicationFailedEvent failure = events.stream()
-			.filter((event) -> event instanceof ApplicationFailedEvent)
+			.filter(ApplicationFailedEvent.class::isInstance)
 			.map(ApplicationFailedEvent.class::cast)
 			.findFirst()
 			.get();
@@ -1282,7 +1282,7 @@ class SpringApplicationTests {
 		SpringApplication application = new SpringApplication(ExampleConfig.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
 		SpringApplicationRunListener runListener = mock(SpringApplicationRunListener.class);
-		SpringApplicationHook hook = (springApplication) -> runListener;
+		SpringApplicationHook hook = springApplication -> runListener;
 		SpringApplication.withHook(hook, () -> this.context = application.run());
 		then(runListener).should().starting(any());
 		then(runListener).should().contextPrepared(this.context);
@@ -1295,8 +1295,8 @@ class SpringApplicationTests {
 		SpringApplication application = new SpringApplication(ExampleConfig.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
 		SpringApplicationRunListener runListener = mock(SpringApplicationRunListener.class);
-		SpringApplicationHook hook = (springApplication) -> runListener;
-		this.context = SpringApplication.withHook(hook, () -> application.run());
+		SpringApplicationHook hook = springApplication -> runListener;
+		this.context = SpringApplication.withHook(hook, application::run);
 		then(runListener).should().starting(any());
 		then(runListener).should().contextPrepared(this.context);
 		then(runListener).should().ready(eq(this.context), any());
@@ -1318,10 +1318,10 @@ class SpringApplicationTests {
 			}
 
 		});
-		SpringApplicationHook hook = (springApplication) -> runListener;
+		SpringApplicationHook hook = springApplication -> runListener;
 		assertThatExceptionOfType(SpringApplication.AbandonedRunException.class)
-			.isThrownBy(() -> SpringApplication.withHook(hook, () -> application.run()))
-			.satisfies((ex) -> assertThat(ex.getApplicationContext().isRunning()).isFalse());
+			.isThrownBy(() -> SpringApplication.withHook(hook, application::run))
+			.satisfies(ex -> assertThat(ex.getApplicationContext().isRunning()).isFalse());
 		then(runListener).should().starting(any());
 		then(runListener).should().contextPrepared(any());
 		then(runListener).should(never()).ready(any(), any());
@@ -1362,7 +1362,7 @@ class SpringApplicationTests {
 
 	private <S extends AvailabilityState> ArgumentMatcher<ApplicationEvent> isAvailabilityChangeEventWithState(
 			S state) {
-		return (argument) -> (argument instanceof AvailabilityChangeEvent<?>)
+		return argument -> (argument instanceof AvailabilityChangeEvent<?>)
 				&& ((AvailabilityChangeEvent<?>) argument).getState().equals(state);
 	}
 
@@ -1427,7 +1427,7 @@ class SpringApplicationTests {
 	}
 
 	@Configuration
-	static class InaccessibleConfiguration {
+	static final class InaccessibleConfiguration {
 
 		private InaccessibleConfiguration() {
 		}
@@ -1621,7 +1621,7 @@ class SpringApplicationTests {
 
 		@Bean
 		CommandLineRunner runner() {
-			return (args) -> {
+			return args -> {
 				throw new IllegalStateException(new ExitStatusException());
 			};
 		}
@@ -1633,14 +1633,14 @@ class SpringApplicationTests {
 
 		@Bean
 		CommandLineRunner runner() {
-			return (args) -> {
+			return args -> {
 				throw new IllegalStateException();
 			};
 		}
 
 		@Bean
 		ExitCodeExceptionMapper exceptionMapper() {
-			return (exception) -> {
+			return exception -> {
 				if (exception instanceof IllegalStateException) {
 					return 11;
 				}
@@ -1888,7 +1888,7 @@ class SpringApplicationTests {
 		@Bean
 		Example example(ObjectProvider<ExampleConfigurer> configurers) {
 			Example example = new Example();
-			configurers.orderedStream().forEach((configurer) -> configurer.configure(example));
+			configurers.orderedStream().forEach(configurer -> configurer.configure(example));
 			return example;
 		}
 
@@ -1902,7 +1902,7 @@ class SpringApplicationTests {
 
 		@Bean
 		ExampleConfigurer configurer() {
-			return (example) -> {
+			return example -> {
 			};
 		}
 

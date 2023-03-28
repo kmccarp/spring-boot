@@ -99,14 +99,14 @@ class StartupTimeMetricsListenerTests {
 
 	private ApplicationStartedEvent applicationStartedEvent(Long startupTimeMs) {
 		SpringApplication application = mock(SpringApplication.class);
-		given(application.getMainApplicationClass()).willAnswer((invocation) -> TestMainApplication.class);
+		given(application.getMainApplicationClass()).willAnswer(invocation -> TestMainApplication.class);
 		return new ApplicationStartedEvent(application, null, null,
 				(startupTimeMs != null) ? Duration.ofMillis(startupTimeMs) : null);
 	}
 
 	private ApplicationReadyEvent applicationReadyEvent(Long startupTimeMs) {
 		SpringApplication application = mock(SpringApplication.class);
-		given(application.getMainApplicationClass()).willAnswer((invocation) -> TestMainApplication.class);
+		given(application.getMainApplicationClass()).willAnswer(invocation -> TestMainApplication.class);
 		return new ApplicationReadyEvent(application, null, null,
 				(startupTimeMs != null) ? Duration.ofMillis(startupTimeMs) : null);
 	}
@@ -120,7 +120,7 @@ class StartupTimeMetricsListenerTests {
 		assertThat(this.registry.find(metricName)
 			.tags(Tags.concat(expectedCustomTags, "main.application.class", TestMainApplication.class.getName()))
 			.timeGauge()).isNotNull()
-			.extracting((m) -> m.value(TimeUnit.MILLISECONDS))
+			.extracting(m -> m.value(TimeUnit.MILLISECONDS))
 			.isEqualTo(expectedValueInMillis.doubleValue());
 	}
 

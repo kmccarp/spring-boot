@@ -67,7 +67,7 @@ public class ScheduledTasksEndpoint {
 	@ReadOperation
 	public ScheduledTasksDescriptor scheduledTasks() {
 		Map<TaskType, List<TaskDescriptor>> descriptionsByType = this.scheduledTaskHolders.stream()
-			.flatMap((holder) -> holder.getScheduledTasks().stream())
+			.flatMap(holder -> holder.getScheduledTasks().stream())
 			.map(ScheduledTask::getTask)
 			.map(TaskDescriptor::of)
 			.filter(Objects::nonNull)
@@ -121,10 +121,10 @@ public class ScheduledTasksEndpoint {
 		private static final Map<Class<? extends Task>, Function<Task, TaskDescriptor>> DESCRIBERS = new LinkedHashMap<>();
 
 		static {
-			DESCRIBERS.put(FixedRateTask.class, (task) -> new FixedRateTaskDescriptor((FixedRateTask) task));
-			DESCRIBERS.put(FixedDelayTask.class, (task) -> new FixedDelayTaskDescriptor((FixedDelayTask) task));
-			DESCRIBERS.put(CronTask.class, (task) -> new CronTaskDescriptor((CronTask) task));
-			DESCRIBERS.put(TriggerTask.class, (task) -> describeTriggerTask((TriggerTask) task));
+			DESCRIBERS.put(FixedRateTask.class, task -> new FixedRateTaskDescriptor((FixedRateTask) task));
+			DESCRIBERS.put(FixedDelayTask.class, task -> new FixedDelayTaskDescriptor((FixedDelayTask) task));
+			DESCRIBERS.put(CronTask.class, task -> new CronTaskDescriptor((CronTask) task));
+			DESCRIBERS.put(TriggerTask.class, task -> describeTriggerTask((TriggerTask) task));
 		}
 
 		private final TaskType type;
@@ -134,8 +134,8 @@ public class ScheduledTasksEndpoint {
 		private static TaskDescriptor of(Task task) {
 			return DESCRIBERS.entrySet()
 				.stream()
-				.filter((entry) -> entry.getKey().isInstance(task))
-				.map((entry) -> entry.getValue().apply(task))
+				.filter(entry -> entry.getKey().isInstance(task))
+				.map(entry -> entry.getValue().apply(task))
 				.findFirst()
 				.orElse(null);
 		}

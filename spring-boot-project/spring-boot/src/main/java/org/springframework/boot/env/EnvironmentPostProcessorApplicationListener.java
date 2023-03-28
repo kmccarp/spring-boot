@@ -78,7 +78,7 @@ public class EnvironmentPostProcessorApplicationListener implements SmartApplica
 	 */
 	public static EnvironmentPostProcessorApplicationListener with(
 			EnvironmentPostProcessorsFactory postProcessorsFactory) {
-		return new EnvironmentPostProcessorApplicationListener((classloader) -> postProcessorsFactory);
+		return new EnvironmentPostProcessorApplicationListener(classloader -> postProcessorsFactory);
 	}
 
 	@Override

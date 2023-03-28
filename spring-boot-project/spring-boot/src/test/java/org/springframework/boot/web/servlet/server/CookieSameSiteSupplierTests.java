@@ -37,113 +37,113 @@ class CookieSameSiteSupplierTests {
 
 	@Test
 	void whenHasNameWhenNameIsNullThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.whenHasName((String) null))
 			.withMessage("Name must not be empty");
 	}
 
 	@Test
 	void whenHasNameWhenNameIsEmptyThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.whenHasName(""))
 			.withMessage("Name must not be empty");
 	}
 
 	@Test
 	void whenHasNameWhenNameMatchesCallsGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThat(supplier.whenHasName("test").getSameSite(new Cookie("test", "x"))).isEqualTo(SameSite.LAX);
 	}
 
 	@Test
 	void whenHasNameWhenNameDoesNotMatchDoesNotCallGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> fail("Supplier Called");
+		CookieSameSiteSupplier supplier = cookie -> fail("Supplier Called");
 		assertThat(supplier.whenHasName("test").getSameSite(new Cookie("tset", "x"))).isNull();
 	}
 
 	@Test
 	void whenHasSuppliedNameWhenNameIsNullThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.whenHasName((Supplier<String>) null))
 			.withMessage("NameSupplier must not be empty");
 	}
 
 	@Test
 	void whenHasSuppliedNameWhenNameMatchesCallsGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThat(supplier.whenHasName(() -> "test").getSameSite(new Cookie("test", "x"))).isEqualTo(SameSite.LAX);
 	}
 
 	@Test
 	void whenHasSuppliedNameWhenNameDoesNotMatchDoesNotCallGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> fail("Supplier Called");
+		CookieSameSiteSupplier supplier = cookie -> fail("Supplier Called");
 		assertThat(supplier.whenHasName(() -> "test").getSameSite(new Cookie("tset", "x"))).isNull();
 	}
 
 	@Test
 	void whenHasNameMatchingRegexWhenRegexIsNullThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.whenHasNameMatching((String) null))
 			.withMessage("Regex must not be empty");
 	}
 
 	@Test
 	void whenHasNameMatchingRegexWhenRegexIsEmptyThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.whenHasNameMatching(""))
 			.withMessage("Regex must not be empty");
 	}
 
 	@Test
 	void whenHasNameMatchingRegexWhenNameMatchesCallsGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThat(supplier.whenHasNameMatching("te.*").getSameSite(new Cookie("test", "x"))).isEqualTo(SameSite.LAX);
 	}
 
 	@Test
 	void whenHasNameMatchingRegexWhenNameDoesNotMatchDoesNotCallGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> fail("Supplier Called");
+		CookieSameSiteSupplier supplier = cookie -> fail("Supplier Called");
 		assertThat(supplier.whenHasNameMatching("te.*").getSameSite(new Cookie("tset", "x"))).isNull();
 	}
 
 	@Test
 	void whenHasNameMatchingPatternWhenPatternIsNullThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.whenHasNameMatching((Pattern) null))
 			.withMessage("Pattern must not be null");
 	}
 
 	@Test
 	void whenHasNameMatchingPatternWhenNameMatchesCallsGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThat(supplier.whenHasNameMatching(Pattern.compile("te.*")).getSameSite(new Cookie("test", "x")))
 			.isEqualTo(SameSite.LAX);
 	}
 
 	@Test
 	void whenHasNameMatchingPatternWhenNameDoesNotMatchDoesNotCallGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> fail("Supplier Called");
+		CookieSameSiteSupplier supplier = cookie -> fail("Supplier Called");
 		assertThat(supplier.whenHasNameMatching(Pattern.compile("te.*")).getSameSite(new Cookie("tset", "x"))).isNull();
 	}
 
 	@Test
 	void whenWhenPredicateIsNullThrowsException() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.when(null))
 			.withMessage("Predicate must not be null");
 	}
 
 	@Test
 	void whenWhenPredicateMatchesCallsGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> SameSite.LAX;
-		assertThat(supplier.when((cookie) -> cookie.getName().equals("test")).getSameSite(new Cookie("test", "x")))
+		CookieSameSiteSupplier supplier = cookie -> SameSite.LAX;
+		assertThat(supplier.when(cookie -> "test".equals(cookie.getName())).getSameSite(new Cookie("test", "x")))
 			.isEqualTo(SameSite.LAX);
 	}
 
 	@Test
 	void whenWhenPredicateDoesNotMatchDoesNotCallGetSameSite() {
-		CookieSameSiteSupplier supplier = (cookie) -> fail("Supplier Called");
-		assertThat(supplier.when((cookie) -> cookie.getName().equals("test")).getSameSite(new Cookie("tset", "x")))
+		CookieSameSiteSupplier supplier = cookie -> fail("Supplier Called");
+		assertThat(supplier.when(cookie -> "test".equals(cookie.getName())).getSameSite(new Cookie("tset", "x")))
 			.isNull();
 	}
 

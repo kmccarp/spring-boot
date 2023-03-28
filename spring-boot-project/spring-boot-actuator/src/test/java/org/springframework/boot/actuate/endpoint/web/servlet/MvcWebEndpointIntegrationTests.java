@@ -83,7 +83,7 @@ class MvcWebEndpointIntegrationTests
 	@Test
 	void responseToOptionsRequestIncludesCorsHeaders() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.options()
+				client -> client.options()
 					.uri("/test")
 					.accept(MediaType.APPLICATION_JSON)
 					.header("Access-Control-Request-Method", "POST")
@@ -99,7 +99,7 @@ class MvcWebEndpointIntegrationTests
 
 	@Test
 	void readOperationsThatReturnAResourceSupportRangeRequests() {
-		load(ResourceEndpointConfiguration.class, (client) -> {
+		load(ResourceEndpointConfiguration.class, client -> {
 			byte[] responseBody = client.get()
 				.uri("/resource")
 				.header("Range", "bytes=0-3")
@@ -117,7 +117,7 @@ class MvcWebEndpointIntegrationTests
 	@Test
 	void requestWithSuffixShouldNotMatch() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.options()
+				client -> client.options()
 					.uri("/test.do")
 					.accept(MediaType.APPLICATION_JSON)
 					.exchange()
@@ -173,11 +173,10 @@ class MvcWebEndpointIntegrationTests
 			corsConfiguration.setAllowedOrigins(Arrays.asList("https://example.com"));
 			corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
 			String endpointPath = environment.getProperty("endpointPath");
-			WebMvcEndpointHandlerMapping handlerMapping = new WebMvcEndpointHandlerMapping(
+			return new WebMvcEndpointHandlerMapping(
 					new EndpointMapping(endpointPath), endpointDiscoverer.getEndpoints(), endpointMediaTypes,
 					corsConfiguration, new EndpointLinksResolver(endpointDiscoverer.getEndpoints()),
 					StringUtils.hasText(endpointPath));
-			return handlerMapping;
 		}
 
 	}

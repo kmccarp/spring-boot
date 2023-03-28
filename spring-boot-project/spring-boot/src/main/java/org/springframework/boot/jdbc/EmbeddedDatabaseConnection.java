@@ -127,8 +127,8 @@ public enum EmbeddedDatabaseConnection {
 	}
 
 	boolean isDriverCompatible(String driverClass) {
-		return (driverClass != null
-				&& (driverClass.equals(getDriverClassName()) || driverClass.equals(this.alternativeDriverClass)));
+		return driverClass != null
+				&& (driverClass.equals(getDriverClassName()) || driverClass.equals(this.alternativeDriverClass));
 	}
 
 	/**
@@ -147,12 +147,12 @@ public enum EmbeddedDatabaseConnection {
 		if (connection == NONE) {
 			return false;
 		}
-		return (url == null || connection.isEmbeddedUrl(url));
+		return url == null || connection.isEmbeddedUrl(url);
 	}
 
 	private static EmbeddedDatabaseConnection getEmbeddedDatabaseConnection(String driverClass) {
 		return Stream.of(H2, HSQLDB, DERBY)
-			.filter((connection) -> connection.isDriverCompatible(driverClass))
+			.filter(connection -> connection.isDriverCompatible(driverClass))
 			.findFirst()
 			.orElse(NONE);
 	}
@@ -205,7 +205,7 @@ public enum EmbeddedDatabaseConnection {
 			for (EmbeddedDatabaseConnection candidate : candidates) {
 				if (candidate != NONE && productName.contains(candidate.getType().name())) {
 					String url = metaData.getURL();
-					return (url == null || candidate.isEmbeddedUrl(url));
+					return url == null || candidate.isEmbeddedUrl(url);
 				}
 			}
 			return false;

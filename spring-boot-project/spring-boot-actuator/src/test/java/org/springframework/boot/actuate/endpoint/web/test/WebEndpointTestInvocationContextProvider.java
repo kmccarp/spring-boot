@@ -195,7 +195,7 @@ class WebEndpointTestInvocationContextProvider implements TestTemplateInvocation
 			return WebTestClient.bindToServer()
 				.uriBuilderFactory(uriBuilderFactory)
 				.responseTimeout(TIMEOUT)
-				.codecs((codecs) -> codecs.defaultCodecs().maxInMemorySize(-1))
+				.codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(-1))
 				.filter((request, next) -> {
 					if (HttpMethod.GET == request.method()) {
 						return next.exchange(request).retry(10);

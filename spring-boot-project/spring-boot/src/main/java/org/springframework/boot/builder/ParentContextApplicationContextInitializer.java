@@ -85,6 +85,8 @@ public class ParentContextApplicationContextInitializer
 	@SuppressWarnings("serial")
 	public static class ParentContextAvailableEvent extends ApplicationEvent {
 
+		private static final long serialVersionUID = 1;
+
 		public ParentContextAvailableEvent(ConfigurableApplicationContext applicationContext) {
 			super(applicationContext);
 		}

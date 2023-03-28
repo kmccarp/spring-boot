@@ -666,7 +666,7 @@ class QuartzEndpointTests {
 		mockJobs(job);
 		mockTriggers(trigger);
 		given(this.scheduler.getTriggersOfJob(JobKey.jobKey("hello", "samples")))
-			.willAnswer((invocation) -> Collections.singletonList(trigger));
+			.willAnswer(invocation -> Collections.singletonList(trigger));
 		QuartzJobDetailsDescriptor jobDetails = this.endpoint.quartzJob("samples", "hello", true);
 		assertThat(jobDetails.getTriggers()).hasSize(1);
 		Map<String, Object> triggerDetails = jobDetails.getTriggers().get(0);
@@ -694,7 +694,7 @@ class QuartzEndpointTests {
 		((OperableTrigger) triggerTwo).setNextFireTime(triggerTwoNextFireTime);
 		mockTriggers(triggerOne, triggerTwo);
 		given(this.scheduler.getTriggersOfJob(JobKey.jobKey("hello", "samples")))
-			.willAnswer((invocation) -> Arrays.asList(triggerOne, triggerTwo));
+			.willAnswer(invocation -> Arrays.asList(triggerOne, triggerTwo));
 		QuartzJobDetailsDescriptor jobDetails = this.endpoint.quartzJob("samples", "hello", true);
 		assertThat(jobDetails.getTriggers()).hasSize(2);
 		assertThat(jobDetails.getTriggers().get(0)).containsEntry("name", "two");
@@ -720,7 +720,7 @@ class QuartzEndpointTests {
 		((OperableTrigger) triggerTwo).setNextFireTime(nextFireTime);
 		mockTriggers(triggerOne, triggerTwo);
 		given(this.scheduler.getTriggersOfJob(JobKey.jobKey("hello", "samples")))
-			.willAnswer((invocation) -> Arrays.asList(triggerOne, triggerTwo));
+			.willAnswer(invocation -> Arrays.asList(triggerOne, triggerTwo));
 		QuartzJobDetailsDescriptor jobDetails = this.endpoint.quartzJob("samples", "hello", true);
 		assertThat(jobDetails.getTriggers()).hasSize(2);
 		assertThat(jobDetails.getTriggers().get(0)).containsEntry("name", "two");

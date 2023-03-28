@@ -29,6 +29,8 @@ import org.springframework.boot.web.server.WebServer;
  */
 public class ReactiveWebServerInitializedEvent extends WebServerInitializedEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final ReactiveWebServerApplicationContext applicationContext;
 
 	public ReactiveWebServerInitializedEvent(WebServer webServer,

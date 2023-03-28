@@ -136,10 +136,9 @@ class InvalidConfigDataPropertyExceptionTests {
 			ConfigData.Option... configDataOptions) {
 		MockPropertySource propertySource = new MockPropertySource();
 		propertySource.setProperty(name, "a");
-		ConfigDataEnvironmentContributor contributor = new ConfigDataEnvironmentContributor(Kind.BOUND_IMPORT, null,
+		return new ConfigDataEnvironmentContributor(Kind.BOUND_IMPORT, null,
 				null, true, propertySource, ConfigurationPropertySource.from(propertySource), null,
 				ConfigData.Options.of(configDataOptions), null);
-		return contributor;
 	}
 
 	@Test

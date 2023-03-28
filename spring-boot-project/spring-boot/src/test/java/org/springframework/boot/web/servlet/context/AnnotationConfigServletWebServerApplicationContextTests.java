@@ -143,6 +143,8 @@ class AnnotationConfigServletWebServerApplicationContextTests {
 	@Component
 	static class ExampleServletWithAutowired extends GenericServlet {
 
+		private static final long serialVersionUID = 1;
+
 		@Autowired
 		private SessionScopedComponent component;
 

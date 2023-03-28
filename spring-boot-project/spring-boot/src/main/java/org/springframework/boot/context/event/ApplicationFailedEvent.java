@@ -29,6 +29,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SuppressWarnings("serial")
 public class ApplicationFailedEvent extends SpringApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final ConfigurableApplicationContext context;
 
 	private final Throwable exception;

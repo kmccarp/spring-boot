@@ -45,7 +45,7 @@ class ConfigurationPropertySourcesCaching implements ConfigurationPropertyCachin
 
 	@Override
 	public void setTimeToLive(Duration timeToLive) {
-		forEach((caching) -> caching.setTimeToLive(timeToLive));
+		forEach(caching -> caching.setTimeToLive(timeToLive));
 	}
 
 	@Override

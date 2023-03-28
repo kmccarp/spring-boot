@@ -66,7 +66,7 @@ class ControllerEndpointHandlerMappingIntegrationTests {
 
 	@Test
 	void get() {
-		this.contextRunner.run(withWebTestClient((webTestClient) -> webTestClient.get()
+		this.contextRunner.run(withWebTestClient(webTestClient -> webTestClient.get()
 			.uri("/actuator/example/one")
 			.accept(MediaType.TEXT_PLAIN)
 			.exchange()
@@ -80,7 +80,7 @@ class ControllerEndpointHandlerMappingIntegrationTests {
 
 	@Test
 	void getWithUnacceptableContentType() {
-		this.contextRunner.run(withWebTestClient((webTestClient) -> webTestClient.get()
+		this.contextRunner.run(withWebTestClient(webTestClient -> webTestClient.get()
 			.uri("/actuator/example/one")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
@@ -90,7 +90,7 @@ class ControllerEndpointHandlerMappingIntegrationTests {
 
 	@Test
 	void post() {
-		this.contextRunner.run(withWebTestClient((webTestClient) -> webTestClient.post()
+		this.contextRunner.run(withWebTestClient(webTestClient -> webTestClient.post()
 			.uri("/actuator/example/two")
 			.bodyValue(Collections.singletonMap("id", "test"))
 			.exchange()
@@ -102,7 +102,7 @@ class ControllerEndpointHandlerMappingIntegrationTests {
 
 	private ContextConsumer<AssertableReactiveWebApplicationContext> withWebTestClient(
 			Consumer<WebTestClient> webClient) {
-		return (context) -> {
+		return context -> {
 			int port = ((AnnotationConfigReactiveWebServerApplicationContext) context.getSourceApplicationContext())
 				.getWebServer()
 				.getPort();

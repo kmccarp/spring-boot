@@ -351,7 +351,7 @@ class ConfigDataEnvironmentContributorsTests {
 				this.bootstrapContext, Arrays.asList(firstContributor, secondContributor));
 		Binder binder = contributors.getBinder(this.activationContext, BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		assertThatExceptionOfType(BindException.class).isThrownBy(() -> binder.bind("test", String.class))
-			.satisfies((ex) -> assertThat(ex.getCause()).isInstanceOf(InactiveConfigDataAccessException.class));
+			.satisfies(ex -> assertThat(ex.getCause()).isInstanceOf(InactiveConfigDataAccessException.class));
 	}
 
 	@Test
@@ -368,7 +368,7 @@ class ConfigDataEnvironmentContributorsTests {
 				this.bootstrapContext, Arrays.asList(firstContributor, secondContributor));
 		Binder binder = contributors.getBinder(this.activationContext, BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		assertThatExceptionOfType(BindException.class).isThrownBy(() -> binder.bind("test", String.class))
-			.satisfies((ex) -> assertThat(ex.getCause()).isInstanceOf(InactiveConfigDataAccessException.class));
+			.satisfies(ex -> assertThat(ex.getCause()).isInstanceOf(InactiveConfigDataAccessException.class));
 	}
 
 	@Test
@@ -386,7 +386,7 @@ class ConfigDataEnvironmentContributorsTests {
 				this.bootstrapContext, Arrays.asList(firstContributor, secondContributor));
 		Binder binder = contributors.getBinder(this.activationContext, BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		assertThatExceptionOfType(BindException.class).isThrownBy(() -> binder.bind("test", String.class))
-			.satisfies((ex) -> assertThat(ex.getCause()).isInstanceOf(InactiveConfigDataAccessException.class));
+			.satisfies(ex -> assertThat(ex.getCause()).isInstanceOf(InactiveConfigDataAccessException.class));
 	}
 
 	private ConfigDataEnvironmentContributor createBoundImportContributor(ConfigData configData,

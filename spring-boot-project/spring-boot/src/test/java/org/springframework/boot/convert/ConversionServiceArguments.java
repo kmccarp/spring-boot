@@ -41,11 +41,11 @@ final class ConversionServiceArguments {
 	}
 
 	static Stream<? extends Arguments> with(Formatter<?> formatter) {
-		return with((conversionService) -> conversionService.addFormatter(formatter));
+		return with(conversionService -> conversionService.addFormatter(formatter));
 	}
 
 	static Stream<? extends Arguments> with(GenericConverter converter) {
-		return with((conversionService) -> conversionService.addConverter(converter));
+		return with(conversionService -> conversionService.addConverter(converter));
 	}
 
 	static Stream<? extends Arguments> with(Consumer<FormattingConversionService> initializer) {

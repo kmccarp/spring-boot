@@ -153,7 +153,7 @@ class MimeMappingsTests {
 	void mimeTypesInDefaultMappingsAreCorrectlyStructured() {
 		String regName = "[A-Za-z0-9!#$&.+\\-^_]{1,127}";
 		Pattern pattern = Pattern.compile("^" + regName + "\\/" + regName + "$");
-		assertThat(MimeMappings.DEFAULT).allSatisfy((mapping) -> assertThat(mapping.getMimeType()).matches(pattern));
+		assertThat(MimeMappings.DEFAULT).allSatisfy(mapping -> assertThat(mapping.getMimeType()).matches(pattern));
 	}
 
 	@Test

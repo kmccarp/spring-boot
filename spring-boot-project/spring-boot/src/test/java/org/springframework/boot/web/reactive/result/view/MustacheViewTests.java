@@ -54,7 +54,7 @@ class MustacheViewTests {
 		view.render(Collections.singletonMap("World", "Spring"), MediaType.TEXT_HTML, exchange)
 			.block(Duration.ofSeconds(30));
 		StepVerifier.create(exchange.getResponse().getBodyAsString())
-			.assertNext((body) -> assertThat(body).isEqualToIgnoringWhitespace("Hello Spring"))
+			.assertNext(body -> assertThat(body).isEqualToIgnoringWhitespace("Hello Spring"))
 			.verifyComplete();
 	}
 

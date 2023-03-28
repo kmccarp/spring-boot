@@ -106,7 +106,7 @@ class FileSessionPersistence implements SessionPersistenceManager {
 	@SuppressWarnings("unchecked")
 	private Map<String, SerializablePersistentSession> readSession(ObjectInputStream stream)
 			throws ClassNotFoundException, IOException {
-		return ((Map<String, SerializablePersistentSession>) stream.readObject());
+		return (Map<String, SerializablePersistentSession>) stream.readObject();
 	}
 
 	private File getSessionFile(String deploymentName) {

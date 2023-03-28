@@ -206,7 +206,7 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 				Map<String, PropertyFile> propertyFiles = new TreeMap<>();
 				try (Stream<Path> pathStream = Files.find(sourceDirectory, MAX_DEPTH, PropertyFile::isPropertyFile,
 						FileVisitOption.FOLLOW_LINKS)) {
-					pathStream.forEach((path) -> {
+					pathStream.forEach(path -> {
 						String name = getName(sourceDirectory.relativize(path));
 						if (StringUtils.hasText(name)) {
 							if (options.contains(Option.USE_LOWERCASE_NAMES)) {

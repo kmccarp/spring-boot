@@ -64,8 +64,8 @@ public class ConfigurationPropertiesReportEndpointWebExtension {
 		boolean foundMatchingBeans = configurationProperties.getContexts()
 			.values()
 			.stream()
-			.anyMatch((context) -> !context.getBeans().isEmpty());
-		return (foundMatchingBeans) ? new WebEndpointResponse<>(configurationProperties, WebEndpointResponse.STATUS_OK)
+			.anyMatch(context -> !context.getBeans().isEmpty());
+		return foundMatchingBeans ? new WebEndpointResponse<>(configurationProperties, WebEndpointResponse.STATUS_OK)
 				: new WebEndpointResponse<>(WebEndpointResponse.STATUS_NOT_FOUND);
 	}
 

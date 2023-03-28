@@ -60,7 +60,7 @@ class JavaBeanBinder implements DataObjectBinder {
 		}
 		BeanSupplier<T> beanSupplier = bean.getSupplier(target);
 		boolean bound = bind(propertyBinder, bean, beanSupplier, context);
-		return (bound ? beanSupplier.get() : null);
+		return bound ? beanSupplier.get() : null;
 	}
 
 	@Override

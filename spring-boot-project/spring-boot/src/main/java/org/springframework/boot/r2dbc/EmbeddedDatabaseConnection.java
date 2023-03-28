@@ -36,13 +36,13 @@ public enum EmbeddedDatabaseConnection {
 	/**
 	 * No Connection.
 	 */
-	NONE(null, null, (options) -> false),
+	NONE(null, null, options -> false),
 
 	/**
 	 * H2 Database Connection.
 	 */
 	H2("io.r2dbc.h2.H2ConnectionFactoryProvider", "r2dbc:h2:mem:///%s?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
-			(options) -> options.getValue(ConnectionFactoryOptions.DRIVER).equals("h2")
+			options -> options.getValue(ConnectionFactoryOptions.DRIVER).equals("h2")
 					&& options.getValue(ConnectionFactoryOptions.PROTOCOL).equals("mem"));
 
 	private final String driverClassName;

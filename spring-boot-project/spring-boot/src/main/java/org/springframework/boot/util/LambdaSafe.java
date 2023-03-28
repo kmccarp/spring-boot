@@ -169,11 +169,11 @@ public final class LambdaSafe {
 		}
 
 		private boolean isLambdaGenericProblem(ClassCastException ex) {
-			return (ex.getMessage() == null || startsWithArgumentClassName(ex.getMessage()));
+			return ex.getMessage() == null || startsWithArgumentClassName(ex.getMessage());
 		}
 
 		private boolean startsWithArgumentClassName(String message) {
-			Predicate<Object> startsWith = (argument) -> startsWithArgumentClassName(message, argument);
+			Predicate<Object> startsWith = argument -> startsWithArgumentClassName(message, argument);
 			return startsWith.test(this.argument) || Stream.of(this.additionalArguments).anyMatch(startsWith);
 		}
 
@@ -283,7 +283,7 @@ public final class LambdaSafe {
 		 * @param invoker the invoker used to invoke the callback
 		 */
 		public void invoke(Consumer<C> invoker) {
-			this.callbackInstances.forEach((callbackInstance) -> invoke(callbackInstance, () -> {
+			this.callbackInstances.forEach(callbackInstance -> invoke(callbackInstance, () -> {
 				invoker.accept(callbackInstance);
 				return null;
 			}));
@@ -297,7 +297,7 @@ public final class LambdaSafe {
 		 * could be called)
 		 */
 		public <R> Stream<R> invokeAnd(Function<C, R> invoker) {
-			Function<C, InvocationResult<R>> mapper = (callbackInstance) -> invoke(callbackInstance,
+			Function<C, InvocationResult<R>> mapper = callbackInstance -> invoke(callbackInstance,
 					() -> invoker.apply(callbackInstance));
 			return this.callbackInstances.stream()
 				.map(mapper)

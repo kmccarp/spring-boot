@@ -62,6 +62,8 @@ import org.springframework.util.ObjectUtils;
  */
 public class JsonComponentModule extends SimpleModule implements BeanFactoryAware, InitializingBean {
 
+	private static final long serialVersionUID = 1;
+
 	private BeanFactory beanFactory;
 
 	@Override
@@ -170,7 +172,7 @@ public class JsonComponentModule extends SimpleModule implements BeanFactoryAwar
 				Class<?> type = beanFactory.getType(jsonComponent, true);
 				for (Class<?> declaredClass : type.getDeclaredClasses()) {
 					if (isSuitableInnerClass(declaredClass)) {
-						innerComponents.computeIfAbsent(type, (t) -> new ArrayList<>()).add(declaredClass);
+						innerComponents.computeIfAbsent(type, t -> new ArrayList<>()).add(declaredClass);
 					}
 				}
 			}
@@ -193,7 +195,7 @@ public class JsonComponentModule extends SimpleModule implements BeanFactoryAwar
 			ReflectionHints reflection = generationContext.getRuntimeHints().reflection();
 			this.innerComponents.forEach((outer, inners) -> {
 				reflection.registerType(outer, MemberCategory.DECLARED_CLASSES);
-				inners.forEach((inner) -> reflection.registerType(inner, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));
+				inners.forEach(inner -> reflection.registerType(inner, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));
 			});
 		}
 

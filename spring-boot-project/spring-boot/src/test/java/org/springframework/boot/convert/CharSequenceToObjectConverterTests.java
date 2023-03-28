@@ -74,7 +74,7 @@ class CharSequenceToObjectConverterTests {
 	}
 
 	static Stream<? extends Arguments> conversionServices() {
-		return ConversionServiceArguments.with((conversionService) -> {
+		return ConversionServiceArguments.with(conversionService -> {
 			conversionService.addConverter(new StringToIntegerConverter());
 			conversionService.addConverter(new StringToLongConverter());
 			conversionService.addConverter(new CharSequenceToLongConverter());

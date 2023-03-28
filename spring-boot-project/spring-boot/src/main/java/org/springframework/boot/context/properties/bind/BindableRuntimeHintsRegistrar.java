@@ -178,7 +178,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			Arrays.stream(this.type.getDeclaredConstructors())
 				.filter(this::hasNoParameters)
 				.findFirst()
-				.ifPresent((constructor) -> hints.registerConstructor(constructor, ExecutableMode.INVOKE));
+				.ifPresent(constructor -> hints.registerConstructor(constructor, ExecutableMode.INVOKE));
 		}
 
 		private void verifyParameterNamesAreAvailable() {

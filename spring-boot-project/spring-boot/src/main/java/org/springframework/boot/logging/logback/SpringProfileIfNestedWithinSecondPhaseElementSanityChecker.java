@@ -46,11 +46,11 @@ class SpringProfileIfNestedWithinSecondPhaseElementSanityChecker extends Context
 			return;
 		}
 		List<Model> models = new ArrayList<>();
-		SECOND_PHASE_TYPES.forEach((type) -> deepFindAllModelsOfType(type, models, model));
+		SECOND_PHASE_TYPES.forEach(type -> deepFindAllModelsOfType(type, models, model));
 		List<Pair<Model, Model>> nestedPairs = deepFindNestedSubModelsOfType(SpringProfileModel.class, models);
 		if (!nestedPairs.isEmpty()) {
 			addWarn("<springProfile> elements cannot be nested within an <appender>, <logger> or <root> element");
-			nestedPairs.forEach((nested) -> {
+			nestedPairs.forEach(nested -> {
 				Model first = nested.first;
 				Model second = nested.second;
 				addWarn("Element <%s> at line %s contains a nested <%s> element at line %s".formatted(first.getTag(),

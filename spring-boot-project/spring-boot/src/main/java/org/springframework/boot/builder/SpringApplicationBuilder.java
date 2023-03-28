@@ -92,7 +92,7 @@ public class SpringApplicationBuilder {
 
 	private boolean registerShutdownHookApplied;
 
-	private boolean configuredAsChild = false;
+	private boolean configuredAsChild;
 
 	public SpringApplicationBuilder(Class<?>... sources) {
 		this(null, sources);

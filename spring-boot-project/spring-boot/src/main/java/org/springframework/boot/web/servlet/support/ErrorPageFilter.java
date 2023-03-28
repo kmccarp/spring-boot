@@ -313,7 +313,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 
 		private String message;
 
-		private boolean hasErrorToSend = false;
+		private boolean hasErrorToSend;
 
 		ErrorWrapperResponse(HttpServletResponse response) {
 			super(response);

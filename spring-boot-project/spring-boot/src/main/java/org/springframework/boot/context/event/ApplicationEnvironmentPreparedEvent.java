@@ -31,6 +31,8 @@ import org.springframework.core.env.Environment;
 @SuppressWarnings("serial")
 public class ApplicationEnvironmentPreparedEvent extends SpringApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final ConfigurableBootstrapContext bootstrapContext;
 
 	private final ConfigurableEnvironment environment;

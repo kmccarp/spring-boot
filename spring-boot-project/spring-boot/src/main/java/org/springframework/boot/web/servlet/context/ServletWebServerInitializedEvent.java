@@ -33,6 +33,8 @@ import org.springframework.boot.web.server.WebServer;
 @SuppressWarnings("serial")
 public class ServletWebServerInitializedEvent extends WebServerInitializedEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final ServletWebServerApplicationContext applicationContext;
 
 	public ServletWebServerInitializedEvent(WebServer webServer,

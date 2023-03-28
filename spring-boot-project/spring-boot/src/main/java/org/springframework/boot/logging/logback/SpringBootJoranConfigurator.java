@@ -177,7 +177,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			generationContext.getRuntimeHints().resources().registerPattern(MODEL_RESOURCE_LOCATION);
 			SerializationHints serializationHints = generationContext.getRuntimeHints().serialization();
 			serializationTypes(this.model).forEach(serializationHints::registerType);
-			reflectionTypes(this.model).forEach((type) -> generationContext.getRuntimeHints()
+			reflectionTypes(this.model).forEach(type -> generationContext.getRuntimeHints()
 				.reflection()
 				.registerType(TypeReference.of(type), MemberCategory.INTROSPECT_PUBLIC_METHODS,
 						MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS));
@@ -189,7 +189,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			Class<?> candidate = model.getClass();
 			while (Model.class.isAssignableFrom(candidate)) {
 				if (modelClasses.add((Class<? extends Model>) candidate)) {
-					ReflectionUtils.doWithFields(candidate, (field) -> {
+					ReflectionUtils.doWithFields(candidate, field -> {
 						if (Modifier.isStatic(field.getModifiers())) {
 							return;
 						}
@@ -255,10 +255,9 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 				try {
 					PropertySetter propertySetter = new PropertySetter(
 							this.modelInterpretationContext.getBeanDescriptionCache(), parent);
-					Class<?> typeFromPropertySetter = propertySetter.getClassNameViaImplicitRules(tag,
+					return propertySetter.getClassNameViaImplicitRules(tag,
 							AggregationType.AS_COMPLEX_PROPERTY,
 							this.modelInterpretationContext.getDefaultNestedComponentRegistry());
-					return typeFromPropertySetter;
 				}
 				catch (Exception ex) {
 					return null;
@@ -296,12 +295,12 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 
 		private Collection<String> parameterTypesNames(Collection<Method> methods) {
 			return methods.stream()
-				.filter((method) -> !method.getDeclaringClass().equals(ContextAware.class)
+				.filter(method -> !method.getDeclaringClass().equals(ContextAware.class)
 						&& !method.getDeclaringClass().equals(ContextAwareBase.class))
 				.map(Method::getParameterTypes)
 				.flatMap(Stream::of)
-				.filter((type) -> !type.isPrimitive() && !type.equals(String.class))
-				.map((type) -> type.isArray() ? type.getComponentType() : type)
+				.filter(type -> !type.isPrimitive() && !type.equals(String.class))
+				.map(type -> type.isArray() ? type.getComponentType() : type)
 				.map(Class::getName)
 				.toList();
 		}

@@ -51,15 +51,15 @@ class HttpExchangesWebFilterTests {
 	@Test
 	void filterRecordsExchange() {
 		executeFilter(MockServerWebExchange.from(MockServerHttpRequest.get("https://api.example.com")),
-				(exchange) -> Mono.empty());
+				exchange -> Mono.empty());
 		assertThat(this.repository.findAll()).hasSize(1);
 	}
 
 	@Test
 	void filterRecordsSessionIdWhenSessionIsUsed() {
 		executeFilter(MockServerWebExchange.from(MockServerHttpRequest.get("https://api.example.com")),
-				(exchange) -> exchange.getSession()
-					.doOnNext((session) -> session.getAttributes().put("a", "alpha"))
+				exchange -> exchange.getSession()
+					.doOnNext(session -> session.getAttributes().put("a", "alpha"))
 					.then());
 		assertThat(this.repository.findAll()).hasSize(1);
 		Session session = this.repository.findAll().get(0).getSession();
@@ -70,7 +70,7 @@ class HttpExchangesWebFilterTests {
 	@Test
 	void filterDoesNotRecordIdOfUnusedSession() {
 		executeFilter(MockServerWebExchange.from(MockServerHttpRequest.get("https://api.example.com")),
-				(exchange) -> exchange.getSession().then());
+				exchange -> exchange.getSession().then());
 		assertThat(this.repository.findAll()).hasSize(1);
 		Session session = this.repository.findAll().get(0).getSession();
 		assertThat(session).isNull();
@@ -89,7 +89,7 @@ class HttpExchangesWebFilterTests {
 				return Mono.just((T) principal);
 			}
 
-		}, (exchange) -> exchange.getSession().doOnNext((session) -> session.getAttributes().put("a", "alpha")).then());
+		}, exchange -> exchange.getSession().doOnNext(session -> session.getAttributes().put("a", "alpha")).then());
 		assertThat(this.repository.findAll()).hasSize(1);
 		org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal recordedPrincipal = this.repository
 			.findAll()

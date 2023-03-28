@@ -150,7 +150,7 @@ class ConfigurationPropertySourcesPropertyResolverTests {
 		}
 
 		private void incrementCount(String name) {
-			this.counts.computeIfAbsent(name, (k) -> new AtomicInteger()).incrementAndGet();
+			this.counts.computeIfAbsent(name, k -> new AtomicInteger()).incrementAndGet();
 		}
 
 		int getCount(String name) {

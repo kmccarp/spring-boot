@@ -139,9 +139,9 @@ class WebServerFactoryCustomizerBeanPostProcessorTests {
 	}
 
 	private void addLambdaBeans(List<String> called) {
-		WebServerFactoryCustomizer<WebServerFactoryOne> one = (f) -> called.add("one");
-		WebServerFactoryCustomizer<WebServerFactoryTwo> two = (f) -> called.add("two");
-		WebServerFactoryCustomizer<WebServerFactory> all = (f) -> called.add("all");
+		WebServerFactoryCustomizer<WebServerFactoryOne> one = f -> called.add("one");
+		WebServerFactoryCustomizer<WebServerFactoryTwo> two = f -> called.add("two");
+		WebServerFactoryCustomizer<WebServerFactory> all = f -> called.add("all");
 		Map<String, Object> beans = new LinkedHashMap<>();
 		beans.put("one", one);
 		beans.put("two", two);

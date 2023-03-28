@@ -69,7 +69,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 	private void postProcessBeforeInitialization(WebServerFactory webServerFactory) {
 		LambdaSafe.callbacks(WebServerFactoryCustomizer.class, getCustomizers(), webServerFactory)
 			.withLogger(WebServerFactoryCustomizerBeanPostProcessor.class)
-			.invoke((customizer) -> customizer.customize(webServerFactory));
+			.invoke(customizer -> customizer.customize(webServerFactory));
 	}
 
 	private Collection<WebServerFactoryCustomizer<?>> getCustomizers() {

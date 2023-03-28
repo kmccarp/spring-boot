@@ -95,7 +95,7 @@ class ConfigDataEnvironmentTests {
 			.getRoot()
 			.getChildren(ImportPhase.BEFORE_PROFILE_ACTIVATION);
 		Object[] wrapped = children.stream()
-			.filter((child) -> child.getKind() == Kind.EXISTING)
+			.filter(child -> child.getKind() == Kind.EXISTING)
 			.map(ConfigDataEnvironmentContributor::getPropertySource)
 			.toArray();
 		assertThat(wrapped[1]).isEqualTo(propertySource1);
@@ -117,7 +117,7 @@ class ConfigDataEnvironmentTests {
 			.getRoot()
 			.getChildren(ImportPhase.BEFORE_PROFILE_ACTIVATION);
 		Object[] wrapped = children.stream()
-			.filter((child) -> child.getKind() == Kind.EXISTING)
+			.filter(child -> child.getKind() == Kind.EXISTING)
 			.map(ConfigDataEnvironmentContributor::getPropertySource)
 			.toArray();
 		assertThat(wrapped[1]).isEqualTo(propertySource1);
@@ -136,7 +136,7 @@ class ConfigDataEnvironmentTests {
 			.getRoot()
 			.getChildren(ImportPhase.BEFORE_PROFILE_ACTIVATION);
 		Object[] imports = children.stream()
-			.filter((child) -> child.getKind() == Kind.INITIAL_IMPORT)
+			.filter(child -> child.getKind() == Kind.INITIAL_IMPORT)
 			.map(ConfigDataEnvironmentContributor::getImports)
 			.map(Object::toString)
 			.toArray();
@@ -304,7 +304,7 @@ class ConfigDataEnvironmentTests {
 		ConfigDataEnvironment configDataEnvironment = new ConfigDataEnvironment(this.logFactory, this.bootstrapContext,
 				this.environment, this.resourceLoader, this.additionalProfiles, null);
 		assertThatExceptionOfType(InvalidConfigDataPropertyException.class)
-			.isThrownBy(() -> configDataEnvironment.processAndApply());
+			.isThrownBy(configDataEnvironment::processAndApply);
 	}
 
 	@Test
@@ -355,7 +355,7 @@ class ConfigDataEnvironmentTests {
 				this.bootstrapContext, this.environment, resourceLoader, this.additionalProfiles, null);
 		assertThat(configDataEnvironment).extracting("loaders.loaders")
 			.asList()
-			.extracting((item) -> (Class) item.getClass())
+			.extracting(item -> (Class) item.getClass())
 			.containsOnly(SeparateClassLoaderConfigDataLoader.class);
 	}
 

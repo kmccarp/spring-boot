@@ -541,7 +541,7 @@ class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 		Map<String, String> properties = loggerContext.getCopyOfPropertyMap();
 		Set<String> expectedProperties = new HashSet<>();
 		ReflectionUtils.doWithFields(LogbackLoggingSystemProperties.class,
-				(field) -> expectedProperties.add((String) field.get(null)), this::isPublicStaticFinal);
+				field -> expectedProperties.add((String) field.get(null)), this::isPublicStaticFinal);
 		expectedProperties.removeAll(Arrays.asList("LOG_FILE", "LOG_PATH"));
 		expectedProperties.add("org.jboss.logging.provider");
 		assertThat(properties).containsOnlyKeys(expectedProperties);
@@ -660,7 +660,7 @@ class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 
 	@Test
 	void whenContextHasAotContributionThenProcessAheadOfTimeClearsAndReturnsIt() {
-		LoggerContext context = ((LoggerContext) LoggerFactory.getILoggerFactory());
+		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		context.putObject(BeanFactoryInitializationAotContribution.class.getName(),
 				mock(BeanFactoryInitializationAotContribution.class));
 		BeanFactoryInitializationAotContribution contribution = this.loggingSystem.processAheadOfTime(null);
@@ -705,7 +705,7 @@ class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 
 	private String getLineWithText(CharSequence output, CharSequence outputSearch) {
 		return Arrays.stream(output.toString().split("\\r?\\n"))
-			.filter((line) -> line.contains(outputSearch))
+			.filter(line -> line.contains(outputSearch))
 			.findFirst()
 			.orElse(null);
 	}

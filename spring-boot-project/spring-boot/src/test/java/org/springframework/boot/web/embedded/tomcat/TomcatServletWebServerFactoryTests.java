@@ -154,7 +154,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	void tomcatListeners() {
 		TomcatServletWebServerFactory factory = getFactory();
 		LifecycleListener[] listeners = new LifecycleListener[4];
-		Arrays.setAll(listeners, (i) -> mock(LifecycleListener.class));
+		Arrays.setAll(listeners, i -> mock(LifecycleListener.class));
 		factory.setContextLifecycleListeners(Arrays.asList(listeners[0], listeners[1]));
 		factory.addContextLifecycleListeners(listeners[2], listeners[3]);
 		this.webServer = factory.getWebServer();
@@ -168,7 +168,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	void tomcatCustomizers() {
 		TomcatServletWebServerFactory factory = getFactory();
 		TomcatContextCustomizer[] customizers = new TomcatContextCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(TomcatContextCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(TomcatContextCustomizer.class));
 		factory.setTomcatContextCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addContextCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer();
@@ -193,7 +193,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	void tomcatConnectorCustomizers() {
 		TomcatServletWebServerFactory factory = getFactory();
 		TomcatConnectorCustomizer[] customizers = new TomcatConnectorCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(TomcatConnectorCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(TomcatConnectorCustomizer.class));
 		factory.setTomcatConnectorCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addConnectorCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer();
@@ -208,7 +208,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	void tomcatProtocolHandlerCustomizersShouldBeInvoked() {
 		TomcatServletWebServerFactory factory = getFactory();
 		TomcatProtocolHandlerCustomizer<AbstractHttp11Protocol<?>>[] customizers = new TomcatProtocolHandlerCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(TomcatProtocolHandlerCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(TomcatProtocolHandlerCustomizer.class));
 		factory.setTomcatProtocolHandlerCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addProtocolHandlerCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer();
@@ -221,7 +221,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	@Test
 	void tomcatProtocolHandlerCanBeCustomized() {
 		TomcatServletWebServerFactory factory = getFactory();
-		TomcatProtocolHandlerCustomizer<AbstractHttp11Protocol<?>> customizer = (protocolHandler) -> protocolHandler
+		TomcatProtocolHandlerCustomizer<AbstractHttp11Protocol<?>> customizer = protocolHandler -> protocolHandler
 			.setProcessorCache(250);
 		factory.addProtocolHandlerCustomizers(customizer);
 		Tomcat tomcat = getTomcat(factory);
@@ -234,7 +234,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	void tomcatAdditionalConnectors() {
 		TomcatServletWebServerFactory factory = getFactory();
 		Connector[] connectors = new Connector[4];
-		Arrays.setAll(connectors, (i) -> new Connector());
+		Arrays.setAll(connectors, i -> new Connector());
 		factory.addAdditionalTomcatConnectors(connectors);
 		this.webServer = factory.getWebServer();
 		Map<Service, Connector[]> connectorsByService = ((TomcatWebServer) this.webServer).getServiceConnectors();
@@ -482,26 +482,26 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	@Test
 	void exceptionThrownOnLoadFailureWhenFailCtxIfServletStartFailsIsTrue() {
 		TomcatServletWebServerFactory factory = getFactory();
-		factory.addContextCustomizers((context) -> {
+		factory.addContextCustomizers(context -> {
 			if (context instanceof StandardContext standardContext) {
 				standardContext.setFailCtxIfServletStartFails(true);
 			}
 		});
 		this.webServer = factory
-			.getWebServer((context) -> context.addServlet("failing", FailingServlet.class).setLoadOnStartup(0));
+			.getWebServer(context -> context.addServlet("failing", FailingServlet.class).setLoadOnStartup(0));
 		assertThatExceptionOfType(WebServerException.class).isThrownBy(this.webServer::start);
 	}
 
 	@Test
 	void exceptionThrownOnLoadFailureWhenFailCtxIfServletStartFailsIsFalse() {
 		TomcatServletWebServerFactory factory = getFactory();
-		factory.addContextCustomizers((context) -> {
+		factory.addContextCustomizers(context -> {
 			if (context instanceof StandardContext standardContext) {
 				standardContext.setFailCtxIfServletStartFails(false);
 			}
 		});
 		this.webServer = factory
-			.getWebServer((context) -> context.addServlet("failing", FailingServlet.class).setLoadOnStartup(0));
+			.getWebServer(context -> context.addServlet("failing", FailingServlet.class).setLoadOnStartup(0));
 		this.webServer.start();
 	}
 
@@ -521,7 +521,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 	void nonExistentUploadDirectoryIsCreatedUponMultipartUpload() {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory(0);
 		AtomicReference<ServletContext> servletContextReference = new AtomicReference<>();
-		factory.addInitializers((servletContext) -> {
+		factory.addInitializers(servletContext -> {
 			servletContextReference.set(servletContext);
 			Dynamic servlet = servletContext.addServlet("upload", new HttpServlet() {
 
@@ -566,13 +566,13 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 
 		};
 		assertThatExceptionOfType(WebServerException.class).isThrownBy(
-				() -> factory.getWebServer((context) -> context.addListener(new FailingServletContextListener())));
+				() -> factory.getWebServer(context -> context.addListener(new FailingServletContextListener())));
 	}
 
 	@Test
 	void registerJspServletWithDefaultLoadOnStartup() {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory(0);
-		factory.addInitializers((context) -> context.addServlet("manually-registered-jsp-servlet", JspServlet.class));
+		factory.addInitializers(context -> context.addServlet("manually-registered-jsp-servlet", JspServlet.class));
 		this.webServer = factory.getWebServer();
 		this.webServer.start();
 	}
@@ -587,7 +587,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 			registration.setAsyncSupported(true);
@@ -596,11 +596,11 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 		int port = this.webServer.getPort();
 		Future<Object> request = initiateGetRequest(port, "/blocking");
 		blockingServlet.awaitQueue();
-		this.webServer.shutDownGracefully((result) -> {
+		this.webServer.shutDownGracefully(result -> {
 		});
 		Object unconnectableRequest = Awaitility.await()
 			.until(() -> initiateGetRequest(HttpClients.createDefault(), port, "/").get(),
-					(result) -> result instanceof Exception);
+			Exception.class::isInstance);
 		assertThat(unconnectableRequest).isInstanceOf(HttpHostConnectException.class);
 		blockingServlet.admitOne();
 		assertThat(request.get()).isInstanceOf(HttpResponse.class);
@@ -612,7 +612,7 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 			registration.setAsyncSupported(true);
@@ -626,13 +626,12 @@ class TomcatServletWebServerFactoryTests extends AbstractServletWebServerFactory
 		assertThat(keepAliveRequest.get()).isInstanceOf(HttpResponse.class);
 		Future<Object> request = initiateGetRequest(port, "/blocking");
 		blockingServlet.awaitQueue();
-		this.webServer.shutDownGracefully((result) -> {
+		this.webServer.shutDownGracefully(result -> {
 		});
 		Object idleConnectionRequestResult = Awaitility.await().until(() -> {
 			Future<Object> idleConnectionRequest = initiateGetRequest(httpClient, port, "/");
-			Object result = idleConnectionRequest.get();
-			return result;
-		}, (result) -> result instanceof Exception);
+			return idleConnectionRequest.get();
+		}, Exception.class::isInstance);
 		assertThat(idleConnectionRequestResult).isInstanceOfAny(SocketException.class, NoHttpResponseException.class);
 		if (idleConnectionRequestResult instanceof SocketException socketException) {
 			assertThat(socketException).hasMessage("Connection reset");

@@ -195,7 +195,7 @@ public class TaskSchedulerBuilder {
 		map.from(this.awaitTerminationPeriod).asInt(Duration::getSeconds).to(taskScheduler::setAwaitTerminationSeconds);
 		map.from(this.threadNamePrefix).to(taskScheduler::setThreadNamePrefix);
 		if (!CollectionUtils.isEmpty(this.customizers)) {
-			this.customizers.forEach((customizer) -> customizer.customize(taskScheduler));
+			this.customizers.forEach(customizer -> customizer.customize(taskScheduler));
 		}
 		return taskScheduler;
 	}

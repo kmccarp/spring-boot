@@ -46,7 +46,7 @@ public class DiskSpaceMetricsBinder implements MeterBinder {
 
 	@Override
 	public void bindTo(MeterRegistry registry) {
-		this.paths.forEach((path) -> new DiskSpaceMetrics(path, this.tags).bindTo(registry));
+		this.paths.forEach(path -> new DiskSpaceMetrics(path, this.tags).bindTo(registry));
 	}
 
 }

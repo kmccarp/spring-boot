@@ -46,7 +46,7 @@ class SpringBootPropertySourceTests {
 
 	@Test
 	void allDefaultMethodsAreImplemented() {
-		assertThat(Stream.of(SpringBootPropertySource.class.getMethods()).filter((method) -> method.isDefault()))
+		assertThat(Stream.of(SpringBootPropertySource.class.getMethods()).filter(Method::isDefault))
 			.isEmpty();
 	}
 

@@ -88,7 +88,7 @@ class Neo4jHealthIndicatorTests {
 		Session session = mock(Session.class);
 		Result statementResult = mockStatementResult(resultSummary, "4711", "some edition");
 		AtomicInteger count = new AtomicInteger();
-		given(session.run(anyString())).will((invocation) -> {
+		given(session.run(anyString())).will(invocation -> {
 			if (count.compareAndSet(0, 1)) {
 				throw new SessionExpiredException("Session expired");
 			}

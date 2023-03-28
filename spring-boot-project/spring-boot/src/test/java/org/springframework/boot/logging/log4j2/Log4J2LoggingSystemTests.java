@@ -120,7 +120,7 @@ class Log4J2LoggingSystemTests extends AbstractLoggingSystemTests {
 		PropertiesUtil properties = PropertiesUtil.getProperties();
 		Object environment = ReflectionTestUtils.getField(properties, "environment");
 		Set<PropertySource> sources = (Set<PropertySource>) ReflectionTestUtils.getField(environment, "sources");
-		sources.removeIf((candidate) -> candidate instanceof SpringEnvironmentPropertySource
+		sources.removeIf(candidate -> candidate instanceof SpringEnvironmentPropertySource
 				|| candidate instanceof SpringBootPropertySource);
 	}
 
@@ -217,7 +217,7 @@ class Log4J2LoggingSystemTests extends AbstractLoggingSystemTests {
 		assertThat(configurations).isNotEmpty();
 		assertThat(configurations.get(0).getName()).isEqualTo(LoggingSystem.ROOT_LOGGER_NAME);
 		Map<String, LogLevel> loggers = new LinkedHashMap<>();
-		configurations.forEach((logger) -> loggers.put(logger.getName(), logger.getConfiguredLevel()));
+		configurations.forEach(logger -> loggers.put(logger.getName(), logger.getConfiguredLevel()));
 		assertIsPresent("org", loggers, null);
 		assertIsPresent("org.springframework.boot.logging.log4j2", loggers, null);
 		assertIsPresent("org.springframework.boot.logging.log4j2.Log4J2LoggingSystemTests", loggers, LogLevel.DEBUG);

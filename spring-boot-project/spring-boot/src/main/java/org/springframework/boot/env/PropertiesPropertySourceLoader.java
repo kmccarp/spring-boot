@@ -68,7 +68,7 @@ public class PropertiesPropertySourceLoader implements PropertySourceLoader {
 		}
 		else {
 			List<Document> documents = new OriginTrackedPropertiesLoader(resource).load();
-			documents.forEach((document) -> result.add(document.asMap()));
+			documents.forEach(document -> result.add(document.asMap()));
 		}
 		return result;
 	}

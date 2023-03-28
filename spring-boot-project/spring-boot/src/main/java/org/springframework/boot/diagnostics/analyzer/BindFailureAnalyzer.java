@@ -103,7 +103,7 @@ class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 		Collection<String> validValues = findValidValues(cause);
 		if (!validValues.isEmpty()) {
 			message.append(String.format(". The following values are valid:%n"));
-			validValues.forEach((value) -> message.append(String.format("%n    %s", value)));
+			validValues.forEach(value -> message.append(String.format("%n    %s", value)));
 		}
 		return new FailureAnalysis(description.toString(), message.toString(), cause);
 	}

@@ -137,7 +137,7 @@ class EnvironmentEndpointTests {
 		TestPropertyValues.of("other.service=abcde").applyTo(environment);
 		TestPropertyValues.of("system.service=123456").applyToSystemProperties(() -> {
 			EnvironmentDescriptor descriptor = new EnvironmentEndpoint(environment,
-					Collections.singletonList((data) -> {
+					Collections.singletonList(data -> {
 						String name = data.getPropertySource().getName();
 						if (name.equals(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME)) {
 							return data.withValue("******");
@@ -302,13 +302,13 @@ class EnvironmentEndpointTests {
 
 	private Map<String, PropertySourceDescriptor> propertySources(EnvironmentDescriptor descriptor) {
 		Map<String, PropertySourceDescriptor> sources = new LinkedHashMap<>();
-		descriptor.getPropertySources().forEach((d) -> sources.put(d.getName(), d));
+		descriptor.getPropertySources().forEach(d -> sources.put(d.getName(), d));
 		return sources;
 	}
 
 	private Map<String, PropertySourceEntryDescriptor> propertySources(EnvironmentEntryDescriptor descriptor) {
 		Map<String, PropertySourceEntryDescriptor> sources = new LinkedHashMap<>();
-		descriptor.getPropertySources().forEach((d) -> sources.put(d.getName(), d));
+		descriptor.getPropertySources().forEach(d -> sources.put(d.getName(), d));
 		return sources;
 	}
 

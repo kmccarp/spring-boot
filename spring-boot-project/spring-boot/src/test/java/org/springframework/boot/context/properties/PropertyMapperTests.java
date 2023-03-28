@@ -162,7 +162,7 @@ class PropertyMapperTests {
 
 	@Test
 	void whenInstanceOfWhenValueIsTargetTypeShouldMatch() {
-		Long result = this.map.from(123L).whenInstanceOf(Long.class).toInstance((value) -> value + 1);
+		Long result = this.map.from(123L).whenInstanceOf(Long.class).toInstance(value -> value + 1);
 		assertThat(result).isEqualTo(124L);
 	}
 
@@ -189,7 +189,7 @@ class PropertyMapperTests {
 		Long result = this.map.from(source)
 			.when("123"::equals)
 			.as(Integer::valueOf)
-			.when((v) -> v == 123)
+			.when(v -> v == 123)
 			.as(Integer::longValue)
 			.toInstance(Long::valueOf);
 		assertThat(result).isEqualTo(123);
@@ -208,7 +208,7 @@ class PropertyMapperTests {
 
 	@Test
 	void whenWhenValueMatchesShouldSupportChainedCalls() {
-		String result = this.map.from("123").when((s) -> s.contains("2")).when("123"::equals).toInstance(String::new);
+		String result = this.map.from("123").when(s -> s.contains("2")).when("123"::equals).toInstance(String::new);
 		assertThat(result).isEqualTo("123");
 	}
 

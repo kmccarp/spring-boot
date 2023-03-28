@@ -42,12 +42,12 @@ public class BasicJsonParser extends AbstractJsonParser {
 
 	@Override
 	public Map<String, Object> parseMap(String json) {
-		return tryParse(() -> parseMap(json, (jsonToParse) -> parseMapInternal(0, jsonToParse)), Exception.class);
+		return tryParse(() -> parseMap(json, jsonToParse -> parseMapInternal(0, jsonToParse)), Exception.class);
 	}
 
 	@Override
 	public List<Object> parseList(String json) {
-		return tryParse(() -> parseList(json, (jsonToParse) -> parseListInternal(0, jsonToParse)), Exception.class);
+		return tryParse(() -> parseList(json, jsonToParse -> parseListInternal(0, jsonToParse)), Exception.class);
 	}
 
 	private List<Object> parseListInternal(int nesting, String json) {
