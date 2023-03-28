@@ -26,5 +26,6 @@ import ch.qos.logback.core.model.NamedModel;
  * @see SpringProfileModelHandler
  */
 class SpringProfileModel extends NamedModel {
+	private static final long serialVersionUID = 1;
 
 }

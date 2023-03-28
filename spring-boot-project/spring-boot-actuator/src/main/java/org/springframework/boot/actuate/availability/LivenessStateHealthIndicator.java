@@ -31,7 +31,7 @@ import org.springframework.boot.availability.LivenessState;
 public class LivenessStateHealthIndicator extends AvailabilityStateHealthIndicator {
 
 	public LivenessStateHealthIndicator(ApplicationAvailability availability) {
-		super(availability, LivenessState.class, (statusMappings) -> {
+		super(availability, LivenessState.class, statusMappings -> {
 			statusMappings.add(LivenessState.CORRECT, Status.UP);
 			statusMappings.add(LivenessState.BROKEN, Status.DOWN);
 		});

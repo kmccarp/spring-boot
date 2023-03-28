@@ -650,7 +650,7 @@ class LoggingApplicationListenerTests {
 
 		@Override
 		public Runnable getShutdownHandler() {
-			return () -> TestShutdownHandlerLoggingSystem.shutdownLatch.countDown();
+			return TestShutdownHandlerLoggingSystem.shutdownLatch::countDown;
 		}
 
 	}
@@ -668,7 +668,7 @@ class LoggingApplicationListenerTests {
 
 	static final class TestCleanupLoggingSystem extends LoggingSystem {
 
-		private boolean cleanedUp = false;
+		private boolean cleanedUp;
 
 		TestCleanupLoggingSystem(ClassLoader classLoader) {
 		}

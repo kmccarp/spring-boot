@@ -113,7 +113,7 @@ class ConfigurationPropertiesScanRegistrarTests {
 	}
 
 	private Consumer<BeanDefinition> configurationPropertiesBeanDefinition(BindMethod bindMethod) {
-		return (definition) -> {
+		return definition -> {
 			assertThat(definition).isExactlyInstanceOf(RootBeanDefinition.class);
 			assertThat(definition.hasAttribute(BindMethod.class.getName())).isTrue();
 			assertThat(definition.getAttribute(BindMethod.class.getName())).isEqualTo(bindMethod);

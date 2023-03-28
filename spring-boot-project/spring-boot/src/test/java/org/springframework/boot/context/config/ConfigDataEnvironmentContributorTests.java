@@ -378,7 +378,7 @@ class ConfigDataEnvironmentContributorTests {
 
 	private List<String> asLocationsList(Iterator<ConfigDataEnvironmentContributor> iterator) {
 		List<String> list = new ArrayList<>();
-		iterator.forEachRemaining((contributor) -> list.add(getLocationName(contributor)));
+		iterator.forEachRemaining(contributor -> list.add(getLocationName(contributor)));
 		return list;
 	}
 

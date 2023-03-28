@@ -60,7 +60,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	void testNaming() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(FooConfig.class)
 			.withPropertyValues("foo.name:foo");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -82,7 +82,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	void testNestedNaming() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(FooConfig.class)
 			.withPropertyValues("foo.bar.name:foo");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -104,7 +104,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(SelfReferentialConfig.class)
 			.withPropertyValues("foo.name:foo");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -127,7 +127,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	void testCycle() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(CycleConfig.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -148,7 +148,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	void testMap() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(MapConfig.class)
 			.withPropertyValues("foo.map.name:foo");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -168,7 +168,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	@Test
 	void testEmptyMapIsNotAdded() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(MapConfig.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -190,7 +190,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	void testList() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(ListConfig.class)
 			.withPropertyValues("foo.list[0]:foo");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -212,7 +212,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(AddressedConfig.class)
 			.withPropertyValues("foo.address:192.168.1.10");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -235,7 +235,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(InitializedMapAndListPropertiesConfig.class)
 			.withPropertyValues("foo.map.entryOne:true", "foo.list[0]:abc");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -257,7 +257,7 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	void hikariDataSourceConfigurationPropertiesBeanCanBeSerialized() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(HikariDataSourceConfig.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -273,13 +273,13 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void endpointResponseUsesToStringOfCharSequenceAsPropertyValue() {
-		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer((context) -> {
+		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer(context -> {
 			ConfigurableEnvironment environment = context.getEnvironment();
 			environment.getPropertySources()
 				.addFirst(new MapPropertySource("test",
 						Collections.singletonMap("foo.name", new CharSequenceProperty("Spring Boot"))));
 		}).withUserConfiguration(FooConfig.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();
@@ -294,13 +294,13 @@ class ConfigurationPropertiesReportEndpointSerializationTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void endpointResponseUsesPlaceholderForComplexValueAsPropertyValue() {
-		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer((context) -> {
+		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer(context -> {
 			ConfigurableEnvironment environment = context.getEnvironment();
 			environment.getPropertySources()
 				.addFirst(new MapPropertySource("test",
 						Collections.singletonMap("foo.name", new ComplexProperty("Spring Boot"))));
 		}).withUserConfiguration(ComplexPropertyToStringConverter.class, FooConfig.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint.configurationProperties();

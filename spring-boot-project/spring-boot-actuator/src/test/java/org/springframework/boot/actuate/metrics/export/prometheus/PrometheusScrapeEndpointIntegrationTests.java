@@ -51,7 +51,7 @@ class PrometheusScrapeEndpointIntegrationTests {
 			.expectHeader()
 			.contentType(MediaType.parseMediaType(expectedContentType))
 			.expectBody(String.class)
-			.value((body) -> assertThat(body).contains("counter1_total")
+			.value(body -> assertThat(body).contains("counter1_total")
 				.contains("counter2_total")
 				.contains("counter3_total"));
 	}
@@ -70,7 +70,7 @@ class PrometheusScrapeEndpointIntegrationTests {
 			.expectHeader()
 			.contentType(MediaType.parseMediaType(expectedContentType))
 			.expectBody(String.class)
-			.value((body) -> assertThat(body).contains("counter1_total")
+			.value(body -> assertThat(body).contains("counter1_total")
 				.contains("counter2_total")
 				.contains("counter3_total"));
 	}
@@ -87,7 +87,7 @@ class PrometheusScrapeEndpointIntegrationTests {
 			.expectHeader()
 			.contentType(openMetrics)
 			.expectBody(String.class)
-			.value((body) -> assertThat(body).contains("counter1_total")
+			.value(body -> assertThat(body).contains("counter1_total")
 				.contains("counter2_total")
 				.contains("counter3_total"));
 	}
@@ -116,7 +116,7 @@ class PrometheusScrapeEndpointIntegrationTests {
 			.expectHeader()
 			.contentType(MediaType.parseMediaType(TextFormat.CONTENT_TYPE_004))
 			.expectBody(String.class)
-			.value((body) -> assertThat(body).contains("counter1_total")
+			.value(body -> assertThat(body).contains("counter1_total")
 				.contains("counter2_total")
 				.doesNotContain("counter3_total"));
 	}
@@ -136,7 +136,7 @@ class PrometheusScrapeEndpointIntegrationTests {
 
 		@Bean
 		MeterRegistry registry(CollectorRegistry registry) {
-			PrometheusMeterRegistry meterRegistry = new PrometheusMeterRegistry((k) -> null, registry, Clock.SYSTEM);
+			PrometheusMeterRegistry meterRegistry = new PrometheusMeterRegistry(k -> null, registry, Clock.SYSTEM);
 			Counter.builder("counter1").register(meterRegistry);
 			Counter.builder("counter2").register(meterRegistry);
 			Counter.builder("counter3").register(meterRegistry);

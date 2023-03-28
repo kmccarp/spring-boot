@@ -30,6 +30,8 @@ import jakarta.servlet.ServletResponse;
  */
 public class MockServlet extends GenericServlet {
 
+	private static final long serialVersionUID = 1;
+
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 	}

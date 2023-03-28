@@ -71,12 +71,11 @@ class LogbackRuntimeHintsTests {
 	private ReflectionHints registerHints() {
 		RuntimeHints hints = new RuntimeHints();
 		new LogbackRuntimeHints().registerHints(hints, getClass().getClassLoader());
-		ReflectionHints reflection = hints.reflection();
-		return reflection;
+		return hints.reflection();
 	}
 
 	private Consumer<Class<?>> registeredForPublicConstructorInvocation(ReflectionHints reflection) {
-		return (converter) -> {
+		return converter -> {
 			TypeHint typeHint = reflection.getTypeHint(converter);
 			assertThat(typeHint).isNotNull();
 			assertThat(typeHint.getMemberCategories()).containsExactly(MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);

@@ -262,7 +262,7 @@ public final class ConfigurationPropertiesBean {
 			factoryType = factoryType.getSuperclass();
 		}
 		AtomicReference<Method> factoryMethod = new AtomicReference<>();
-		ReflectionUtils.doWithMethods(factoryType, (method) -> {
+		ReflectionUtils.doWithMethods(factoryType, method -> {
 			if (method.getName().equals(factoryMethodName)) {
 				factoryMethod.set(method);
 			}

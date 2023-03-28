@@ -28,6 +28,8 @@ import ch.qos.logback.core.model.NamedModel;
  */
 class SpringPropertyModel extends NamedModel {
 
+	private static final long serialVersionUID = 1;
+
 	private String scope;
 
 	private String defaultValue;

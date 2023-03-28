@@ -58,7 +58,7 @@ class LiquibaseEndpointTests {
 
 	@Test
 	void liquibaseReportIsReturned() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+		this.contextRunner.withUserConfiguration(Config.class).run(context -> {
 			Map<String, LiquibaseBeanDescriptor> liquibaseBeans = context.getBean(LiquibaseEndpoint.class)
 				.liquibaseBeans()
 				.getContexts()
@@ -70,8 +70,8 @@ class LiquibaseEndpointTests {
 
 	@Test
 	void liquibaseReportIsReturnedForContextHierarchy() {
-		this.contextRunner.withUserConfiguration().run((parent) -> {
-			this.contextRunner.withUserConfiguration(Config.class).withParent(parent).run((context) -> {
+		this.contextRunner.withUserConfiguration().run(parent -> {
+			this.contextRunner.withUserConfiguration(Config.class).withParent(parent).run(context -> {
 				Map<String, LiquibaseBeanDescriptor> liquibaseBeans = context.getBean(LiquibaseEndpoint.class)
 					.liquibaseBeans()
 					.getContexts()
@@ -86,7 +86,7 @@ class LiquibaseEndpointTests {
 	void invokeWithCustomSchema() {
 		this.contextRunner.withUserConfiguration(Config.class, DataSourceWithSchemaConfiguration.class)
 			.withPropertyValues("spring.liquibase.default-schema=CUSTOMSCHEMA")
-			.run((context) -> {
+			.run(context -> {
 				Map<String, LiquibaseBeanDescriptor> liquibaseBeans = context.getBean(LiquibaseEndpoint.class)
 					.liquibaseBeans()
 					.getContexts()
@@ -101,7 +101,7 @@ class LiquibaseEndpointTests {
 		this.contextRunner.withUserConfiguration(Config.class)
 			.withPropertyValues("spring.liquibase.database-change-log-lock-table=liquibase_database_changelog_lock",
 					"spring.liquibase.database-change-log-table=liquibase_database_changelog")
-			.run((context) -> {
+			.run(context -> {
 				Map<String, LiquibaseBeanDescriptor> liquibaseBeans = context.getBean(LiquibaseEndpoint.class)
 					.liquibaseBeans()
 					.getContexts()
@@ -113,7 +113,7 @@ class LiquibaseEndpointTests {
 
 	@Test
 	void connectionAutoCommitPropertyIsReset() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+		this.contextRunner.withUserConfiguration(Config.class).run(context -> {
 			DataSource dataSource = context.getBean(DataSource.class);
 			assertThat(getAutoCommit(dataSource)).isTrue();
 			context.getBean(LiquibaseEndpoint.class).liquibaseBeans();
@@ -124,7 +124,7 @@ class LiquibaseEndpointTests {
 	@Test
 	void whenMultipleLiquibaseBeansArePresentChangeSetsAreCorrectlyReportedForEachBean() {
 		this.contextRunner.withUserConfiguration(Config.class, MultipleDataSourceLiquibaseConfiguration.class)
-			.run((context) -> {
+			.run(context -> {
 				Map<String, LiquibaseBeanDescriptor> liquibaseBeans = context.getBean(LiquibaseEndpoint.class)
 					.liquibaseBeans()
 					.getContexts()

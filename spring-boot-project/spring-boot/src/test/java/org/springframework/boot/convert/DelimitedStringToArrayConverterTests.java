@@ -86,7 +86,7 @@ class DelimitedStringToArrayConverterTests {
 
 	static Stream<? extends Arguments> conversionServices() {
 		return ConversionServiceArguments
-			.with((service) -> service.addConverter(new DelimitedStringToArrayConverter(service)));
+			.with(service -> service.addConverter(new DelimitedStringToArrayConverter(service)));
 	}
 
 	static class Values {

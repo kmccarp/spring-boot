@@ -118,7 +118,7 @@ class ValidationBindHandlerTests {
 		BindValidationException cause = bindAndExpectValidationError(() -> this.binder.bind(
 				ConfigurationPropertyName.of("foo"), Bindable.of(ExampleValidatedWithNestedBean.class), this.handler));
 		Set<ConfigurationProperty> boundProperties = cause.getValidationErrors().getBoundProperties();
-		assertThat(boundProperties).extracting((p) -> p.getName().toString())
+		assertThat(boundProperties).extracting(p -> p.getName().toString())
 			.contains("foo.nested.age", "foo.nested.name");
 	}
 
@@ -195,7 +195,7 @@ class ValidationBindHandlerTests {
 			.isThrownBy(() -> this.binder.bind("foo", Bindable.of(ExampleValidatedBean.class).withExistingValue(bean),
 					this.handler))
 			.withCauseInstanceOf(BindValidationException.class)
-			.satisfies((ex) -> assertThat(ex.getCause()).hasMessageContaining("years"));
+			.satisfies(ex -> assertThat(ex.getCause()).hasMessageContaining("years"));
 	}
 
 	@Test

@@ -51,8 +51,8 @@ class SanitizerTests {
 
 	@Test
 	void whenCustomSanitizationFunctionAndShowUnsanitizedIsFalse() {
-		Sanitizer sanitizer = new Sanitizer(Collections.singletonList((data) -> {
-			if (data.getKey().equals("custom")) {
+		Sanitizer sanitizer = new Sanitizer(Collections.singletonList(data -> {
+			if ("custom".equals(data.getKey())) {
 				return data.withValue("$$$$$$");
 			}
 			return data;
@@ -67,8 +67,8 @@ class SanitizerTests {
 
 	@Test
 	void whenCustomSanitizationFunctionAndShowUnsanitizedIsTrue() {
-		Sanitizer sanitizer = new Sanitizer(Collections.singletonList((data) -> {
-			if (data.getKey().equals("custom")) {
+		Sanitizer sanitizer = new Sanitizer(Collections.singletonList(data -> {
+			if ("custom".equals(data.getKey())) {
 				return data.withValue("$$$$$$");
 			}
 			return data;
@@ -83,8 +83,8 @@ class SanitizerTests {
 
 	@Test
 	void overridingDefaultSanitizingFunction() {
-		Sanitizer sanitizer = new Sanitizer(Collections.singletonList((data) -> {
-			if (data.getKey().equals("password")) {
+		Sanitizer sanitizer = new Sanitizer(Collections.singletonList(data -> {
+			if ("password".equals(data.getKey())) {
 				return data.withValue("------");
 			}
 			return data;
@@ -97,13 +97,13 @@ class SanitizerTests {
 	void whenValueSanitizedLaterSanitizingFunctionsShouldBeSkipped() {
 		final String sameKey = "custom";
 		List<SanitizingFunction> sanitizingFunctions = new ArrayList<>();
-		sanitizingFunctions.add((data) -> {
+		sanitizingFunctions.add(data -> {
 			if (data.getKey().equals(sameKey)) {
 				return data.withValue("------");
 			}
 			return data;
 		});
-		sanitizingFunctions.add((data) -> {
+		sanitizingFunctions.add(data -> {
 			if (data.getKey().equals(sameKey)) {
 				return data.withValue("******");
 			}

@@ -88,7 +88,7 @@ class InputStreamSourceToByteArrayConverterTests {
 
 	static Stream<? extends Arguments> conversionServices() {
 		return ConversionServiceArguments
-			.with((service) -> service.addConverter(new InputStreamSourceToByteArrayConverter()));
+			.with(service -> service.addConverter(new InputStreamSourceToByteArrayConverter()));
 	}
 
 	private static class TestOrigin implements Origin {

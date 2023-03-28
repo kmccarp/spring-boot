@@ -105,7 +105,7 @@ class HeapDumpWebEndpointWebIntegrationTests {
 
 		@Override
 		protected HeapDumper createHeapDumper() {
-			return (live) -> {
+			return live -> {
 				this.file = Files.createTempFile("heap-", ".dump").toFile();
 				if (!TestHeapDumpWebEndpoint.this.available) {
 					throw new HeapDumperUnavailableException("Not available", null);

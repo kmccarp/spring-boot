@@ -180,7 +180,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 			private final Set<String> beanNames = new LinkedHashSet<>();
 
 			private void detected(DatabaseInitializerDetector detector, String beanName) {
-				this.byDetectorBeanNames.computeIfAbsent(detector, (key) -> new LinkedHashSet<>()).add(beanName);
+				this.byDetectorBeanNames.computeIfAbsent(detector, key -> new LinkedHashSet<>()).add(beanName);
 				this.beanNames.add(beanName);
 			}
 

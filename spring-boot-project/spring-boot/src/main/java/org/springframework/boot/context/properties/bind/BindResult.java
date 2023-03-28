@@ -62,7 +62,7 @@ public final class BindResult<T> {
 	 * @return if a result was bound
 	 */
 	public boolean isBound() {
-		return (this.value != null);
+		return this.value != null;
 	}
 
 	/**

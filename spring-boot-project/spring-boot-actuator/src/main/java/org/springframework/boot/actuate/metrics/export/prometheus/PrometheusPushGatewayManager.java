@@ -186,6 +186,8 @@ public class PrometheusPushGatewayManager {
 	 */
 	static class PushGatewayTaskScheduler extends ThreadPoolTaskScheduler {
 
+		private static final long serialVersionUID = 1;
+
 		PushGatewayTaskScheduler() {
 			setPoolSize(1);
 			setDaemon(true);

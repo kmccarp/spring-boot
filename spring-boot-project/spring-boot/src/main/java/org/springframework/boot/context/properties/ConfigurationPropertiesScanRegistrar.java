@@ -74,7 +74,7 @@ class ConfigurationPropertiesScanRegistrar implements ImportBeanDefinitionRegist
 		if (packagesToScan.isEmpty()) {
 			packagesToScan.add(ClassUtils.getPackageName(metadata.getClassName()));
 		}
-		packagesToScan.removeIf((candidate) -> !StringUtils.hasText(candidate));
+		packagesToScan.removeIf(candidate -> !StringUtils.hasText(candidate));
 		return packagesToScan;
 	}
 

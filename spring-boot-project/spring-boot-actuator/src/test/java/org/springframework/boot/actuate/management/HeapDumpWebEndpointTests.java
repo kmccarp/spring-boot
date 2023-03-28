@@ -38,7 +38,7 @@ class HeapDumpWebEndpointTests {
 
 			@Override
 			protected HeapDumper createHeapDumper() {
-				return (live) -> {
+				return live -> {
 					dumpingLatch.countDown();
 					blockingLatch.await();
 					return Files.createTempFile("heap-", ".dump").toFile();

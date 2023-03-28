@@ -28,6 +28,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 public class BootstrapContextClosedEvent extends ApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final ConfigurableApplicationContext applicationContext;
 
 	BootstrapContextClosedEvent(BootstrapContext source, ConfigurableApplicationContext applicationContext) {

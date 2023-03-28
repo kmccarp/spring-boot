@@ -119,7 +119,7 @@ class DelimitedStringToCollectionConverterTests {
 
 	static Stream<? extends Arguments> conversionServices() {
 		return ConversionServiceArguments
-			.with((service) -> service.addConverter(new DelimitedStringToCollectionConverter(service)));
+			.with(service -> service.addConverter(new DelimitedStringToCollectionConverter(service)));
 	}
 
 	static class Values {

@@ -70,8 +70,8 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 	}
 
 	private List<Descriptor> getDescriptors(String propertyName) {
-		return getPropertySources().filter((source) -> source.containsProperty(propertyName))
-			.map((source) -> Descriptor.get(source, propertyName))
+		return getPropertySources().filter(source -> source.containsProperty(propertyName))
+			.map(source -> Descriptor.get(source, propertyName))
 			.toList();
 	}
 
@@ -81,20 +81,19 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 		}
 		return this.environment.getPropertySources()
 			.stream()
-			.filter((source) -> !ConfigurationPropertySources.isAttachedConfigurationPropertySource(source));
+			.filter(source -> !ConfigurationPropertySources.isAttachedConfigurationPropertySource(source));
 	}
 
 	private void appendDetails(StringBuilder message, MutuallyExclusiveConfigurationPropertiesException cause,
 			List<Descriptor> descriptors) {
-		descriptors.sort(Comparator.comparing((descriptor) -> descriptor.propertyName));
+		descriptors.sort(Comparator.comparing(descriptor -> descriptor.propertyName));
 		message.append(String.format("The following configuration properties are mutually exclusive:%n%n"));
 		sortedStrings(cause.getMutuallyExclusiveNames())
-			.forEach((name) -> message.append(String.format("\t%s%n", name)));
+			.forEach(name -> message.append(String.format("\t%s%n", name)));
 		message.append(String.format("%n"));
-		message.append(
-				String.format("However, more than one of those properties has been configured at the same time:%n%n"));
+		message.append(String.format("However, more than one of those properties has been configured at the same time:%n%n"));
 		Set<String> configuredDescriptions = sortedStrings(descriptors,
-				(descriptor) -> String.format("\t%s%s%n", descriptor.propertyName,
+				descriptor -> String.format("\t%s%s%n", descriptor.propertyName,
 						(descriptor.origin != null) ? " (originating from '" + descriptor.origin + "')" : ""));
 		configuredDescriptions.forEach(message::append);
 	}

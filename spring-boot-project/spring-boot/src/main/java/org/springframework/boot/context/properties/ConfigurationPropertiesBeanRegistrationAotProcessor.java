@@ -50,7 +50,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessor implements BeanRegistr
 			return null;
 		}
 		return BeanRegistrationAotContribution.withCustomCodeFragments(
-				(codeFragments) -> new ConfigurationPropertiesBeanRegistrationCodeFragments(codeFragments,
+				codeFragments -> new ConfigurationPropertiesBeanRegistrationCodeFragments(codeFragments,
 						registeredBean));
 
 	}
@@ -63,7 +63,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessor implements BeanRegistr
 	private static class ConfigurationPropertiesBeanRegistrationCodeFragments
 			extends BeanRegistrationCodeFragmentsDecorator {
 
-		private static final Predicate<String> INCLUDE_BIND_METHOD_ATTRIBUTE_FILTER = (name) -> name
+		private static final Predicate<String> INCLUDE_BIND_METHOD_ATTRIBUTE_FILTER = name -> name
 			.equals(BindMethod.class.getName());
 
 		private static final String REGISTERED_BEAN_PARAMETER_NAME = "registeredBean";
@@ -88,7 +88,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessor implements BeanRegistr
 		public CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
 				BeanRegistrationCode beanRegistrationCode, Executable constructorOrFactoryMethod,
 				boolean allowDirectSupplierShortcut) {
-			GeneratedMethod generatedMethod = beanRegistrationCode.getMethods().add("getInstance", (method) -> {
+			GeneratedMethod generatedMethod = beanRegistrationCode.getMethods().add("getInstance", method -> {
 				Class<?> beanClass = this.registeredBean.getBeanClass();
 				method.addJavadoc("Get the bean instance for '$L'.", this.registeredBean.getBeanName())
 					.addModifiers(Modifier.PRIVATE, Modifier.STATIC)

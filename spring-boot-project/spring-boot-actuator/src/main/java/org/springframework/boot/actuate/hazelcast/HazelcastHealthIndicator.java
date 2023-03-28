@@ -42,7 +42,7 @@ public class HazelcastHealthIndicator extends AbstractHealthIndicator {
 
 	@Override
 	protected void doHealthCheck(Health.Builder builder) {
-		this.hazelcast.executeTransaction((context) -> {
+		this.hazelcast.executeTransaction(context -> {
 			String uuid = this.hazelcast.getLocalEndpoint().getUuid().toString();
 			builder.up().withDetail("name", this.hazelcast.getName()).withDetail("uuid", uuid);
 			return null;

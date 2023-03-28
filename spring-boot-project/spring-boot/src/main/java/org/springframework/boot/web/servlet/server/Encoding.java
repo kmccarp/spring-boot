@@ -110,7 +110,7 @@ public class Encoding {
 			force = this.force;
 		}
 		if (force == null) {
-			force = (type == Type.REQUEST);
+			force = type == Type.REQUEST;
 		}
 		return force;
 	}

@@ -86,7 +86,7 @@ public class ReactiveHealthEndpointWebExtension
 					: Mono.just(new WebEndpointResponse<>(WebEndpointResponse.STATUS_NOT_FOUND));
 		}
 		HealthEndpointGroup group = result.getGroup();
-		return result.getHealth().map((health) -> {
+		return result.getHealth().map(health -> {
 			int statusCode = group.getHttpCodeStatusMapper().getStatusCode(health.getStatus());
 			return new WebEndpointResponse<>(health, statusCode);
 		});
@@ -104,7 +104,7 @@ public class ReactiveHealthEndpointWebExtension
 		return Flux.fromIterable(contributions.entrySet())
 			.flatMap(NamedHealthComponent::create)
 			.collectMap(NamedHealthComponent::getName, NamedHealthComponent::getHealth)
-			.map((components) -> this.getCompositeHealth(apiVersion, components, statusAggregator, showComponents,
+			.map(components -> this.getCompositeHealth(apiVersion, components, statusAggregator, showComponents,
 					groupNames));
 	}
 

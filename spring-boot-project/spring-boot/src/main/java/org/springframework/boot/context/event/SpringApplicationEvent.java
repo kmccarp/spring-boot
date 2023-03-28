@@ -28,6 +28,8 @@ import org.springframework.context.ApplicationEvent;
 @SuppressWarnings("serial")
 public abstract class SpringApplicationEvent extends ApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final String[] args;
 
 	public SpringApplicationEvent(SpringApplication application, String[] args) {

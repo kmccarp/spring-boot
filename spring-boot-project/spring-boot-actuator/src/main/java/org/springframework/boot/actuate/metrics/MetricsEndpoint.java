@@ -65,7 +65,7 @@ public class MetricsEndpoint {
 
 	private void collectNames(Set<String> names, MeterRegistry registry) {
 		if (registry instanceof CompositeMeterRegistry compositeMeterRegistry) {
-			compositeMeterRegistry.getRegistries().forEach((member) -> collectNames(names, member));
+			compositeMeterRegistry.getRegistries().forEach(member -> collectNames(names, member));
 		}
 		else {
 			registry.getMeters().stream().map(this::getName).forEach(names::add);
@@ -85,7 +85,7 @@ public class MetricsEndpoint {
 		}
 		Map<Statistic, Double> samples = getSamples(meters);
 		Map<String, Set<String>> availableTags = getAvailableTags(meters);
-		tags.forEach((t) -> availableTags.remove(t.getKey()));
+		tags.forEach(t -> availableTags.remove(t.getKey()));
 		Meter.Id meterId = meters.iterator().next().getId();
 		return new MetricDescriptor(requiredMetricName, meterId.getDescription(), meterId.getBaseUnit(),
 				asList(samples, Sample::new), asList(availableTags, AvailableTag::new));
@@ -116,21 +116,21 @@ public class MetricsEndpoint {
 			Iterable<Tag> tags) {
 		return composite.getRegistries()
 			.stream()
-			.map((registry) -> findFirstMatchingMeters(registry, name, tags))
-			.filter((matching) -> !matching.isEmpty())
+			.map(registry -> findFirstMatchingMeters(registry, name, tags))
+			.filter(matching -> !matching.isEmpty())
 			.findFirst()
 			.orElse(Collections.emptyList());
 	}
 
 	private Map<Statistic, Double> getSamples(Collection<Meter> meters) {
 		Map<Statistic, Double> samples = new LinkedHashMap<>();
-		meters.forEach((meter) -> mergeMeasurements(samples, meter));
+		meters.forEach(meter -> mergeMeasurements(samples, meter));
 		return samples;
 	}
 
 	private void mergeMeasurements(Map<Statistic, Double> samples, Meter meter) {
 		meter.measure()
-			.forEach((measurement) -> samples.merge(measurement.getStatistic(), measurement.getValue(),
+			.forEach(measurement -> samples.merge(measurement.getStatistic(), measurement.getValue(),
 					mergeFunction(measurement.getStatistic())));
 	}
 
@@ -140,12 +140,12 @@ public class MetricsEndpoint {
 
 	private Map<String, Set<String>> getAvailableTags(Collection<Meter> meters) {
 		Map<String, Set<String>> availableTags = new HashMap<>();
-		meters.forEach((meter) -> mergeAvailableTags(availableTags, meter));
+		meters.forEach(meter -> mergeAvailableTags(availableTags, meter));
 		return availableTags;
 	}
 
 	private void mergeAvailableTags(Map<String, Set<String>> availableTags, Meter meter) {
-		meter.getId().getTags().forEach((tag) -> {
+		meter.getId().getTags().forEach(tag -> {
 			Set<String> value = Collections.singleton(tag.getValue());
 			availableTags.merge(tag.getKey(), value, this::merge);
 		});
@@ -159,7 +159,7 @@ public class MetricsEndpoint {
 	}
 
 	private <K, V, T> List<T> asList(Map<K, V> map, BiFunction<K, V, T> mapper) {
-		return map.entrySet().stream().map((entry) -> mapper.apply(entry.getKey(), entry.getValue())).toList();
+		return map.entrySet().stream().map(entry -> mapper.apply(entry.getKey(), entry.getValue())).toList();
 	}
 
 	/**

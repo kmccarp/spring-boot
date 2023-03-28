@@ -85,7 +85,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperation() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/test")
 					.exchange()
 					.expectStatus()
@@ -98,7 +98,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithEndpointsMappedToTheRoot() {
 		load(TestEndpointConfiguration.class, "",
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/test")
 					.exchange()
 					.expectStatus()
@@ -111,7 +111,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithSelector() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/test/one")
 					.exchange()
 					.expectStatus()
@@ -124,7 +124,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithSelectorContainingADot() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/test/foo.bar")
 					.exchange()
 					.expectStatus()
@@ -137,7 +137,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void linksToOtherEndpointsAreProvided() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("")
 					.exchange()
 					.expectStatus()
@@ -162,19 +162,19 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void linksMappingIsDisabledWhenEndpointPathIsEmpty() {
 		load(TestEndpointConfiguration.class, "",
-				(client) -> client.get().uri("").exchange().expectStatus().isNotFound());
+				client -> client.get().uri("").exchange().expectStatus().isNotFound());
 	}
 
 	@Test
 	protected void operationWithTrailingSlashShouldNotMatch() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get().uri("/test/").exchange().expectStatus().isNotFound());
+				client -> client.get().uri("/test/").exchange().expectStatus().isNotFound());
 	}
 
 	@Test
 	void matchAllRemainingPathsSelectorShouldMatchFullPath() {
 		load(MatchAllRemainingEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/matchallremaining/one/two/three")
 					.exchange()
 					.expectStatus()
@@ -187,7 +187,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void matchAllRemainingPathsSelectorShouldDecodePath() {
 		load(MatchAllRemainingEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/matchallremaining/one/two three/")
 					.exchange()
 					.expectStatus()
@@ -200,7 +200,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithSingleQueryParameters() {
 		load(QueryEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/query?one=1&two=2")
 					.exchange()
 					.expectStatus()
@@ -213,7 +213,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithSingleQueryParametersAndMultipleValues() {
 		load(QueryEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/query?one=1&one=1&two=2")
 					.exchange()
 					.expectStatus()
@@ -226,7 +226,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithListQueryParameterAndSingleValue() {
 		load(QueryWithListEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/query?one=1&two=2")
 					.exchange()
 					.expectStatus()
@@ -239,7 +239,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithListQueryParameterAndMultipleValues() {
 		load(QueryWithListEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/query?one=1&two=2&two=2")
 					.exchange()
 					.expectStatus()
@@ -251,7 +251,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void readOperationWithMappingFailureProducesBadRequestResponse() {
-		load(QueryEndpointConfiguration.class, (client) -> {
+		load(QueryEndpointConfiguration.class, client -> {
 			WebTestClient.BodyContentSpec body = client.get()
 				.uri("/query?two=two")
 				.accept(MediaType.APPLICATION_JSON)
@@ -265,7 +265,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void writeOperation() {
-		load(TestEndpointConfiguration.class, (client) -> {
+		load(TestEndpointConfiguration.class, client -> {
 			Map<String, Object> body = new HashMap<>();
 			body.put("foo", "one");
 			body.put("bar", "two");
@@ -284,7 +284,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void deleteOperation() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.delete()
+				client -> client.delete()
 					.uri("/test/one")
 					.exchange()
 					.expectStatus()
@@ -380,7 +380,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithMonoResponse() {
 		load(MonoResponseEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/mono")
 					.exchange()
 					.expectStatus()
@@ -393,7 +393,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithFluxResponse() {
 		load(FluxResponseEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/flux")
 					.exchange()
 					.expectStatus()
@@ -410,7 +410,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithCustomMediaType() {
 		load(CustomMediaTypesEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/custommediatypes")
 					.exchange()
 					.expectStatus()
@@ -421,7 +421,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void readOperationWithMissingRequiredParametersReturnsBadRequestResponse() {
-		load(RequiredParameterEndpointConfiguration.class, (client) -> {
+		load(RequiredParameterEndpointConfiguration.class, client -> {
 			WebTestClient.BodyContentSpec body = client.get()
 				.uri("/requiredparameters")
 				.accept(MediaType.APPLICATION_JSON)
@@ -436,13 +436,13 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void readOperationWithMissingNullableParametersIsOk() {
 		load(RequiredParameterEndpointConfiguration.class,
-				(client) -> client.get().uri("/requiredparameters?foo=hello").exchange().expectStatus().isOk());
+				client -> client.get().uri("/requiredparameters?foo=hello").exchange().expectStatus().isOk());
 	}
 
 	@Test
 	void endpointsProducePrimaryMediaTypeByDefault() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/test")
 					.exchange()
 					.expectStatus()
@@ -454,7 +454,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void endpointsProduceSecondaryMediaTypeWhenRequested() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/test")
 					.accept(MediaType.APPLICATION_JSON)
 					.exchange()
@@ -467,7 +467,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void linksProducesPrimaryMediaTypeByDefault() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("")
 					.exchange()
 					.expectStatus()
@@ -479,7 +479,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void linksProducesSecondaryMediaTypeWhenRequested() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("")
 					.accept(MediaType.APPLICATION_JSON)
 					.exchange()
@@ -492,7 +492,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void principalIsNullWhenRequestHasNoPrincipal() {
 		load(PrincipalEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/principal")
 					.accept(MediaType.APPLICATION_JSON)
 					.exchange()
@@ -504,10 +504,10 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void principalIsAvailableWhenRequestHasAPrincipal() {
-		load((context) -> {
+		load(context -> {
 			this.authenticatedContextCustomizer.accept(context);
 			context.register(PrincipalEndpointConfiguration.class);
-		}, (client) -> client.get()
+		}, client -> client.get()
 			.uri("/principal")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
@@ -519,10 +519,10 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void operationWithAQueryNamedPrincipalCanBeAccessedWhenAuthenticated() {
-		load((context) -> {
+		load(context -> {
 			this.authenticatedContextCustomizer.accept(context);
 			context.register(PrincipalQueryEndpointConfiguration.class);
-		}, (client) -> client.get()
+		}, client -> client.get()
 			.uri("/principalquery?principal=Zoe")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
@@ -535,7 +535,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void securityContextIsAvailableAndHasNullPrincipalWhenRequestHasNoPrincipal() {
 		load(SecurityContextEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/securitycontext")
 					.accept(MediaType.APPLICATION_JSON)
 					.exchange()
@@ -547,10 +547,10 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void securityContextIsAvailableAndHasPrincipalWhenRequestHasPrincipal() {
-		load((context) -> {
+		load(context -> {
 			this.authenticatedContextCustomizer.accept(context);
 			context.register(SecurityContextEndpointConfiguration.class);
-		}, (client) -> client.get()
+		}, client -> client.get()
 			.uri("/securitycontext")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
@@ -563,7 +563,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	@Test
 	void userInRoleReturnsFalseWhenRequestHasNoPrincipal() {
 		load(UserInRoleEndpointConfiguration.class,
-				(client) -> client.get()
+				client -> client.get()
 					.uri("/userinrole?role=ADMIN")
 					.accept(MediaType.APPLICATION_JSON)
 					.exchange()
@@ -575,10 +575,10 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void userInRoleReturnsFalseWhenUserIsNotInRole() {
-		load((context) -> {
+		load(context -> {
 			this.authenticatedContextCustomizer.accept(context);
 			context.register(UserInRoleEndpointConfiguration.class);
-		}, (client) -> client.get()
+		}, client -> client.get()
 			.uri("/userinrole?role=ADMIN")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
@@ -590,10 +590,10 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void userInRoleReturnsTrueWhenUserIsInRole() {
-		load((context) -> {
+		load(context -> {
 			this.authenticatedContextCustomizer.accept(context);
 			context.register(UserInRoleEndpointConfiguration.class);
-		}, (client) -> client.get()
+		}, client -> client.get()
 			.uri("/userinrole?role=ACTUATOR")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
@@ -605,8 +605,8 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 	@Test
 	void endpointCanProduceAResponseWithACustomStatus() {
-		load((context) -> context.register(CustomResponseStatusEndpointConfiguration.class),
-				(client) -> client.get().uri("/customstatus").exchange().expectStatus().isEqualTo(234));
+		load(context -> context.register(CustomResponseStatusEndpointConfiguration.class),
+				client -> client.get().uri("/customstatus").exchange().expectStatus().isEqualTo(234));
 	}
 
 	protected abstract int getPort(T context);
@@ -624,11 +624,11 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	}
 
 	private void load(Class<?> configuration, BiConsumer<ApplicationContext, WebTestClient> consumer) {
-		load((context) -> context.register(configuration), "/endpoints", consumer);
+		load(context -> context.register(configuration), "/endpoints", consumer);
 	}
 
 	protected void load(Class<?> configuration, Consumer<WebTestClient> clientConsumer) {
-		load((context) -> context.register(configuration), "/endpoints",
+		load(context -> context.register(configuration), "/endpoints",
 				(context, client) -> clientConsumer.accept(client));
 	}
 
@@ -637,7 +637,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	}
 
 	protected void load(Class<?> configuration, String endpointPath, Consumer<WebTestClient> clientConsumer) {
-		load((context) -> context.register(configuration), endpointPath,
+		load(context -> context.register(configuration), endpointPath,
 				(context, client) -> clientConsumer.accept(client));
 	}
 

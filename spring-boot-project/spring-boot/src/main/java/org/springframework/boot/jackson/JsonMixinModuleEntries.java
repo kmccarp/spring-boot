@@ -66,7 +66,7 @@ public final class JsonMixinModuleEntries {
 	 * @return an instance with the result of the scanning
 	 */
 	public static JsonMixinModuleEntries scan(ApplicationContext context, Collection<String> basePackages) {
-		return JsonMixinModuleEntries.create((builder) -> {
+		return JsonMixinModuleEntries.create(builder -> {
 			if (ObjectUtils.isEmpty(basePackages)) {
 				return;
 			}

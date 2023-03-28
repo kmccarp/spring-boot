@@ -74,7 +74,7 @@ class R2dbcScriptDatabaseInitializerTests
 			.sql(sql)
 			.map((row, metadata) -> row.get(0))
 			.first()
-			.map((number) -> ((Number) number).intValue())
+			.map(number -> ((Number) number).intValue())
 			.block();
 	}
 

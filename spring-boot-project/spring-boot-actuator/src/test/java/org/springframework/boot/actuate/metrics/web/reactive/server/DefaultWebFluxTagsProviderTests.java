@@ -74,7 +74,7 @@ class DefaultWebFluxTagsProviderTests {
 
 		@Override
 		public Iterable<Tag> httpRequestTags(ServerWebExchange exchange, Throwable ex) {
-			return this.tagNames.stream().map((name) -> Tag.of(name, "value")).toList();
+			return this.tagNames.stream().map(name -> Tag.of(name, "value")).toList();
 		}
 
 	}

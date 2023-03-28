@@ -25,6 +25,8 @@ import java.security.Provider;
  */
 public class MockPkcs11SecurityProvider extends Provider {
 
+	private static final long serialVersionUID = 1;
+
 	/**
 	 * The name of the mock provider.
 	 */

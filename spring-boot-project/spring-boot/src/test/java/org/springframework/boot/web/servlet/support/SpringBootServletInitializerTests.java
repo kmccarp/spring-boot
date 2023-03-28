@@ -124,7 +124,7 @@ class SpringBootServletInitializerTests {
 
 	@Test
 	void errorPageFilterRegistrationCanBeDisabled() {
-		WebServer webServer = new UndertowServletWebServerFactory(0).getWebServer((servletContext) -> {
+		WebServer webServer = new UndertowServletWebServerFactory(0).getWebServer(servletContext -> {
 			try (AbstractApplicationContext context = (AbstractApplicationContext) new WithErrorPageFilterNotRegistered()
 				.createRootApplicationContext(servletContext)) {
 				assertThat(context.getBeansOfType(ErrorPageFilter.class)).isEmpty();
@@ -141,7 +141,7 @@ class SpringBootServletInitializerTests {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void errorPageFilterIsRegisteredWithNearHighestPrecedence() {
-		WebServer webServer = new UndertowServletWebServerFactory(0).getWebServer((servletContext) -> {
+		WebServer webServer = new UndertowServletWebServerFactory(0).getWebServer(servletContext -> {
 			try (AbstractApplicationContext context = (AbstractApplicationContext) new WithErrorPageFilter()
 				.createRootApplicationContext(servletContext)) {
 				Map<String, FilterRegistrationBean> registrations = context
@@ -162,7 +162,7 @@ class SpringBootServletInitializerTests {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void errorPageFilterIsRegisteredForRequestAndAsyncDispatch() {
-		WebServer webServer = new UndertowServletWebServerFactory(0).getWebServer((servletContext) -> {
+		WebServer webServer = new UndertowServletWebServerFactory(0).getWebServer(servletContext -> {
 			try (AbstractApplicationContext context = (AbstractApplicationContext) new WithErrorPageFilter()
 				.createRootApplicationContext(servletContext)) {
 				Map<String, FilterRegistrationBean> registrations = context

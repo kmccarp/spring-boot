@@ -111,7 +111,7 @@ public class TomcatWebServer implements WebServer {
 				addInstanceIdToEngineName();
 
 				Context context = findContext();
-				context.addLifecycleListener((event) -> {
+				context.addLifecycleListener(event -> {
 					if (context.equals(event.getSource()) && Lifecycle.START_EVENT.equals(event.getType())) {
 						// Remove service connectors so that protocol binding doesn't
 						// happen when the service is started.

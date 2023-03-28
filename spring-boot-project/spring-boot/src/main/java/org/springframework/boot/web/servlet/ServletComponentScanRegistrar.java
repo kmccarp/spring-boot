@@ -81,6 +81,8 @@ class ServletComponentScanRegistrar implements ImportBeanDefinitionRegistrar {
 
 	static final class ServletComponentRegisteringPostProcessorBeanDefinition extends GenericBeanDefinition {
 
+		private static final long serialVersionUID = 1;
+
 		private final Set<String> packageNames = new LinkedHashSet<>();
 
 		ServletComponentRegisteringPostProcessorBeanDefinition(Collection<String> packageNames) {

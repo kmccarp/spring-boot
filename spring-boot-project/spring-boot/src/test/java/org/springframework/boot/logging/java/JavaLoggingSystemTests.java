@@ -52,7 +52,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 @ExtendWith(OutputCaptureExtension.class)
 class JavaLoggingSystemTests extends AbstractLoggingSystemTests {
 
-	private static final FileFilter SPRING_LOG_FILTER = (pathname) -> pathname.getName().startsWith("spring.log");
+	private static final FileFilter SPRING_LOG_FILTER = pathname -> pathname.getName().startsWith("spring.log");
 
 	private final JavaLoggingSystem loggingSystem = new JavaLoggingSystem(getClass().getClassLoader());
 

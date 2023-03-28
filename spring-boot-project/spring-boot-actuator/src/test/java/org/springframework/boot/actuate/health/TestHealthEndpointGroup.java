@@ -40,7 +40,7 @@ class TestHealthEndpointGroup implements HealthEndpointGroup {
 	private AdditionalHealthEndpointPath additionalPath;
 
 	TestHealthEndpointGroup() {
-		this((name) -> true);
+		this(name -> true);
 	}
 
 	TestHealthEndpointGroup(Predicate<String> memberPredicate) {

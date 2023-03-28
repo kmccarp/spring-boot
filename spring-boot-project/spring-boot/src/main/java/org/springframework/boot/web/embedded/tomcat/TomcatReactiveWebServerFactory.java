@@ -178,7 +178,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	protected void configureContext(Context context) {
 		this.contextLifecycleListeners.forEach(context::addLifecycleListener);
 		new DisableReferenceClearingContextCustomizer().customize(context);
-		this.tomcatContextCustomizers.forEach((customizer) -> customizer.customize(context));
+		this.tomcatContextCustomizers.forEach(customizer -> customizer.customize(context));
 	}
 
 	protected void customizeConnector(Connector connector) {
@@ -213,7 +213,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	private void invokeProtocolHandlerCustomizers(ProtocolHandler protocolHandler) {
 		LambdaSafe
 			.callbacks(TomcatProtocolHandlerCustomizer.class, this.tomcatProtocolHandlerCustomizers, protocolHandler)
-			.invoke((customizer) -> customizer.customize(protocolHandler));
+			.invoke(customizer -> customizer.customize(protocolHandler));
 	}
 
 	private void customizeProtocol(AbstractProtocol<?> protocol) {

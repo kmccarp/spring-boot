@@ -87,7 +87,7 @@ class StaticResourceJarsTests {
 	}
 
 	private File createResourcesJar(String name) throws IOException {
-		return createJar(name, (output) -> {
+		return createJar(name, output -> {
 			JarEntry jarEntry = new JarEntry("META-INF/resources");
 			try {
 				output.putNextEntry(jarEntry);

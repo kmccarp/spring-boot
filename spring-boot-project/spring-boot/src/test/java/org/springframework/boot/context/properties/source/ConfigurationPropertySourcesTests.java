@@ -164,7 +164,7 @@ class ConfigurationPropertySourcesTests {
 
 	@Test // gh-21416
 	void descendantOfPropertyAccessWhenMutableWithCacheShouldBePerformant() {
-		Function<StandardEnvironment, Long> descendantOfPerformance = (environment) -> {
+		Function<StandardEnvironment, Long> descendantOfPerformance = environment -> {
 			Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 			ConfigurationPropertyName missing = ConfigurationPropertyName.of("missing");
 			long start = System.nanoTime();

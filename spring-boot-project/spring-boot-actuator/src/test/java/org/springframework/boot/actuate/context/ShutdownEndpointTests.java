@@ -48,7 +48,7 @@ class ShutdownEndpointTests {
 	void shutdown() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(EndpointConfig.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			EndpointConfig config = context.getBean(EndpointConfig.class);
 			ClassLoader previousTccl = Thread.currentThread().getContextClassLoader();
 			ShutdownDescriptor result;
@@ -106,7 +106,7 @@ class ShutdownEndpointTests {
 
 		@Bean
 		ApplicationListener<ContextClosedEvent> listener() {
-			return (event) -> {
+			return event -> {
 				EndpointConfig.this.threadContextClassLoader = Thread.currentThread().getContextClassLoader();
 				EndpointConfig.this.latch.countDown();
 			};
@@ -121,7 +121,7 @@ class ShutdownEndpointTests {
 
 		@Bean
 		ApplicationListener<ContextClosedEvent> listener() {
-			return (event) -> EmptyConfig.this.latch.countDown();
+			return event -> EmptyConfig.this.latch.countDown();
 		}
 
 	}

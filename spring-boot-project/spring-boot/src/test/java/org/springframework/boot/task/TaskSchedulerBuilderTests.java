@@ -88,7 +88,7 @@ class TaskSchedulerBuilderTests {
 	@Test
 	void customizersShouldBeAppliedLast() {
 		ThreadPoolTaskScheduler scheduler = spy(new ThreadPoolTaskScheduler());
-		this.builder.poolSize(4).threadNamePrefix("test-").additionalCustomizers((taskScheduler) -> {
+		this.builder.poolSize(4).threadNamePrefix("test-").additionalCustomizers(taskScheduler -> {
 			then(taskScheduler).should().setPoolSize(4);
 			then(taskScheduler).should().setThreadNamePrefix("test-");
 		});

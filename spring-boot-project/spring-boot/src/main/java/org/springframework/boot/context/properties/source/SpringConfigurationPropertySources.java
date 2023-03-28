@@ -131,8 +131,8 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 		}
 
 		private boolean isIgnored(PropertySource<?> candidate) {
-			return (candidate instanceof StubPropertySource
-					|| candidate instanceof ConfigurationPropertySourcesPropertySource);
+			return candidate instanceof StubPropertySource
+					|| candidate instanceof ConfigurationPropertySourcesPropertySource;
 		}
 
 	}

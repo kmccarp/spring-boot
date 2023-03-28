@@ -47,7 +47,7 @@ public class DelegatingApplicationListener implements ApplicationListener<Applic
 
 	private static final String PROPERTY_NAME = "context.listener.classes";
 
-	private int order = 0;
+	private int order;
 
 	private SimpleApplicationEventMulticaster multicaster;
 

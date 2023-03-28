@@ -204,8 +204,8 @@ public class LiquibaseEndpoint {
 			this.execType = ranChangeSet.getExecType();
 			this.id = ranChangeSet.getId();
 			this.labels = ranChangeSet.getLabels().getLabels();
-			this.checksum = ((ranChangeSet.getLastCheckSum() != null) ? ranChangeSet.getLastCheckSum().toString()
-					: null);
+			this.checksum = (ranChangeSet.getLastCheckSum() != null) ? ranChangeSet.getLastCheckSum().toString()
+					: null;
 			this.orderExecuted = ranChangeSet.getOrderExecuted();
 			this.tag = ranChangeSet.getTag();
 		}

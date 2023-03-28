@@ -67,7 +67,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	private Session session = new Session();
 
-	private boolean registerDefaultServlet = false;
+	private boolean registerDefaultServlet;
 
 	private MimeMappings mimeMappings = MimeMappings.lazyCopy(MimeMappings.DEFAULT);
 
@@ -269,7 +269,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	 */
 	protected final ServletContextInitializer[] mergeInitializers(ServletContextInitializer... initializers) {
 		List<ServletContextInitializer> mergedInitializers = new ArrayList<>();
-		mergedInitializers.add((servletContext) -> this.initParameters.forEach(servletContext::setInitParameter));
+		mergedInitializers.add(servletContext -> this.initParameters.forEach(servletContext::setInitParameter));
 		mergedInitializers.add(new SessionConfiguringInitializer(this.session));
 		mergedInitializers.addAll(Arrays.asList(initializers));
 		mergedInitializers.addAll(this.initializers);

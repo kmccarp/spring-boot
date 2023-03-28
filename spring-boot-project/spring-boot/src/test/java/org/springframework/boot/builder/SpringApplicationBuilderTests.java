@@ -301,8 +301,8 @@ class SpringApplicationBuilderTests {
 	void addBootstrapRegistryInitializer() {
 		SpringApplicationBuilder application = new SpringApplicationBuilder(ExampleConfig.class)
 			.web(WebApplicationType.NONE)
-			.addBootstrapRegistryInitializer((context) -> context.addCloseListener(
-					(event) -> event.getApplicationContext().getBeanFactory().registerSingleton("test", "spring")));
+			.addBootstrapRegistryInitializer(context -> context.addCloseListener(
+					event -> event.getApplicationContext().getBeanFactory().registerSingleton("test", "spring")));
 		this.context = application.run();
 		assertThat(this.context.getBean("test")).isEqualTo("spring");
 	}
@@ -325,7 +325,7 @@ class SpringApplicationBuilderTests {
 		};
 		SpringApplication application = applicationBuilder.build();
 		assertThat(application).asInstanceOf(InstanceOfAssertFactories.type(CustomSpringApplication.class))
-			.satisfies((customApp) -> assertThat(customApp.resourceLoader).isEqualTo(resourceLoader));
+			.satisfies(customApp -> assertThat(customApp.resourceLoader).isEqualTo(resourceLoader));
 	}
 
 	@Configuration(proxyBeanMethods = false)

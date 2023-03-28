@@ -95,7 +95,7 @@ class StandardConfigDataLocationResolverTests {
 			.of("file:src/test/resources/configdata/properties/application.unknown");
 		assertThatIllegalStateException().isThrownBy(() -> this.resolver.resolve(this.context, location))
 			.withMessageStartingWith("Unable to load config data from")
-			.satisfies((ex) -> assertThat(ex.getCause()).hasMessageStartingWith("File extension is not known"));
+			.satisfies(ex -> assertThat(ex.getCause()).hasMessageStartingWith("File extension is not known"));
 	}
 
 	@Test
@@ -225,7 +225,7 @@ class StandardConfigDataLocationResolverTests {
 		given(this.context.getParent()).willReturn(parent);
 		assertThatIllegalStateException().isThrownBy(() -> this.resolver.resolve(this.context, location))
 			.withMessageStartingWith("Unable to load config data from 'application.other'")
-			.satisfies((ex) -> assertThat(ex.getCause()).hasMessageStartingWith("File extension is not known"));
+			.satisfies(ex -> assertThat(ex.getCause()).hasMessageStartingWith("File extension is not known"));
 	}
 
 	@Test

@@ -68,7 +68,7 @@ class HttpWebServiceMessageSenderBuilderTests {
 	private ClientHttpRequestMessageSender build(HttpWebServiceMessageSenderBuilder builder) {
 		WebServiceMessageSender messageSender = builder.build();
 		assertThat(messageSender).isInstanceOf(ClientHttpRequestMessageSender.class);
-		return ((ClientHttpRequestMessageSender) messageSender);
+		return (ClientHttpRequestMessageSender) messageSender;
 	}
 
 }

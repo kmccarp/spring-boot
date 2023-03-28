@@ -48,7 +48,7 @@ class SessionsEndpointWebIntegrationTests {
 	@WebEndpointTest
 	void sessionsForUsernameWithoutUsernameParam(WebTestClient client) {
 		client.get()
-			.uri((builder) -> builder.path("/actuator/sessions").build())
+			.uri(builder -> builder.path("/actuator/sessions").build())
 			.exchange()
 			.expectStatus()
 			.isBadRequest();
@@ -58,7 +58,7 @@ class SessionsEndpointWebIntegrationTests {
 	void sessionsForUsernameNoResults(WebTestClient client) {
 		given(repository.findByPrincipalName("user")).willReturn(Collections.emptyMap());
 		client.get()
-			.uri((builder) -> builder.path("/actuator/sessions").queryParam("username", "user").build())
+			.uri(builder -> builder.path("/actuator/sessions").queryParam("username", "user").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -71,7 +71,7 @@ class SessionsEndpointWebIntegrationTests {
 	void sessionsForUsernameFound(WebTestClient client) {
 		given(repository.findByPrincipalName("user")).willReturn(Collections.singletonMap(session.getId(), session));
 		client.get()
-			.uri((builder) -> builder.path("/actuator/sessions").queryParam("username", "user").build())
+			.uri(builder -> builder.path("/actuator/sessions").queryParam("username", "user").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -83,7 +83,7 @@ class SessionsEndpointWebIntegrationTests {
 	@WebEndpointTest
 	void sessionForIdNotFound(WebTestClient client) {
 		client.get()
-			.uri((builder) -> builder.path("/actuator/sessions/session-id-not-found").build())
+			.uri(builder -> builder.path("/actuator/sessions/session-id-not-found").build())
 			.exchange()
 			.expectStatus()
 			.isNotFound();

@@ -103,7 +103,7 @@ class JmsHealthIndicatorTests {
 		Connection connection = mock(Connection.class);
 		UnresponsiveStartAnswer unresponsiveStartAnswer = new UnresponsiveStartAnswer();
 		willAnswer(unresponsiveStartAnswer).given(connection).start();
-		willAnswer((invocation) -> {
+		willAnswer(invocation -> {
 			unresponsiveStartAnswer.connectionClosed();
 			return null;
 		}).given(connection).close();
@@ -117,7 +117,7 @@ class JmsHealthIndicatorTests {
 
 	private static final class UnresponsiveStartAnswer implements Answer<Void> {
 
-		private boolean connectionClosed = false;
+		private boolean connectionClosed;
 
 		private final Object monitor = new Object();
 

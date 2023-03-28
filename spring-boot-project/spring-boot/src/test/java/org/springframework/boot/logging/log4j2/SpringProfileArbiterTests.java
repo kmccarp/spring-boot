@@ -88,7 +88,7 @@ class SpringProfileArbiterTests {
 		PropertiesUtil properties = PropertiesUtil.getProperties();
 		Object environment = ReflectionTestUtils.getField(properties, "environment");
 		Set<PropertySource> sources = (Set<PropertySource>) ReflectionTestUtils.getField(environment, "sources");
-		sources.removeIf((candidate) -> candidate instanceof SpringEnvironmentPropertySource
+		sources.removeIf(candidate -> candidate instanceof SpringEnvironmentPropertySource
 				|| candidate instanceof SpringBootPropertySource);
 	}
 

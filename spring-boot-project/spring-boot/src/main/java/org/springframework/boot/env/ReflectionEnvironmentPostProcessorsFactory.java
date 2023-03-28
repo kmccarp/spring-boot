@@ -61,7 +61,7 @@ class ReflectionEnvironmentPostProcessorsFactory implements EnvironmentPostProce
 	public List<EnvironmentPostProcessor> getEnvironmentPostProcessors(DeferredLogFactory logFactory,
 			ConfigurableBootstrapContext bootstrapContext) {
 		Instantiator<EnvironmentPostProcessor> instantiator = new Instantiator<>(EnvironmentPostProcessor.class,
-				(parameters) -> {
+				parameters -> {
 					parameters.add(DeferredLogFactory.class, logFactory);
 					parameters.add(Log.class, logFactory::getLog);
 					parameters.add(ConfigurableBootstrapContext.class, bootstrapContext);

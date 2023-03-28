@@ -225,7 +225,7 @@ public final class ConfigData {
 		 * @return a new {@link Options} instance
 		 */
 		public Options without(Option option) {
-			return copy((options) -> options.remove(option));
+			return copy(options -> options.remove(option));
 		}
 
 		/**
@@ -235,7 +235,7 @@ public final class ConfigData {
 		 * @return a new {@link Options} instance
 		 */
 		public Options with(Option option) {
-			return copy((options) -> options.add(option));
+			return copy(options -> options.add(option));
 		}
 
 		private Options copy(Consumer<EnumSet<Option>> processor) {
@@ -281,7 +281,7 @@ public final class ConfigData {
 		 * profile specific sibling imports.
 		 * @since 2.4.5
 		 */
-		PROFILE_SPECIFIC;
+		PROFILE_SPECIFIC
 
 	}
 

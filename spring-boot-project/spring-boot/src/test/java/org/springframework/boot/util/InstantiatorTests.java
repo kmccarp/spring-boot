@@ -43,7 +43,7 @@ class InstantiatorTests {
 
 	private final ParamB paramB = new ParamB();
 
-	private ParamC paramC;
+	private final ParamC paramC;
 
 	@Test
 	void instantiateWhenOnlyDefaultConstructorCreatesInstance() {
@@ -116,7 +116,7 @@ class InstantiatorTests {
 	@Test
 	void createWithFailureHandlerInvokesFailureHandler() {
 		assertThatIllegalStateException()
-			.isThrownBy(() -> new Instantiator<>(WithDefaultConstructor.class, (availableParameters) -> {
+			.isThrownBy(() -> new Instantiator<>(WithDefaultConstructor.class, availableParameters -> {
 			}, new CustomFailureHandler())
 				.instantiate(Collections.singleton(WithAdditionalConstructor.class.getName())))
 			.withMessageContaining("custom failure handler message");
@@ -127,7 +127,7 @@ class InstantiatorTests {
 	}
 
 	private <T> Instantiator<T> createInstantiator(Class<T> type) {
-		return new Instantiator<>(type, (availableParameters) -> {
+		return new Instantiator<>(type, availableParameters -> {
 			availableParameters.add(ParamA.class, this.paramA);
 			availableParameters.add(ParamB.class, this.paramB);
 			availableParameters.add(ParamC.class, ParamC::new);

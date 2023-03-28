@@ -58,11 +58,11 @@ public class CachesEndpoint {
 	@ReadOperation
 	public CachesDescriptor caches() {
 		Map<String, Map<String, CacheDescriptor>> descriptors = new LinkedHashMap<>();
-		getCacheEntries(matchAll(), matchAll()).forEach((entry) -> {
+		getCacheEntries(matchAll(), matchAll()).forEach(entry -> {
 			String cacheName = entry.getName();
 			String cacheManager = entry.getCacheManager();
 			Map<String, CacheDescriptor> cacheManagerDescriptors = descriptors.computeIfAbsent(cacheManager,
-					(key) -> new LinkedHashMap<>());
+					key -> new LinkedHashMap<>());
 			cacheManagerDescriptors.put(cacheName, new CacheDescriptor(entry.getTarget()));
 		});
 		Map<String, CacheManagerDescriptor> cacheManagerDescriptors = new LinkedHashMap<>();
@@ -80,7 +80,7 @@ public class CachesEndpoint {
 	 */
 	@ReadOperation
 	public CacheEntryDescriptor cache(@Selector String cache, @Nullable String cacheManager) {
-		return extractUniqueCacheEntry(cache, getCacheEntries((name) -> name.equals(cache), isNameMatch(cacheManager)));
+		return extractUniqueCacheEntry(cache, getCacheEntries(name -> name.equals(cache), isNameMatch(cacheManager)));
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class CachesEndpoint {
 	@DeleteOperation
 	public boolean clearCache(@Selector String cache, @Nullable String cacheManager) {
 		CacheEntryDescriptor entry = extractUniqueCacheEntry(cache,
-				getCacheEntries((name) -> name.equals(cache), isNameMatch(cacheManager)));
-		return (entry != null && clearCache(entry));
+				getCacheEntries(name -> name.equals(cache), isNameMatch(cacheManager)));
+		return entry != null && clearCache(entry);
 	}
 
 	private List<CacheEntryDescriptor> getCacheEntries(Predicate<String> cacheNamePredicate,
@@ -112,7 +112,7 @@ public class CachesEndpoint {
 		return this.cacheManagers.keySet()
 			.stream()
 			.filter(cacheManagerNamePredicate)
-			.flatMap((cacheManagerName) -> getCacheEntries(cacheManagerName, cacheNamePredicate).stream())
+			.flatMap(cacheManagerName -> getCacheEntries(cacheManagerName, cacheNamePredicate).stream())
 			.toList();
 	}
 
@@ -123,7 +123,7 @@ public class CachesEndpoint {
 			.filter(cacheNamePredicate)
 			.map(cacheManager::getCache)
 			.filter(Objects::nonNull)
-			.map((cache) -> new CacheEntryDescriptor(cache, cacheManagerName))
+			.map(cache -> new CacheEntryDescriptor(cache, cacheManagerName))
 			.toList();
 	}
 
@@ -132,7 +132,7 @@ public class CachesEndpoint {
 			throw new NonUniqueCacheException(cache,
 					entries.stream().map(CacheEntryDescriptor::getCacheManager).distinct().toList());
 		}
-		return (!entries.isEmpty() ? entries.get(0) : null);
+		return !entries.isEmpty() ? entries.get(0) : null;
 	}
 
 	private boolean clearCache(CacheEntryDescriptor entry) {
@@ -147,11 +147,11 @@ public class CachesEndpoint {
 	}
 
 	private Predicate<String> isNameMatch(String name) {
-		return (name != null) ? ((requested) -> requested.equals(name)) : matchAll();
+		return (name != null) ? (requested -> requested.equals(name)) : matchAll();
 	}
 
 	private Predicate<String> matchAll() {
-		return (name) -> true;
+		return name -> true;
 	}
 
 	/**

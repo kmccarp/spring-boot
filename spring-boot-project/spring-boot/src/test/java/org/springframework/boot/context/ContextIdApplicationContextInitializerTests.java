@@ -71,12 +71,12 @@ class ContextIdApplicationContextInitializerTests {
 		ConfigurableApplicationContext grandparent = createContext(null);
 		ConfigurableApplicationContext parent1 = createContext(grandparent);
 		ConfigurableApplicationContext parent2 = createContext(grandparent);
-		ConfigurableApplicationContext child1_1 = createContext(parent1);
-		assertThat(child1_1.getId()).isEqualTo("application-1-1");
-		ConfigurableApplicationContext child1_2 = createContext(parent1);
-		assertThat(child1_2.getId()).isEqualTo("application-1-2");
-		ConfigurableApplicationContext child2_1 = createContext(parent2);
-		assertThat(child2_1.getId()).isEqualTo("application-2-1");
+		ConfigurableApplicationContext child11 = createContext(parent1);
+		assertThat(child11.getId()).isEqualTo("application-1-1");
+		ConfigurableApplicationContext child12 = createContext(parent1);
+		assertThat(child12.getId()).isEqualTo("application-1-2");
+		ConfigurableApplicationContext child21 = createContext(parent2);
+		assertThat(child21.getId()).isEqualTo("application-2-1");
 	}
 
 	@Test

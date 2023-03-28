@@ -52,7 +52,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 
 	final TestHealthEndpointGroup primaryGroup = new TestHealthEndpointGroup();
 
-	final TestHealthEndpointGroup allTheAs = new TestHealthEndpointGroup((name) -> name.startsWith("a"));
+	final TestHealthEndpointGroup allTheAs = new TestHealthEndpointGroup(name -> name.startsWith("a"));
 
 	final HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,
 			Collections.singletonMap("alltheas", this.allTheAs));
@@ -218,7 +218,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 		C contributor = createContributor(this.up);
 		C compositeContributor = createCompositeContributor(Collections.singletonMap("spring", contributor));
 		this.registry.registerContributor("test", compositeContributor);
-		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup((name) -> name.startsWith("test"));
+		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup(name -> name.startsWith("test"));
 		HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,
 				Collections.singletonMap("testGroup", testGroup));
 		HealthResult<T> result = create(this.registry, groups).getHealth(ApiVersion.V3, null, SecurityContext.NONE,
@@ -229,7 +229,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 
 	@Test
 	void getHealthWhenGroupContainsComponentOfCompositeContributorReturnsHealth() {
-		CompositeHealth health = getCompositeHealth((name) -> name.equals("test/spring-1"));
+		CompositeHealth health = getCompositeHealth("test/spring-1"::equals);
 		assertThat(health.getComponents()).containsKey("test");
 		CompositeHealth test = (CompositeHealth) health.getComponents().get("test");
 		assertThat(test.getComponents()).containsKey("spring-1");
@@ -240,7 +240,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 	@Test
 	void getHealthWhenGroupExcludesComponentOfCompositeContributorReturnsHealth() {
 		CompositeHealth health = getCompositeHealth(
-				(name) -> name.startsWith("test/") && !name.equals("test/spring-2"));
+				name -> name.startsWith("test/") && !"test/spring-2".equals(name));
 		assertThat(health.getComponents()).containsKey("test");
 		CompositeHealth test = (CompositeHealth) health.getComponents().get("test");
 		assertThat(test.getComponents()).containsKey("spring-1");
@@ -255,7 +255,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 		C compositeContributor = createCompositeContributor(contributors);
 		this.registry.registerContributor("test", compositeContributor);
 		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup(
-				(name) -> name.startsWith("test") && !name.equals("test/spring-1/b"));
+				name -> name.startsWith("test") && !"test/spring-1/b".equals(name));
 		HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,
 				Collections.singletonMap("testGroup", testGroup));
 		HealthResult<T> result = create(this.registry, groups).getHealth(ApiVersion.V3, null, SecurityContext.NONE,
@@ -281,7 +281,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 		C compositeContributor = createCompositeContributor(contributors);
 		this.registry.registerContributor("test", compositeContributor);
 		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup(
-				(name) -> name.startsWith("test") && !name.equals("test/spring-1/b"));
+				name -> name.startsWith("test") && !"test/spring-1/b".equals(name));
 		HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,
 				Collections.singletonMap("testGroup", testGroup));
 		HealthResult<T> result = create(this.registry, groups).getHealth(ApiVersion.V3, null, SecurityContext.NONE,
@@ -316,7 +316,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 	@Test
 	void getHealthWhenGroupHasAdditionalPath() {
 		this.registry.registerContributor("test", createContributor(this.up));
-		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup((name) -> name.startsWith("test"));
+		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup(name -> name.startsWith("test"));
 		testGroup.setAdditionalPath(AdditionalHealthEndpointPath.from("server:/healthz"));
 		HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,
 				Collections.singletonMap("testGroup", testGroup));
@@ -329,7 +329,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 	@Test
 	void getHealthWhenGroupHasAdditionalPathAndShowComponentsFalse() {
 		this.registry.registerContributor("test", createContributor(this.up));
-		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup((name) -> name.startsWith("test"));
+		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup(name -> name.startsWith("test"));
 		testGroup.setAdditionalPath(AdditionalHealthEndpointPath.from("server:/healthz"));
 		testGroup.setShowComponents(false);
 		HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,
@@ -344,7 +344,7 @@ abstract class HealthEndpointSupportTests<S extends HealthEndpointSupport<C, T>,
 	@Test
 	void getComponentHealthWhenGroupHasAdditionalPathAndShowComponentsFalse() {
 		this.registry.registerContributor("test", createContributor(this.up));
-		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup((name) -> name.startsWith("test"));
+		TestHealthEndpointGroup testGroup = new TestHealthEndpointGroup(name -> name.startsWith("test"));
 		testGroup.setAdditionalPath(AdditionalHealthEndpointPath.from("server:/healthz"));
 		testGroup.setShowComponents(false);
 		HealthEndpointGroups groups = HealthEndpointGroups.of(this.primaryGroup,

@@ -51,15 +51,15 @@ class ClientHttpRequestFactoriesRuntimeHints implements RuntimeHintsRegistrar {
 
 	private void registerHints(ReflectionHints hints, ClassLoader classLoader) {
 		hints.registerField(findField(AbstractClientHttpRequestFactoryWrapper.class, "requestFactory"));
-		hints.registerTypeIfPresent(classLoader, ClientHttpRequestFactories.APACHE_HTTP_CLIENT_CLASS, (typeHint) -> {
+		hints.registerTypeIfPresent(classLoader, ClientHttpRequestFactories.APACHE_HTTP_CLIENT_CLASS, typeHint -> {
 			typeHint.onReachableType(TypeReference.of(ClientHttpRequestFactories.APACHE_HTTP_CLIENT_CLASS));
 			registerReflectionHints(hints, HttpComponentsClientHttpRequestFactory.class);
 		});
-		hints.registerTypeIfPresent(classLoader, ClientHttpRequestFactories.OKHTTP_CLIENT_CLASS, (typeHint) -> {
+		hints.registerTypeIfPresent(classLoader, ClientHttpRequestFactories.OKHTTP_CLIENT_CLASS, typeHint -> {
 			typeHint.onReachableType(TypeReference.of(ClientHttpRequestFactories.OKHTTP_CLIENT_CLASS));
 			registerReflectionHints(hints, OkHttp3ClientHttpRequestFactory.class);
 		});
-		hints.registerType(SimpleClientHttpRequestFactory.class, (typeHint) -> {
+		hints.registerType(SimpleClientHttpRequestFactory.class, typeHint -> {
 			typeHint.onReachableType(HttpURLConnection.class);
 			registerReflectionHints(hints, SimpleClientHttpRequestFactory.class);
 		});

@@ -73,7 +73,7 @@ public class UndertowWebServer implements WebServer {
 
 	private Undertow undertow;
 
-	private volatile boolean started = false;
+	private volatile boolean started;
 
 	private volatile GracefulShutdownHandler gracefulShutdown;
 
@@ -122,7 +122,7 @@ public class UndertowWebServer implements WebServer {
 			}
 			catch (Exception ex) {
 				try {
-					PortInUseException.ifPortBindingException(ex, (bindException) -> {
+					PortInUseException.ifPortBindingException(ex, bindException -> {
 						List<Port> failedPorts = getConfiguredPorts();
 						failedPorts.removeAll(getActualPorts());
 						if (failedPorts.size() == 1) {
@@ -413,13 +413,13 @@ public class UndertowWebServer implements WebServer {
 		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 			hints.reflection()
 				.registerTypeIfPresent(classLoader, "io.undertow.Undertow",
-						(hint) -> hint.withField("listeners").withField("channels"));
+						hint -> hint.withField("listeners").withField("channels"));
 			hints.reflection()
 				.registerTypeIfPresent(classLoader, "io.undertow.Undertow$ListenerConfig",
-						(hint) -> hint.withField("type").withField("port"));
+						hint -> hint.withField("type").withField("port"));
 			hints.reflection()
 				.registerTypeIfPresent(classLoader, "io.undertow.protocols.ssl.UndertowAcceptingSslChannel",
-						(hint) -> hint.withField("ssl"));
+						hint -> hint.withField("ssl"));
 		}
 
 	}

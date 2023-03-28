@@ -53,7 +53,7 @@ class HttpExchangesWebFilterIntegrationTests {
 
 	@Test
 	void exchangeForNotFoundResponseHas404Status() {
-		this.contextRunner.run((context) -> {
+		this.contextRunner.run(context -> {
 			WebTestClient.bindToApplicationContext(context)
 				.build()
 				.get()
@@ -69,7 +69,7 @@ class HttpExchangesWebFilterIntegrationTests {
 
 	@Test
 	void exchangeForMonoErrorWithRuntimeExceptionHas500Status() {
-		this.contextRunner.run((context) -> {
+		this.contextRunner.run(context -> {
 			WebTestClient.bindToApplicationContext(context)
 				.build()
 				.get()
@@ -85,7 +85,7 @@ class HttpExchangesWebFilterIntegrationTests {
 
 	@Test
 	void exchangeForThrownRuntimeExceptionHas500Status() {
-		this.contextRunner.run((context) -> {
+		this.contextRunner.run(context -> {
 			WebTestClient.bindToApplicationContext(context)
 				.build()
 				.get()
@@ -120,8 +120,8 @@ class HttpExchangesWebFilterIntegrationTests {
 
 		@Bean
 		RouterFunction<ServerResponse> router() {
-			return route(GET("/mono-error"), (request) -> Mono.error(new RuntimeException())).andRoute(GET("/thrown"),
-					(HandlerFunction<ServerResponse>) (request) -> {
+			return route(GET("/mono-error"), request -> Mono.error(new RuntimeException())).andRoute(GET("/thrown"),
+					(HandlerFunction<ServerResponse>) request -> {
 						throw new RuntimeException();
 					});
 		}

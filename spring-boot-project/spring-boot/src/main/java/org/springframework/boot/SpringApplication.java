@@ -228,9 +228,9 @@ public class SpringApplication {
 
 	private boolean allowCircularReferences;
 
-	private boolean isCustomEnvironment = false;
+	private boolean isCustomEnvironment;
 
-	private boolean lazyInitialization = false;
+	private boolean lazyInitialization;
 
 	private String environmentPrefix;
 
@@ -282,7 +282,7 @@ public class SpringApplication {
 	}
 
 	private Optional<Class<?>> findMainClass(Stream<StackFrame> stack) {
-		return stack.filter((frame) -> Objects.equals(frame.getMethodName(), "main"))
+		return stack.filter(frame -> Objects.equals(frame.getMethodName(), "main"))
 			.findFirst()
 			.map(StackWalker.StackFrame::getDeclaringClass);
 	}
@@ -341,7 +341,7 @@ public class SpringApplication {
 
 	private DefaultBootstrapContext createBootstrapContext() {
 		DefaultBootstrapContext bootstrapContext = new DefaultBootstrapContext();
-		this.bootstrapRegistryInitializers.forEach((initializer) -> initializer.initialize(bootstrapContext));
+		this.bootstrapRegistryInitializers.forEach(initializer -> initializer.initialize(bootstrapContext));
 		return bootstrapContext;
 	}
 
@@ -641,7 +641,7 @@ public class SpringApplication {
 	}
 
 	private List<String> quoteProfiles(String[] profiles) {
-		return Arrays.stream(profiles).map((profile) -> "\"" + profile + "\"").toList();
+		return Arrays.stream(profiles).map(profile -> "\"" + profile + "\"").toList();
 	}
 
 	/**
@@ -757,7 +757,7 @@ public class SpringApplication {
 
 	private void callRunner(ApplicationRunner runner, ApplicationArguments args) {
 		try {
-			(runner).run(args);
+			runner.run(args);
 		}
 		catch (Exception ex) {
 			throw new IllegalStateException("Failed to execute ApplicationRunner", ex);
@@ -766,7 +766,7 @@ public class SpringApplication {
 
 	private void callRunner(CommandLineRunner runner, ApplicationArguments args) {
 		try {
-			(runner).run(args.getSourceArgs());
+			runner.run(args.getSourceArgs());
 		}
 		catch (Exception ex) {
 			throw new IllegalStateException("Failed to execute CommandLineRunner", ex);

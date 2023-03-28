@@ -196,7 +196,7 @@ class LogbackConfigurationAotContributionTests {
 		ComponentModel component = new ComponentModel();
 		component.setClassName("${VARIABLE_CLASS_NAME}");
 		TestGenerationContext generationContext = applyContribution(component,
-				(context) -> context.putProperty("VARIABLE_CLASS_NAME", Outer.class.getName()));
+				context -> context.putProperty("VARIABLE_CLASS_NAME", Outer.class.getName()));
 		assertThat(invokePublicConstructorsAndInspectAndInvokePublicMethodsOf(Outer.class))
 			.accepts(generationContext.getRuntimeHints());
 		assertThat(invokePublicConstructorsAndInspectAndInvokePublicMethodsOf(Implementation.class))
@@ -228,12 +228,12 @@ class LogbackConfigurationAotContributionTests {
 	}
 
 	private Condition<InMemoryGeneratedFiles> resource(String name) {
-		return new Condition<>((files) -> files.getGeneratedFile(Kind.RESOURCE, name) != null,
+		return new Condition<>(files -> files.getGeneratedFile(Kind.RESOURCE, name) != null,
 				"has a resource named '%s'", name);
 	}
 
 	private TestGenerationContext applyContribution(Model model) {
-		return this.applyContribution(model, (context) -> {
+		return this.applyContribution(model, context -> {
 		});
 	}
 

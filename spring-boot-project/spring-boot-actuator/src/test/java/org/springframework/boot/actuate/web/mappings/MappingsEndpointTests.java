@@ -79,7 +79,7 @@ class MappingsEndpointTests {
 		Supplier<ConfigurableWebApplicationContext> contextSupplier = prepareContextSupplier();
 		new WebApplicationContextRunner(contextSupplier)
 			.withUserConfiguration(EndpointConfiguration.class, ServletWebConfiguration.class)
-			.run((context) -> {
+			.run(context -> {
 				ContextMappingsDescriptor contextMappings = contextMappings(context);
 				assertThat(contextMappings.getParentId()).isNull();
 				assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherServlets", "servletFilters",
@@ -102,7 +102,7 @@ class MappingsEndpointTests {
 		new WebApplicationContextRunner(contextSupplier)
 			.withUserConfiguration(EndpointConfiguration.class, ServletWebConfiguration.class,
 					PathPatternParserConfiguration.class)
-			.run((context) -> {
+			.run(context -> {
 				ContextMappingsDescriptor contextMappings = contextMappings(context);
 				assertThat(contextMappings.getParentId()).isNull();
 				assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherServlets", "servletFilters",
@@ -125,7 +125,7 @@ class MappingsEndpointTests {
 		new WebApplicationContextRunner(contextSupplier)
 			.withUserConfiguration(EndpointConfiguration.class, ServletWebConfiguration.class,
 					CustomDispatcherServletConfiguration.class)
-			.run((context) -> {
+			.run(context -> {
 				ContextMappingsDescriptor contextMappings = contextMappings(context);
 				Map<String, List<DispatcherServletMappingDescription>> dispatcherServlets = mappings(contextMappings,
 						"dispatcherServlets");
@@ -159,7 +159,7 @@ class MappingsEndpointTests {
 	void reactiveWebMappings() {
 		new ReactiveWebApplicationContextRunner()
 			.withUserConfiguration(EndpointConfiguration.class, ReactiveWebConfiguration.class)
-			.run((context) -> {
+			.run(context -> {
 				ContextMappingsDescriptor contextMappings = contextMappings(context);
 				assertThat(contextMappings.getParentId()).isNull();
 				assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherHandlers");
@@ -205,8 +205,8 @@ class MappingsEndpointTests {
 
 		@Bean
 		RouterFunction<ServerResponse> routerFunction() {
-			return route(GET("/one"), (request) -> ServerResponse.ok().build()).andRoute(POST("/two"),
-					(request) -> ServerResponse.ok().build());
+			return route(GET("/one"), request -> ServerResponse.ok().build()).andRoute(POST("/two"),
+					request -> ServerResponse.ok().build());
 		}
 
 		@RequestMapping("/three")
@@ -216,7 +216,7 @@ class MappingsEndpointTests {
 
 		@Bean
 		RouterFunction<ServerResponse> routerFunctionWithAttributes() {
-			return route(GET("/four"), (request) -> ServerResponse.ok().build()).withAttribute("test", "test");
+			return route(GET("/four"), request -> ServerResponse.ok().build()).withAttribute("test", "test");
 		}
 
 	}

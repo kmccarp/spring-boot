@@ -102,7 +102,7 @@ class NamedContributorsMapAdapterTests {
 		int callCount = map.size();
 		AtomicInteger counter = new AtomicInteger(0);
 		TestNamedContributorsMapAdapter<String> adapter = new TestNamedContributorsMapAdapter<>(map,
-				(name) -> count(name, counter));
+				name -> count(name, counter));
 		assertThat(adapter.getContributor("one")).isEqualTo("eno");
 		assertThat(counter.get()).isEqualTo(callCount);
 		assertThat(adapter.getContributor("two")).isEqualTo("owt");
@@ -119,8 +119,7 @@ class NamedContributorsMapAdapterTests {
 		Map<String, String> map = new LinkedHashMap<>();
 		map.put("one", "one");
 		map.put("two", "two");
-		TestNamedContributorsMapAdapter<String> adapter = new TestNamedContributorsMapAdapter<>(map, this::reverse);
-		return adapter;
+		return new TestNamedContributorsMapAdapter<>(map, this::reverse);
 	}
 
 	private String count(CharSequence charSequence, AtomicInteger counter) {

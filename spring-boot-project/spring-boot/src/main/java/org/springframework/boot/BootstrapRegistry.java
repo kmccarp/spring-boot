@@ -146,7 +146,7 @@ public interface BootstrapRegistry {
 		 * @return a new {@link InstanceSupplier}
 		 */
 		static <T> InstanceSupplier<T> of(T instance) {
-			return (registry) -> instance;
+			return registry -> instance;
 		}
 
 		/**
@@ -157,7 +157,7 @@ public interface BootstrapRegistry {
 		 * @return a new {@link InstanceSupplier}
 		 */
 		static <T> InstanceSupplier<T> from(Supplier<T> supplier) {
-			return (registry) -> (supplier != null) ? supplier.get() : null;
+			return registry -> (supplier != null) ? supplier.get() : null;
 		}
 
 	}

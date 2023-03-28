@@ -150,7 +150,7 @@ class ServletComponentScanIntegrationTests {
 		@Bean
 		protected ServletWebServerFactory webServerFactory(ObjectProvider<WebListenerRegistrar> webListenerRegistrars) {
 			ConfigurableServletWebServerFactory factory = createWebServerFactory();
-			webListenerRegistrars.orderedStream().forEach((registrar) -> registrar.register(factory));
+			webListenerRegistrars.orderedStream().forEach(registrar -> registrar.register(factory));
 			return factory;
 		}
 

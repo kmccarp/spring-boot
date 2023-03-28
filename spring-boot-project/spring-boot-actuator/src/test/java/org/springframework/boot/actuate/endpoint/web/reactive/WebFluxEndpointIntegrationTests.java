@@ -77,7 +77,7 @@ class WebFluxEndpointIntegrationTests
 	@Test
 	void responseToOptionsRequestIncludesCorsHeaders() {
 		load(TestEndpointConfiguration.class,
-				(client) -> client.options()
+				client -> client.options()
 					.uri("/test")
 					.accept(MediaType.APPLICATION_JSON)
 					.header("Access-Control-Request-Method", "POST")
@@ -93,7 +93,7 @@ class WebFluxEndpointIntegrationTests
 
 	@Test
 	void readOperationsThatReturnAResourceSupportRangeRequests() {
-		load(ResourceEndpointConfiguration.class, (client) -> {
+		load(ResourceEndpointConfiguration.class, client -> {
 			byte[] responseBody = client.get()
 				.uri("/resource")
 				.header("Range", "bytes=0-3")
@@ -144,7 +144,7 @@ class WebFluxEndpointIntegrationTests
 
 		@Bean
 		ApplicationListener<ReactiveWebServerInitializedEvent> serverInitializedListener() {
-			return (event) -> this.port = event.getWebServer().getPort();
+			return event -> this.port = event.getWebServer().getPort();
 		}
 
 	}

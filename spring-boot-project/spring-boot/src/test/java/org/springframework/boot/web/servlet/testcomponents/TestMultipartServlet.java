@@ -23,5 +23,6 @@ import jakarta.servlet.http.HttpServlet;
 @WebServlet("/test-multipart")
 @MultipartConfig(location = "test", maxFileSize = 1024, maxRequestSize = 2048, fileSizeThreshold = 512)
 public class TestMultipartServlet extends HttpServlet {
+	private static final long serialVersionUID = 1;
 
 }

@@ -54,7 +54,7 @@ class StringToFileConverterTests {
 
 	static Stream<? extends Arguments> conversionServices() {
 		return ConversionServiceArguments
-			.with((conversionService) -> conversionService.addConverter(new StringToFileConverter()));
+			.with(conversionService -> conversionService.addConverter(new StringToFileConverter()));
 	}
 
 }

@@ -261,7 +261,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	void startBlocksUntilReadyToServe() {
 		AbstractServletWebServerFactory factory = getFactory();
 		final Date[] date = new Date[1];
-		this.webServer = factory.getWebServer((servletContext) -> {
+		this.webServer = factory.getWebServer(servletContext -> {
 			try {
 				Thread.sleep(500);
 				date[0] = new Date();
@@ -279,7 +279,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		AbstractServletWebServerFactory factory = getFactory();
 		final InitCountingServlet servlet = new InitCountingServlet();
 		this.webServer = factory
-			.getWebServer((servletContext) -> servletContext.addServlet("test", servlet).setLoadOnStartup(1));
+			.getWebServer(servletContext -> servletContext.addServlet("test", servlet).setLoadOnStartup(1));
 		assertThat(servlet.getInitCount()).isZero();
 		this.webServer.start();
 		assertThat(servlet.getInitCount()).isOne();
@@ -348,7 +348,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	void multipleConfigurations() throws Exception {
 		AbstractServletWebServerFactory factory = getFactory();
 		ServletContextInitializer[] initializers = new ServletContextInitializer[6];
-		Arrays.setAll(initializers, (i) -> mock(ServletContextInitializer.class));
+		Arrays.setAll(initializers, i -> mock(ServletContextInitializer.class));
 		factory.setInitializers(Arrays.asList(initializers[2], initializers[3]));
 		factory.addInitializers(initializers[4], initializers[5]);
 		this.webServer = factory.getWebServer(initializers[0], initializers[1]);
@@ -732,8 +732,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 			.setSSLSocketFactory(socketFactory)
 			.build();
 		HttpClient httpClient = this.httpClientBuilder.get().setConnectionManager(connectionManager).build();
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-		return requestFactory;
+		return new HttpComponentsClientHttpRequestFactory(httpClient);
 	}
 
 	private String getStoreType(String keyStore) {
@@ -816,7 +815,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		factory.getSession().getCookie().setSecure(true);
 		factory.getSession().getCookie().setMaxAge(Duration.ofSeconds(60));
 		final AtomicReference<SessionCookieConfig> configReference = new AtomicReference<>();
-		this.webServer = factory.getWebServer((context) -> configReference.set(context.getSessionCookieConfig()));
+		this.webServer = factory.getWebServer(context -> configReference.set(context.getSessionCookieConfig()));
 		SessionCookieConfig sessionCookieConfig = configReference.get();
 		assertThat(sessionCookieConfig.getName()).isEqualTo("testname");
 		assertThat(sessionCookieConfig.getDomain()).isEqualTo("testdomain");
@@ -840,8 +839,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 		ClientHttpResponse clientResponse = getClientResponse(getLocalUrl("/"));
 		List<String> setCookieHeaders = clientResponse.getHeaders().get("Set-Cookie");
 		assertThat(setCookieHeaders).satisfiesExactlyInAnyOrder(
-				(header) -> assertThat(header).contains("JSESSIONID").contains("SameSite=" + sameSite.attributeValue()),
-				(header) -> assertThat(header).contains("test=test").doesNotContain("SameSite"));
+				header -> assertThat(header).contains("JSESSIONID").contains("SameSite=" + sameSite.attributeValue()),
+				header -> assertThat(header).contains("test=test").doesNotContain("SameSite"));
 	}
 
 	@ParameterizedTest
@@ -857,8 +856,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 		ClientHttpResponse clientResponse = getClientResponse(getLocalUrl("/"));
 		List<String> setCookieHeaders = clientResponse.getHeaders().get("Set-Cookie");
 		assertThat(setCookieHeaders).satisfiesExactlyInAnyOrder(
-				(header) -> assertThat(header).contains("THESESSION").contains("SameSite=" + sameSite.attributeValue()),
-				(header) -> assertThat(header).contains("test=test").doesNotContain("SameSite"));
+				header -> assertThat(header).contains("THESESSION").contains("SameSite=" + sameSite.attributeValue()),
+				header -> assertThat(header).contains("test=test").doesNotContain("SameSite"));
 	}
 
 	@Test
@@ -873,11 +872,11 @@ public abstract class AbstractServletWebServerFactoryTests {
 		ClientHttpResponse clientResponse = getClientResponse(getLocalUrl("/"));
 		List<String> setCookieHeaders = clientResponse.getHeaders().get("Set-Cookie");
 		assertThat(setCookieHeaders).satisfiesExactlyInAnyOrder(
-				(header) -> assertThat(header).contains("JSESSIONID").doesNotContain("SameSite"),
-				(header) -> assertThat(header).contains("test=test").doesNotContain("SameSite"),
-				(header) -> assertThat(header).contains("relaxed=test").contains("SameSite=Lax"),
-				(header) -> assertThat(header).contains("empty=test").contains("SameSite=None"),
-				(header) -> assertThat(header).contains("controlled=test").contains("SameSite=Strict"));
+				header -> assertThat(header).contains("JSESSIONID").doesNotContain("SameSite"),
+				header -> assertThat(header).contains("test=test").doesNotContain("SameSite"),
+				header -> assertThat(header).contains("relaxed=test").contains("SameSite=Lax"),
+				header -> assertThat(header).contains("empty=test").contains("SameSite=None"),
+				header -> assertThat(header).contains("controlled=test").contains("SameSite=Strict"));
 	}
 
 	@Test
@@ -955,7 +954,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	void rootServletContextResource() {
 		AbstractServletWebServerFactory factory = getFactory();
 		final AtomicReference<URL> rootResource = new AtomicReference<>();
-		this.webServer = factory.getWebServer((servletContext) -> {
+		this.webServer = factory.getWebServer(servletContext -> {
 			try {
 				rootResource.set(servletContext.getResource("/"));
 			}
@@ -988,25 +987,25 @@ public abstract class AbstractServletWebServerFactoryTests {
 
 	@Test
 	protected void portClashOfPrimaryConnectorResultsInPortInUseException() throws Exception {
-		doWithBlockedPort((port) -> {
+		doWithBlockedPort(port -> {
 			assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
 				AbstractServletWebServerFactory factory = getFactory();
 				factory.setPort(port);
 				AbstractServletWebServerFactoryTests.this.webServer = factory.getWebServer();
 				AbstractServletWebServerFactoryTests.this.webServer.start();
-			}).satisfies((ex) -> handleExceptionCausedByBlockedPortOnPrimaryConnector(ex, port));
+			}).satisfies(ex -> handleExceptionCausedByBlockedPortOnPrimaryConnector(ex, port));
 		});
 	}
 
 	@Test
 	void portClashOfSecondaryConnectorResultsInPortInUseException() throws Exception {
-		doWithBlockedPort((port) -> {
+		doWithBlockedPort(port -> {
 			assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> {
 				AbstractServletWebServerFactory factory = getFactory();
 				addConnector(port, factory);
 				AbstractServletWebServerFactoryTests.this.webServer = factory.getWebServer();
 				AbstractServletWebServerFactoryTests.this.webServer.start();
-			}).satisfies((ex) -> handleExceptionCausedByBlockedPortOnSecondaryConnector(ex, port));
+			}).satisfies(ex -> handleExceptionCausedByBlockedPortOnSecondaryConnector(ex, port));
 		});
 	}
 
@@ -1056,7 +1055,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	@Test
 	void faultyFilterCausesStartFailure() {
 		AbstractServletWebServerFactory factory = getFactory();
-		factory.addInitializers((servletContext) -> servletContext.addFilter("faulty", new Filter() {
+		factory.addInitializers(servletContext -> servletContext.addFilter("faulty", new Filter() {
 
 			@Override
 			public void init(FilterConfig filterConfig) throws ServletException {
@@ -1109,7 +1108,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	@Test
 	void servletContextListenerContextDestroyedIsCalledWhenContainerIsStopped() throws Exception {
 		ServletContextListener listener = mock(ServletContextListener.class);
-		this.webServer = getFactory().getWebServer((servletContext) -> servletContext.addListener(listener));
+		this.webServer = getFactory().getWebServer(servletContext -> servletContext.addListener(listener));
 		this.webServer.start();
 		this.webServer.stop();
 		then(listener).should().contextDestroyed(any(ServletContextEvent.class));
@@ -1119,7 +1118,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	void exceptionThrownOnLoadFailureIsRethrown() {
 		AbstractServletWebServerFactory factory = getFactory();
 		this.webServer = factory
-			.getWebServer((context) -> context.addServlet("failing", FailingServlet.class).setLoadOnStartup(0));
+			.getWebServer(context -> context.addServlet("failing", FailingServlet.class).setLoadOnStartup(0));
 		assertThatExceptionOfType(WebServerException.class).isThrownBy(this.webServer::start)
 			.satisfies(this::wrapsFailingServletException);
 	}
@@ -1141,7 +1140,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 		});
@@ -1162,7 +1161,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingAsyncServlet blockingAsyncServlet = new BlockingAsyncServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingAsyncServlet);
 			registration.addMapping("/blockingAsync");
 			registration.setAsyncSupported(true);
@@ -1186,7 +1185,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		AbstractServletWebServerFactory factory = getFactory();
 		BlockingServlet blockingServlet = new BlockingServlet();
 		this.webServer = factory
-			.getWebServer((context) -> context.addServlet("blockingServlet", blockingServlet).addMapping("/"));
+			.getWebServer(context -> context.addServlet("blockingServlet", blockingServlet).addMapping("/"));
 		this.webServer.start();
 		int port = this.webServer.getPort();
 		initiateGetRequest(port, "/");
@@ -1238,7 +1237,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
 		this.webServer = factory
-			.getWebServer((context) -> context.addServlet("blockingServlet", blockingServlet).addMapping("/"));
+			.getWebServer(context -> context.addServlet("blockingServlet", blockingServlet).addMapping("/"));
 		this.webServer.start();
 		int port = this.webServer.getPort();
 		initiateGetRequest(port, "/");
@@ -1264,7 +1263,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		RunnableFuture<Object> getRequest = new FutureTask<>(() -> {
 			try {
 				return httpClient.execute(new HttpGet("http://localhost:" + port + path),
-						(HttpClientResponseHandler<HttpResponse>) (response) -> {
+						(HttpClientResponseHandler<HttpResponse>) response -> {
 							response.getEntity().getContent().close();
 							return response;
 						});
@@ -1526,6 +1525,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 	@SuppressWarnings("serial")
 	static class InitCountingServlet extends GenericServlet {
 
+		private static final long serialVersionUID = 1;
+
 		private int initCount;
 
 		@Override
@@ -1571,6 +1572,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 
 	public static class FailingServlet extends HttpServlet {
 
+		private static final long serialVersionUID = 1;
+
 		@Override
 		public void init() throws ServletException {
 			throw new FailingServletException();
@@ -1596,6 +1599,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	protected static class BlockingServlet extends HttpServlet {
+
+		private static final long serialVersionUID = 1;
 
 		private final BlockingQueue<Blocker> blockers = new ArrayBlockingQueue<>(10);
 
@@ -1629,6 +1634,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	static class BlockingAsyncServlet extends HttpServlet {
+
+		private static final long serialVersionUID = 1;
 
 		private final BlockingQueue<Blocker> blockers = new ArrayBlockingQueue<>(10);
 
@@ -1685,6 +1692,8 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	static final class CookieServlet extends HttpServlet {
+
+		private static final long serialVersionUID = 1;
 
 		private final boolean addSupplierTestCookies;
 

@@ -50,14 +50,14 @@ class TomcatEmbeddedWebappClassLoaderTests {
 	@Test
 	void getResourceFindsResourceFromParentClassLoader() throws Exception {
 		File war = createWar();
-		withWebappClassLoader(war, (classLoader) -> assertThat(classLoader.getResource("test.txt"))
+		withWebappClassLoader(war, classLoader -> assertThat(classLoader.getResource("test.txt"))
 			.isEqualTo(new URL(webInfClassesUrlString(war) + "test.txt")));
 	}
 
 	@Test
 	void getResourcesOnlyFindsResourcesFromParentClassLoader() throws Exception {
 		File warFile = createWar();
-		withWebappClassLoader(warFile, (classLoader) -> {
+		withWebappClassLoader(warFile, classLoader -> {
 			List<URL> urls = new ArrayList<>();
 			CollectionUtils.toIterator(classLoader.getResources("test.txt")).forEachRemaining(urls::add);
 			assertThat(urls).containsExactly(new URL(webInfClassesUrlString(warFile) + "test.txt"));

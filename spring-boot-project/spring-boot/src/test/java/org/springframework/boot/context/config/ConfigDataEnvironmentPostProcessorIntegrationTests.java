@@ -97,7 +97,7 @@ class ConfigDataEnvironmentPostProcessorIntegrationTests {
 
 			@Override
 			public Resource getResource(String location) {
-				if (location.equals("classpath:/custom.properties")) {
+				if ("classpath:/custom.properties".equals(location)) {
 					return new ByteArrayResource("the.property: fromcustom".getBytes(), location);
 				}
 				return new ClassPathResource("doesnotexist");
@@ -539,7 +539,7 @@ class ConfigDataEnvironmentPostProcessorIntegrationTests {
 		assertThatIllegalStateException().isThrownBy(() -> this.application.run("--spring.config.location=" + location))
 			.withMessageContaining("Unable to load config data")
 			.withMessageContaining(location)
-			.satisfies((ex) -> assertThat(ex.getCause()).hasMessageContaining("File extension is not known")
+			.satisfies(ex -> assertThat(ex.getCause()).hasMessageContaining("File extension is not known")
 				.hasMessageContaining("it must end in '/'"));
 	}
 
@@ -820,7 +820,7 @@ class ConfigDataEnvironmentPostProcessorIntegrationTests {
 
 			@Override
 			public boolean matches(ConfigurableEnvironment value) {
-				value.getPropertySources().forEach((ps) -> System.out.println(ps.getName()));
+				value.getPropertySources().forEach(ps -> System.out.println(ps.getName()));
 				return value.getPropertySources().contains(sourceName);
 			}
 

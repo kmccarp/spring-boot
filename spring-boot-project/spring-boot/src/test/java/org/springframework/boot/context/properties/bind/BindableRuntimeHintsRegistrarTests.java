@@ -248,17 +248,17 @@ class BindableRuntimeHintsRegistrarTests {
 	}
 
 	private Consumer<TypeHint> javaBeanBinding(Class<?> type, Constructor<?> constructor) {
-		return (entry) -> {
+		return entry -> {
 			assertThat(entry.getType()).isEqualTo(TypeReference.of(type));
 			assertThat(entry.constructors()).singleElement().satisfies(match(constructor));
 			assertThat(entry.getMemberCategories()).isEmpty();
-			assertThat(entry.methods()).allMatch((t) -> t.getName().startsWith("set") || t.getName().startsWith("get")
+			assertThat(entry.methods()).allMatch(t -> t.getName().startsWith("set") || t.getName().startsWith("get")
 					|| t.getName().startsWith("is"));
 		};
 	}
 
 	private Consumer<TypeHint> valueObjectBinding(Class<?> type, Constructor<?> constructor) {
-		return (entry) -> {
+		return entry -> {
 			assertThat(entry.getType()).isEqualTo(TypeReference.of(type));
 			assertThat(entry.constructors()).singleElement().satisfies(match(constructor));
 			assertThat(entry.getMemberCategories()).isEmpty();
@@ -267,7 +267,7 @@ class BindableRuntimeHintsRegistrarTests {
 	}
 
 	private Consumer<ExecutableHint> match(Constructor<?> constructor) {
-		return (executableHint) -> {
+		return executableHint -> {
 			assertThat(executableHint.getName()).isEqualTo("<init>");
 			assertThat(Arrays.stream(constructor.getParameterTypes()).map(TypeReference::of).toList())
 				.isEqualTo(executableHint.getParameterTypes());

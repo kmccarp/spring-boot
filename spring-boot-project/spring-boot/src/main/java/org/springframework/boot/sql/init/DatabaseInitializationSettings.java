@@ -31,7 +31,7 @@ public class DatabaseInitializationSettings {
 
 	private List<String> dataLocations;
 
-	private boolean continueOnError = false;
+	private boolean continueOnError;
 
 	private String separator = ";";
 

@@ -121,7 +121,7 @@ class WebServerManager {
 
 		@Override
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
-			return this.delegate.flatMap((handler) -> handler.handle(request, response));
+			return this.delegate.flatMap(handler -> handler.handle(request, response));
 		}
 
 	}

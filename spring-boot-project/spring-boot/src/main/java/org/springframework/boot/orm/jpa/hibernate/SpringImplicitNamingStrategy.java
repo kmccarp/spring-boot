@@ -33,6 +33,8 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
  */
 public class SpringImplicitNamingStrategy extends ImplicitNamingStrategyJpaCompliantImpl {
 
+	private static final long serialVersionUID = 1;
+
 	@Override
 	public Identifier determineJoinTableName(ImplicitJoinTableNameSource source) {
 		String name = source.getOwningPhysicalTableName() + "_"

@@ -674,7 +674,7 @@ class MapBinderTests {
 
 		@Override
 		public Map<String, String> convert(String s) {
-			return StringUtils.commaDelimitedListToSet(s).stream().collect(Collectors.toMap((k) -> k, (k) -> ""));
+			return StringUtils.commaDelimitedListToSet(s).stream().collect(Collectors.toMap(k -> k, k -> ""));
 		}
 
 	}
@@ -695,6 +695,8 @@ class MapBinderTests {
 	}
 
 	static class MyCustomNoDefaultConstructorMap extends HashMap<String, String> {
+
+		private static final long serialVersionUID = 1;
 
 		MyCustomNoDefaultConstructorMap(Map<String, String> items) {
 			putAll(items);
@@ -718,6 +720,7 @@ class MapBinderTests {
 	}
 
 	static class MyCustomWithDefaultConstructorMap extends HashMap<String, String> {
+		private static final long serialVersionUID = 1;
 
 	}
 

@@ -73,7 +73,7 @@ class TomcatEmbeddedContext extends StandardContext {
 			Wrapper wrapper = (Wrapper) child;
 			int order = wrapper.getLoadOnStartup();
 			if (order >= 0) {
-				grouped.computeIfAbsent(order, (o) -> new ArrayList<>()).add(wrapper);
+				grouped.computeIfAbsent(order, o -> new ArrayList<>()).add(wrapper);
 			}
 		}
 		return grouped.values().stream().flatMap(List::stream);
@@ -131,7 +131,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		List<String> mappings = new ArrayList<>();
 		mappings.addAll(Arrays.asList(super.findMimeMappings()));
 		if (this.mimeMappings != null) {
-			this.mimeMappings.forEach((mapping) -> mappings.add(mapping.getExtension()));
+			this.mimeMappings.forEach(mapping -> mappings.add(mapping.getExtension()));
 		}
 		return mappings.toArray(String[]::new);
 	}

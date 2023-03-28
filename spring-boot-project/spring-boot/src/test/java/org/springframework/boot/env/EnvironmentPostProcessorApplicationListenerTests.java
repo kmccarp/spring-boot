@@ -58,8 +58,8 @@ class EnvironmentPostProcessorApplicationListenerTests {
 	void setup() {
 		ReflectionTestUtils.setField(this.listener, "deferredLogs", this.deferredLogs);
 		ReflectionTestUtils.setField(this.listener, "postProcessorsFactory",
-				(Function<ClassLoader, EnvironmentPostProcessorsFactory>) (
-						classLoader) -> EnvironmentPostProcessorsFactory.of(TestEnvironmentPostProcessor.class));
+				(Function<ClassLoader, EnvironmentPostProcessorsFactory>) 
+						classLoader -> EnvironmentPostProcessorsFactory.of(TestEnvironmentPostProcessor.class));
 	}
 
 	@Test

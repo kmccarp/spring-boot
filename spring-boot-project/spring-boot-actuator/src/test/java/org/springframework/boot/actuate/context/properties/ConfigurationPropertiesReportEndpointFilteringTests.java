@@ -52,7 +52,7 @@ class ConfigurationPropertiesReportEndpointFilteringTests {
 	void filterByPrefixMultipleMatches() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
 			.withPropertyValues("foo.primary.name:foo1", "foo.secondary.name:foo2", "only.bar.name:solo1");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint
@@ -68,7 +68,7 @@ class ConfigurationPropertiesReportEndpointFilteringTests {
 	void filterByPrefixNoMatches() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
 			.withPropertyValues("foo.primary.name:foo1", "foo.secondary.name:foo2", "only.bar.name:solo1");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint
@@ -97,7 +97,7 @@ class ConfigurationPropertiesReportEndpointFilteringTests {
 	}
 
 	private void assertProperties(ApplicationContextRunner contextRunner, String value) {
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class);
 			ConfigurationPropertiesDescriptor applicationProperties = endpoint
@@ -108,7 +108,7 @@ class ConfigurationPropertiesReportEndpointFilteringTests {
 			Optional<String> key = contextProperties.getBeans()
 				.keySet()
 				.stream()
-				.filter((id) -> findIdFromPrefix("only.bar", id))
+				.filter(id -> findIdFromPrefix("only.bar", id))
 				.findAny();
 			ConfigurationPropertiesBeanDescriptor descriptor = contextProperties.getBeans().get(key.get());
 			assertThat(descriptor.getPrefix()).isEqualTo("only.bar");

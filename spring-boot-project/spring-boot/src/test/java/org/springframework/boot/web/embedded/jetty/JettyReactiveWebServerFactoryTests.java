@@ -83,7 +83,7 @@ class JettyReactiveWebServerFactoryTests extends AbstractReactiveWebServerFactor
 		HttpHandler handler = mock(HttpHandler.class);
 		JettyReactiveWebServerFactory factory = getFactory();
 		JettyServerCustomizer[] configurations = new JettyServerCustomizer[4];
-		Arrays.setAll(configurations, (i) -> mock(JettyServerCustomizer.class));
+		Arrays.setAll(configurations, i -> mock(JettyServerCustomizer.class));
 		factory.setServerCustomizers(Arrays.asList(configurations[0], configurations[1]));
 		factory.addServerCustomizers(configurations[2], configurations[3]);
 		this.webServer = factory.getWebServer(handler);
@@ -133,7 +133,7 @@ class JettyReactiveWebServerFactoryTests extends AbstractReactiveWebServerFactor
 		this.webServer = factory.getWebServer(blockingHandler);
 		this.webServer.start();
 		WebClient webClient = getWebClient(this.webServer.getPort()).build();
-		this.webServer.shutDownGracefully((result) -> {
+		this.webServer.shutDownGracefully(result -> {
 		});
 		Awaitility.await().atMost(Duration.ofSeconds(30)).until(() -> {
 			blockingHandler.stopBlocking();

@@ -66,7 +66,7 @@ public class PortInUseException extends WebServerException {
 	 * @since 2.2.7
 	 */
 	public static void throwIfPortBindingException(Exception ex, IntSupplier port) {
-		ifPortBindingException(ex, (bindException) -> {
+		ifPortBindingException(ex, bindException -> {
 			throw new PortInUseException(port.getAsInt(), ex);
 		});
 	}
@@ -79,7 +79,7 @@ public class PortInUseException extends WebServerException {
 	 * @since 2.2.7
 	 */
 	public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
-		ifCausedBy(ex, BindException.class, (bindException) -> {
+		ifCausedBy(ex, BindException.class, bindException -> {
 			// bind exception can be also thrown because an address can't be assigned
 			if (bindException.getMessage().toLowerCase().contains("in use")) {
 				action.accept(bindException);

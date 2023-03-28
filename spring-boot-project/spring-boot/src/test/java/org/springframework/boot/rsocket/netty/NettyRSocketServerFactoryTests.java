@@ -136,7 +136,7 @@ class NettyRSocketServerFactoryTests {
 		RSocketServerCustomizer[] customizers = new RSocketServerCustomizer[2];
 		for (int i = 0; i < customizers.length; i++) {
 			customizers[i] = mock(RSocketServerCustomizer.class);
-			will((invocation) -> invocation.getArgument(0)).given(customizers[i])
+			will(invocation -> invocation.getArgument(0)).given(customizers[i])
 				.customize(any(io.rsocket.core.RSocketServer.class));
 		}
 		factory.setRSocketServerCustomizers(Arrays.asList(customizers));
@@ -242,7 +242,7 @@ class NettyRSocketServerFactoryTests {
 		String payload = "test payload";
 		Mono<String> responseMono = this.requester.route("test").data(payload).retrieveMono(String.class);
 		StepVerifier.create(responseMono)
-			.verifyErrorSatisfies((ex) -> assertThat(ex).isInstanceOf(ClosedChannelException.class));
+			.verifyErrorSatisfies(ex -> assertThat(ex).isInstanceOf(ClosedChannelException.class));
 	}
 
 	private RSocketRequester createRSocketTcpClient() {
@@ -265,9 +265,9 @@ class NettyRSocketServerFactoryTests {
 	private HttpClient createSecureHttpClient() {
 		HttpClient httpClient = createHttpClient();
 		Http11SslContextSpec sslContextSpec = Http11SslContextSpec.forClient()
-			.configure((builder) -> builder.sslProvider(SslProvider.JDK)
+			.configure(builder -> builder.sslProvider(SslProvider.JDK)
 				.trustManager(InsecureTrustManagerFactory.INSTANCE));
-		return httpClient.secure((spec) -> spec.sslContext(sslContextSpec));
+		return httpClient.secure(spec -> spec.sslContext(sslContextSpec));
 	}
 
 	private HttpClient createHttpClient() {
@@ -279,9 +279,9 @@ class NettyRSocketServerFactoryTests {
 	private TcpClient createSecureTcpClient() {
 		TcpClient tcpClient = createTcpClient();
 		Http11SslContextSpec sslContextSpec = Http11SslContextSpec.forClient()
-			.configure((builder) -> builder.sslProvider(SslProvider.JDK)
+			.configure(builder -> builder.sslProvider(SslProvider.JDK)
 				.trustManager(InsecureTrustManagerFactory.INSTANCE));
-		return tcpClient.secure((spec) -> spec.sslContext(sslContextSpec));
+		return tcpClient.secure(spec -> spec.sslContext(sslContextSpec));
 	}
 
 	private TcpClient createTcpClient() {

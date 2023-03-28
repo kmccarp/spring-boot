@@ -78,7 +78,7 @@ class ConfigurationPropertyNameTests {
 		for (char c : invalid.toCharArray()) {
 			assertThatExceptionOfType(InvalidConfigurationPropertyNameException.class)
 				.isThrownBy(() -> ConfigurationPropertyName.of("foo" + c))
-				.satisfies((ex) -> assertThat(ex.getMessage()).contains("is not valid"));
+				.satisfies(ex -> assertThat(ex.getMessage()).contains("is not valid"));
 		}
 	}
 
@@ -281,7 +281,7 @@ class ConfigurationPropertyNameTests {
 	@Test
 	void adaptShouldUseElementValueProcessor() {
 		ConfigurationPropertyName name = ConfigurationPropertyName.adapt("FOO_THE-BAR", '_',
-				(c) -> c.toString().replace("-", ""));
+				c -> c.toString().replace("-", ""));
 		assertThat(name).hasToString("foo.thebar");
 	}
 

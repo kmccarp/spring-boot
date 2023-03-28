@@ -59,7 +59,7 @@ class RedisReactiveHealthIndicatorTests {
 		given(commands.info("server")).willReturn(Mono.just(info));
 		RedisReactiveHealthIndicator healthIndicator = createHealthIndicator(redisConnection, commands);
 		Mono<Health> health = healthIndicator.health();
-		StepVerifier.create(health).consumeNextWith((h) -> {
+		StepVerifier.create(health).consumeNextWith(h -> {
 			assertThat(h.getStatus()).isEqualTo(Status.UP);
 			assertThat(h.getDetails()).containsOnlyKeys("version");
 			assertThat(h.getDetails()).containsEntry("version", "2.8.9");
@@ -72,7 +72,7 @@ class RedisReactiveHealthIndicatorTests {
 		ReactiveRedisConnectionFactory redisConnectionFactory = createClusterConnectionFactory(null);
 		RedisReactiveHealthIndicator healthIndicator = new RedisReactiveHealthIndicator(redisConnectionFactory);
 		Mono<Health> health = healthIndicator.health();
-		StepVerifier.create(health).consumeNextWith((h) -> {
+		StepVerifier.create(health).consumeNextWith(h -> {
 			assertThat(h.getStatus()).isEqualTo(Status.UP);
 			assertThat(h.getDetails()).containsEntry("cluster_size", 4L);
 			assertThat(h.getDetails()).containsEntry("slots_up", 4L);
@@ -86,7 +86,7 @@ class RedisReactiveHealthIndicatorTests {
 		ReactiveRedisConnectionFactory redisConnectionFactory = createClusterConnectionFactory("ok");
 		RedisReactiveHealthIndicator healthIndicator = new RedisReactiveHealthIndicator(redisConnectionFactory);
 		Mono<Health> health = healthIndicator.health();
-		StepVerifier.create(health).consumeNextWith((h) -> {
+		StepVerifier.create(health).consumeNextWith(h -> {
 			assertThat(h.getStatus()).isEqualTo(Status.UP);
 			assertThat(h.getDetails()).containsEntry("cluster_size", 4L);
 			assertThat(h.getDetails()).containsEntry("slots_up", 4L);
@@ -99,7 +99,7 @@ class RedisReactiveHealthIndicatorTests {
 		ReactiveRedisConnectionFactory redisConnectionFactory = createClusterConnectionFactory("fail");
 		RedisReactiveHealthIndicator healthIndicator = new RedisReactiveHealthIndicator(redisConnectionFactory);
 		Mono<Health> health = healthIndicator.health();
-		StepVerifier.create(health).consumeNextWith((h) -> {
+		StepVerifier.create(health).consumeNextWith(h -> {
 			assertThat(h.getStatus()).isEqualTo(Status.DOWN);
 			assertThat(h.getDetails()).containsEntry("slots_up", 3L);
 			assertThat(h.getDetails()).containsEntry("slots_fail", 1L);
@@ -115,7 +115,7 @@ class RedisReactiveHealthIndicatorTests {
 		RedisReactiveHealthIndicator healthIndicator = createHealthIndicator(redisConnection, commands);
 		Mono<Health> health = healthIndicator.health();
 		StepVerifier.create(health)
-			.consumeNextWith((h) -> assertThat(h.getStatus()).isEqualTo(Status.DOWN))
+			.consumeNextWith(h -> assertThat(h.getStatus()).isEqualTo(Status.DOWN))
 			.verifyComplete();
 		then(redisConnection).should().closeLater();
 	}
@@ -128,7 +128,7 @@ class RedisReactiveHealthIndicatorTests {
 		RedisReactiveHealthIndicator healthIndicator = new RedisReactiveHealthIndicator(redisConnectionFactory);
 		Mono<Health> health = healthIndicator.health();
 		StepVerifier.create(health)
-			.consumeNextWith((h) -> assertThat(h.getStatus()).isEqualTo(Status.DOWN))
+			.consumeNextWith(h -> assertThat(h.getStatus()).isEqualTo(Status.DOWN))
 			.verifyComplete();
 	}
 

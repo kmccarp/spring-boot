@@ -487,7 +487,7 @@ class ConfigurationPropertiesTests {
 				new SystemEnvironmentPropertySource(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
 						Collections.singletonMap("MY_SPRING_FOO_NAME", "Jane")));
 		SpringApplication application = new SpringApplication(PrefixConfiguration.class);
-		application.setApplicationContextFactory((webApplicationType) -> ConfigurationPropertiesTests.this.context);
+		application.setApplicationContextFactory(webApplicationType -> ConfigurationPropertiesTests.this.context);
 		application.setEnvironmentPrefix("my");
 		application.setEnvironment(this.context.getEnvironment());
 		application.run();
@@ -709,7 +709,7 @@ class ConfigurationPropertiesTests {
 	@Test
 	void loadWhenHasConfigurationPropertiesValidatorShouldApplyValidator() {
 		assertThatExceptionOfType(Exception.class).isThrownBy(() -> load(WithCustomValidatorConfiguration.class))
-			.satisfies((ex) -> {
+			.satisfies(ex -> {
 				assertThat(ex).hasCauseInstanceOf(BindException.class);
 				assertThat(ex.getCause()).hasCauseExactlyInstanceOf(BindValidationException.class);
 			});
@@ -725,7 +725,7 @@ class ConfigurationPropertiesTests {
 
 	@Test
 	void loadWhenConfigurationPropertiesIsAlsoValidatorShouldApplyValidator() {
-		assertThatExceptionOfType(Exception.class).isThrownBy(() -> load(ValidatorProperties.class)).satisfies((ex) -> {
+		assertThatExceptionOfType(Exception.class).isThrownBy(() -> load(ValidatorProperties.class)).satisfies(ex -> {
 			assertThat(ex).hasCauseInstanceOf(BindException.class);
 			assertThat(ex.getCause()).hasCauseExactlyInstanceOf(BindValidationException.class);
 		});
@@ -929,7 +929,7 @@ class ConfigurationPropertiesTests {
 	void loadWhenBindingToConstructorParametersShouldValidate() {
 		assertThatExceptionOfType(Exception.class)
 			.isThrownBy(() -> load(ConstructorParameterValidationConfiguration.class))
-			.satisfies((ex) -> {
+			.satisfies(ex -> {
 				assertThat(ex).hasCauseInstanceOf(BindException.class);
 				assertThat(ex.getCause()).hasCauseExactlyInstanceOf(BindValidationException.class);
 			});
@@ -2072,7 +2072,7 @@ class ConfigurationPropertiesTests {
 
 		void setFoo(String foo) {
 			this.foo = foo;
-			if (!foo.equals("bar")) {
+			if (!"bar".equals(foo)) {
 				throw new IllegalArgumentException("Wrong value for foo");
 			}
 		}

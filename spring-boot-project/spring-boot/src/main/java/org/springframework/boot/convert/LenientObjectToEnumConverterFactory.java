@@ -98,7 +98,7 @@ abstract class LenientObjectToEnumConverterFactory<T> implements ConverterFactor
 			name.chars()
 				.filter(Character::isLetterOrDigit)
 				.map(Character::toLowerCase)
-				.forEach((c) -> canonicalName.append((char) c));
+				.forEach(c -> canonicalName.append((char) c));
 			return canonicalName.toString();
 		}
 

@@ -102,12 +102,12 @@ class ConfigurationPropertiesBeanTests {
 	@Test
 	void getWhenNotAnnotatedReturnsNull() throws Throwable {
 		get(NonAnnotatedComponent.class, "nonAnnotatedComponent",
-				(propertiesBean) -> assertThat(propertiesBean).isNull());
+				propertiesBean -> assertThat(propertiesBean).isNull());
 	}
 
 	@Test
 	void getWhenBeanIsAnnotatedReturnsBean() throws Throwable {
-		get(AnnotatedComponent.class, "annotatedComponent", (propertiesBean) -> {
+		get(AnnotatedComponent.class, "annotatedComponent", propertiesBean -> {
 			assertThat(propertiesBean).isNotNull();
 			assertThat(propertiesBean.getName()).isEqualTo("annotatedComponent");
 			assertThat(propertiesBean.getInstance()).isInstanceOf(AnnotatedComponent.class);
@@ -119,7 +119,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenFactoryMethodIsAnnotatedReturnsBean() throws Throwable {
-		get(NonAnnotatedBeanConfiguration.class, "nonAnnotatedBean", (propertiesBean) -> {
+		get(NonAnnotatedBeanConfiguration.class, "nonAnnotatedBean", propertiesBean -> {
 			assertThat(propertiesBean).isNotNull();
 			assertThat(propertiesBean.getName()).isEqualTo("nonAnnotatedBean");
 			assertThat(propertiesBean.getInstance()).isInstanceOf(NonAnnotatedBean.class);
@@ -132,7 +132,7 @@ class ConfigurationPropertiesBeanTests {
 	@Test
 	void getWhenImportedFactoryMethodIsAnnotatedAndMetadataCachingIsDisabledReturnsBean() throws Throwable {
 		getWithoutBeanMetadataCaching(NonAnnotatedBeanImportConfiguration.class, "nonAnnotatedBean",
-				(propertiesBean) -> {
+				propertiesBean -> {
 					assertThat(propertiesBean).isNotNull();
 					assertThat(propertiesBean.getName()).isEqualTo("nonAnnotatedBean");
 					assertThat(propertiesBean.getInstance()).isInstanceOf(NonAnnotatedBean.class);
@@ -144,7 +144,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenImportedFactoryMethodIsAnnotatedReturnsBean() throws Throwable {
-		get(NonAnnotatedBeanImportConfiguration.class, "nonAnnotatedBean", (propertiesBean) -> {
+		get(NonAnnotatedBeanImportConfiguration.class, "nonAnnotatedBean", propertiesBean -> {
 			assertThat(propertiesBean).isNotNull();
 			assertThat(propertiesBean.getName()).isEqualTo("nonAnnotatedBean");
 			assertThat(propertiesBean.getInstance()).isInstanceOf(NonAnnotatedBean.class);
@@ -156,7 +156,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenHasFactoryMethodBindsUsingMethodReturnType() throws Throwable {
-		get(NonAnnotatedGenericBeanConfiguration.class, "nonAnnotatedGenericBean", (propertiesBean) -> {
+		get(NonAnnotatedGenericBeanConfiguration.class, "nonAnnotatedGenericBean", propertiesBean -> {
 			assertThat(propertiesBean.getType()).isEqualTo(NonAnnotatedGenericBean.class);
 			assertThat(propertiesBean.getBindMethod()).isEqualTo(BindMethod.JAVA_BEAN);
 			ResolvableType type = propertiesBean.asBindTarget().getType();
@@ -167,7 +167,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenHasFactoryMethodWithoutAnnotationBindsUsingMethodType() throws Throwable {
-		get(AnnotatedGenericBeanConfiguration.class, "annotatedGenericBean", (propertiesBean) -> {
+		get(AnnotatedGenericBeanConfiguration.class, "annotatedGenericBean", propertiesBean -> {
 			assertThat(propertiesBean.getType()).isEqualTo(AnnotatedGenericBean.class);
 			assertThat(propertiesBean.getBindMethod()).isEqualTo(BindMethod.JAVA_BEAN);
 			ResolvableType type = propertiesBean.asBindTarget().getType();
@@ -178,7 +178,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenHasNoFactoryMethodBindsUsingObjectType() throws Throwable {
-		get(AnnotatedGenericComponent.class, "annotatedGenericComponent", (propertiesBean) -> {
+		get(AnnotatedGenericComponent.class, "annotatedGenericComponent", propertiesBean -> {
 			assertThat(propertiesBean.getType()).isEqualTo(AnnotatedGenericComponent.class);
 			assertThat(propertiesBean.getBindMethod()).isEqualTo(BindMethod.JAVA_BEAN);
 			ResolvableType type = propertiesBean.asBindTarget().getType();
@@ -190,12 +190,12 @@ class ConfigurationPropertiesBeanTests {
 	@Test
 	void getWhenHasFactoryMethodAndBeanAnnotationFavorsFactoryMethod() throws Throwable {
 		get(AnnotatedBeanConfiguration.class, "annotatedBean",
-				(propertiesBean) -> assertThat(propertiesBean.getAnnotation().prefix()).isEqualTo("factory"));
+				propertiesBean -> assertThat(propertiesBean.getAnnotation().prefix()).isEqualTo("factory"));
 	}
 
 	@Test
 	void getWhenHasValidatedBeanBindsWithBeanAnnotation() throws Throwable {
-		get(ValidatedBeanConfiguration.class, "validatedBean", (propertiesBean) -> {
+		get(ValidatedBeanConfiguration.class, "validatedBean", propertiesBean -> {
 			Validated validated = propertiesBean.asBindTarget().getAnnotation(Validated.class);
 			assertThat(validated.value()).containsExactly(BeanGroup.class);
 		});
@@ -203,7 +203,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenHasValidatedFactoryMethodBindsWithFactoryMethodAnnotation() throws Throwable {
-		get(ValidatedMethodConfiguration.class, "annotatedBean", (propertiesBean) -> {
+		get(ValidatedMethodConfiguration.class, "annotatedBean", propertiesBean -> {
 			Validated validated = propertiesBean.asBindTarget().getAnnotation(Validated.class);
 			assertThat(validated.value()).containsExactly(FactoryMethodGroup.class);
 		});
@@ -211,7 +211,7 @@ class ConfigurationPropertiesBeanTests {
 
 	@Test
 	void getWhenHasValidatedBeanAndFactoryMethodBindsWithFactoryMethodAnnotation() throws Throwable {
-		get(ValidatedMethodAndBeanConfiguration.class, "validatedBean", (propertiesBean) -> {
+		get(ValidatedMethodAndBeanConfiguration.class, "validatedBean", propertiesBean -> {
 			Validated validated = propertiesBean.asBindTarget().getAnnotation(Validated.class);
 			assertThat(validated.value()).containsExactly(FactoryMethodGroup.class);
 		});

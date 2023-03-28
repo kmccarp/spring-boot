@@ -92,7 +92,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessorTests {
 	@Test
 	@CompileWithForkedClassLoader
 	void aotContributedInitializerBindsValueObject() {
-		compile(createContext(ValueObjectSampleBeanConfiguration.class), (freshContext) -> {
+		compile(createContext(ValueObjectSampleBeanConfiguration.class), freshContext -> {
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(freshContext, "test.name=Hello");
 			freshContext.refresh();
 			ValueObjectSampleBean bean = freshContext.getBean(ValueObjectSampleBean.class);
@@ -103,7 +103,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessorTests {
 	@Test
 	@CompileWithForkedClassLoader
 	void aotContributedInitializerBindsJavaBean() {
-		compile(createContext(JavaBeanSampleBeanConfiguration.class), (freshContext) -> {
+		compile(createContext(JavaBeanSampleBeanConfiguration.class), freshContext -> {
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(freshContext, "test.name=Hello");
 			freshContext.refresh();
 			JavaBeanSampleBean bean = freshContext.getBean(JavaBeanSampleBean.class);
@@ -114,7 +114,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessorTests {
 	@Test
 	@CompileWithForkedClassLoader
 	void aotContributedInitializerBindsScannedValueObject() {
-		compile(createContext(ScanTestConfiguration.class), (freshContext) -> {
+		compile(createContext(ScanTestConfiguration.class), freshContext -> {
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(freshContext, "b.first.name=Hello");
 			freshContext.refresh();
 			BFirstProperties bean = freshContext.getBean(BFirstProperties.class);
@@ -125,7 +125,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessorTests {
 	@Test
 	@CompileWithForkedClassLoader
 	void aotContributedInitializerBindsScannedJavaBean() {
-		compile(createContext(ScanTestConfiguration.class), (freshContext) -> {
+		compile(createContext(ScanTestConfiguration.class), freshContext -> {
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(freshContext, "b.second.number=42");
 			freshContext.refresh();
 			BSecondProperties bean = freshContext.getBean(BSecondProperties.class);
@@ -136,7 +136,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessorTests {
 	private GenericApplicationContext createContext(Class<?>... types) {
 		GenericApplicationContext context = new AnnotationConfigApplicationContext();
 		context.registerBean(JavaBeanSampleBeanConfiguration.class);
-		Arrays.stream(types).forEach((type) -> context.registerBean(type));
+		Arrays.stream(types).forEach(context::registerBean);
 		return context;
 	}
 
@@ -145,7 +145,7 @@ class ConfigurationPropertiesBeanRegistrationAotProcessorTests {
 		TestGenerationContext generationContext = new TestGenerationContext(TestTarget.class);
 		ClassName className = new ApplicationContextAotGenerator().processAheadOfTime(context, generationContext);
 		generationContext.writeGeneratedContent();
-		TestCompiler.forSystem().with(generationContext).compile((compiled) -> {
+		TestCompiler.forSystem().with(generationContext).compile(compiled -> {
 			GenericApplicationContext freshApplicationContext = new GenericApplicationContext();
 			ApplicationContextInitializer<GenericApplicationContext> initializer = compiled
 				.getInstance(ApplicationContextInitializer.class, className.toString());

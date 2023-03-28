@@ -289,7 +289,7 @@ public class StandardConfigDataLocationResolver
 		}
 		return Arrays.stream(subdirectories)
 			.filter(Resource::exists)
-			.map((resource) -> new StandardConfigDataResource(reference, resource, true))
+			.map(resource -> new StandardConfigDataResource(reference, resource, true))
 			.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 

@@ -175,7 +175,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 				return false;
 			}
 		}
-		return (source instanceof EnumerablePropertySource);
+		return source instanceof EnumerablePropertySource;
 	}
 
 	private static PropertySource<?> getRootSource(PropertySource<?> source) {

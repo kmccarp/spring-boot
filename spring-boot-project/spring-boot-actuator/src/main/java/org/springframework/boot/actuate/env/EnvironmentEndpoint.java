@@ -89,7 +89,7 @@ public class EnvironmentEndpoint {
 		if (StringUtils.hasText(pattern)) {
 			return getEnvironmentDescriptor(Pattern.compile(pattern).asPredicate(), showUnsanitized);
 		}
-		return getEnvironmentDescriptor((name) -> true, showUnsanitized);
+		return getEnvironmentDescriptor(name -> true, showUnsanitized);
 	}
 
 	private EnvironmentDescriptor getEnvironmentDescriptor(Predicate<String> propertyNamePredicate,
@@ -146,7 +146,7 @@ public class EnvironmentEndpoint {
 		Map<String, PropertyValueDescriptor> properties = new LinkedHashMap<>();
 		Stream.of(source.getPropertyNames())
 			.filter(namePredicate)
-			.forEach((name) -> properties.put(name, describeValueOf(name, source, showUnsanitized)));
+			.forEach(name -> properties.put(name, describeValueOf(name, source, showUnsanitized)));
 		return new PropertySourceDescriptor(sourceName, properties);
 	}
 
@@ -154,7 +154,7 @@ public class EnvironmentEndpoint {
 	private PropertyValueDescriptor describeValueOf(String name, PropertySource<?> source, boolean showUnsanitized) {
 		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(getPropertySources());
 		Object resolved = resolver.resolvePlaceholders(source.getProperty(name));
-		Origin origin = ((source instanceof OriginLookup) ? ((OriginLookup<Object>) source).getOrigin(name) : null);
+		Origin origin = (source instanceof OriginLookup) ? ((OriginLookup<Object>) source).getOrigin(name) : null;
 		Object sanitizedValue = sanitize(source, name, resolved, showUnsanitized);
 		return new PropertyValueDescriptor(stringifyIfNecessary(sanitizedValue), origin);
 	}

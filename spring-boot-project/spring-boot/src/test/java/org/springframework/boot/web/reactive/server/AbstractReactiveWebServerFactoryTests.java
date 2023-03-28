@@ -217,9 +217,9 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 
 	protected ReactorClientHttpConnector buildTrustAllSslConnector() {
 		Http11SslContextSpec sslContextSpec = Http11SslContextSpec.forClient()
-			.configure((builder) -> builder.sslProvider(SslProvider.JDK)
+			.configure(builder -> builder.sslProvider(SslProvider.JDK)
 				.trustManager(InsecureTrustManagerFactory.INSTANCE));
-		HttpClient client = HttpClient.create().wiretap(true).secure((spec) -> spec.sslContext(sslContextSpec));
+		HttpClient client = HttpClient.create().wiretap(true).secure(spec -> spec.sslContext(sslContextSpec));
 		return new ReactorClientHttpConnector(client);
 	}
 
@@ -256,10 +256,10 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 		clientKeyManagerFactory.init(clientKeyStore, keyStorePassword.toCharArray());
 
 		Http11SslContextSpec sslContextSpec = Http11SslContextSpec.forClient()
-			.configure((builder) -> builder.sslProvider(SslProvider.JDK)
+			.configure(builder -> builder.sslProvider(SslProvider.JDK)
 				.trustManager(InsecureTrustManagerFactory.INSTANCE)
 				.keyManager(clientKeyManagerFactory));
-		HttpClient client = HttpClient.create().wiretap(true).secure((spec) -> spec.sslContext(sslContextSpec));
+		HttpClient client = HttpClient.create().wiretap(true).secure(spec -> spec.sslContext(sslContextSpec));
 		return new ReactorClientHttpConnector(client);
 	}
 
@@ -430,7 +430,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 			.toBodilessEntity();
 		AtomicReference<ResponseEntity<Void>> responseReference = new AtomicReference<>();
 		CountDownLatch responseLatch = new CountDownLatch(1);
-		request.subscribe((response) -> {
+		request.subscribe(response -> {
 			responseReference.set(response);
 			responseLatch.countDown();
 		});
@@ -457,7 +457,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 			.toBodilessEntity();
 		AtomicReference<ResponseEntity<Void>> responseReference = new AtomicReference<>();
 		CountDownLatch responseLatch = new CountDownLatch(1);
-		request.subscribe((response) -> {
+		request.subscribe(response -> {
 			responseReference.set(response);
 			responseLatch.countDown();
 		});
@@ -491,7 +491,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 			.toBodilessEntity();
 		AtomicReference<ResponseEntity<Void>> responseReference = new AtomicReference<>();
 		CountDownLatch responseLatch = new CountDownLatch(1);
-		request.subscribe((response) -> {
+		request.subscribe(response -> {
 			responseReference.set(response);
 			responseLatch.countDown();
 		});
@@ -517,7 +517,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 			.toBodilessEntity();
 		AtomicReference<ResponseEntity<Void>> responseReference = new AtomicReference<>();
 		CountDownLatch responseLatch = new CountDownLatch(1);
-		request.subscribe((response) -> {
+		request.subscribe(response -> {
 			responseReference.set(response);
 			responseLatch.countDown();
 		});
@@ -591,7 +591,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 		HttpClient client = HttpClient.create()
 			.wiretap(true)
 			.compress(true)
-			.doOnConnected((connection) -> connection.channel()
+			.doOnConnected(connection -> connection.channel()
 				.pipeline()
 				.addBefore(NettyPipeline.HttpDecompressor, "CompressionTest", new CompressionDetectionHandler()));
 		return getWebClient(client, this.webServer.getPort()).build();

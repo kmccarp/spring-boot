@@ -47,7 +47,7 @@ public class ConnectionPoolMetrics implements MeterBinder {
 
 	@Override
 	public void bindTo(MeterRegistry registry) {
-		this.pool.getMetrics().ifPresent((poolMetrics) -> {
+		this.pool.getMetrics().ifPresent(poolMetrics -> {
 			bindConnectionPoolMetric(registry,
 					Gauge.builder(metricKey("acquired"), poolMetrics, PoolMetrics::acquiredSize)
 						.description("Size of successfully acquired connections which are in active use."));

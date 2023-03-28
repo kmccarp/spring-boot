@@ -69,7 +69,7 @@ final class DelimitedStringToCollectionConverter implements ConditionalGenericCo
 		Collection<Object> target = createCollection(targetType, elementDescriptor, elements.length);
 		Stream<Object> stream = Arrays.stream(elements).map(String::trim);
 		if (elementDescriptor != null) {
-			stream = stream.map((element) -> this.conversionService.convert(element, sourceType, elementDescriptor));
+			stream = stream.map(element -> this.conversionService.convert(element, sourceType, elementDescriptor));
 		}
 		stream.forEach(target::add);
 		return target;

@@ -159,7 +159,7 @@ class CassandraDriverHealthIndicatorTests {
 
 	private Map<UUID, Node> createNodesWithRandomUUID(List<Node> nodes) {
 		Map<UUID, Node> indexedNodes = new HashMap<>();
-		nodes.forEach((node) -> indexedNodes.put(UUID.randomUUID(), node));
+		nodes.forEach(node -> indexedNodes.put(UUID.randomUUID(), node));
 		return indexedNodes;
 	}
 

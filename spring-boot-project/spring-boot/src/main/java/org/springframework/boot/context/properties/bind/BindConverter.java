@@ -140,6 +140,8 @@ final class BindConverter {
 	 */
 	private static class ResolvableTypeDescriptor extends TypeDescriptor {
 
+		private static final long serialVersionUID = 1;
+
 		ResolvableTypeDescriptor(ResolvableType resolvableType, Annotation[] annotations) {
 			super(resolvableType, null, annotations);
 		}
@@ -213,7 +215,7 @@ final class BindConverter {
 			if (editor == null && String.class != type) {
 				editor = BeanUtils.findEditorByConvention(type);
 			}
-			return (editor != null && !EXCLUDED_EDITORS.contains(editor.getClass()));
+			return editor != null && !EXCLUDED_EDITORS.contains(editor.getClass());
 		}
 
 		@Override

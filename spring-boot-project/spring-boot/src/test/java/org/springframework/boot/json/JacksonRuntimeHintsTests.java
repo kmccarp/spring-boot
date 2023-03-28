@@ -47,7 +47,7 @@ class JacksonRuntimeHintsTests {
 		Stream
 			.of(AtomicBooleanSerializer.class, AtomicIntegerSerializer.class, AtomicLongSerializer.class,
 					FileSerializer.class, ClassSerializer.class, TokenBufferSerializer.class)
-			.forEach((serializer) -> {
+			.forEach(serializer -> {
 				TypeHint typeHint = hints.getTypeHint(serializer);
 				assertThat(typeHint).withFailMessage(() -> "No hints found for serializer " + serializer).isNotNull();
 				Set<MemberCategory> memberCategories = typeHint.getMemberCategories();

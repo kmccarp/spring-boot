@@ -47,7 +47,7 @@ class MongoReactiveHealthIndicatorTests {
 		MongoReactiveHealthIndicator mongoReactiveHealthIndicator = new MongoReactiveHealthIndicator(
 				reactiveMongoTemplate);
 		Mono<Health> health = mongoReactiveHealthIndicator.health();
-		StepVerifier.create(health).consumeNextWith((h) -> {
+		StepVerifier.create(health).consumeNextWith(h -> {
 			assertThat(h.getStatus()).isEqualTo(Status.UP);
 			assertThat(h.getDetails()).containsOnlyKeys("maxWireVersion");
 			assertThat(h.getDetails()).containsEntry("maxWireVersion", 10);
@@ -62,7 +62,7 @@ class MongoReactiveHealthIndicatorTests {
 		MongoReactiveHealthIndicator mongoReactiveHealthIndicator = new MongoReactiveHealthIndicator(
 				reactiveMongoTemplate);
 		Mono<Health> health = mongoReactiveHealthIndicator.health();
-		StepVerifier.create(health).consumeNextWith((h) -> {
+		StepVerifier.create(health).consumeNextWith(h -> {
 			assertThat(h.getStatus()).isEqualTo(Status.DOWN);
 			assertThat(h.getDetails()).containsOnlyKeys("error");
 			assertThat(h.getDetails()).containsEntry("error", MongoException.class.getName() + ": Connection failed");

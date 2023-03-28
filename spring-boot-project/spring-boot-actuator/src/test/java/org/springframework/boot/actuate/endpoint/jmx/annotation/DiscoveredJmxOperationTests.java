@@ -129,7 +129,7 @@ class DiscoveredJmxOperationTests {
 
 	private Method findMethod(String methodName) {
 		Map<String, Method> methods = new HashMap<>();
-		ReflectionUtils.doWithMethods(Example.class, (method) -> methods.put(method.getName(), method));
+		ReflectionUtils.doWithMethods(Example.class, method -> methods.put(method.getName(), method));
 		return methods.get(methodName);
 	}
 

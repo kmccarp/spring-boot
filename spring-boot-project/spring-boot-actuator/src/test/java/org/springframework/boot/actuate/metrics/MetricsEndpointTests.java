@@ -134,8 +134,8 @@ class MetricsEndpointTests {
 		MetricsEndpoint.MetricDescriptor response = this.endpoint.metric("cache", Collections.singletonList("host:1"));
 		assertThat(response.getAvailableTags()
 			.stream()
-			.filter((t) -> t.getTag().equals("region"))
-			.flatMap((t) -> t.getValues().stream())).containsExactly("east");
+			.filter(t -> "region".equals(t.getTag()))
+			.flatMap(t -> t.getValues().stream())).containsExactly("east");
 	}
 
 	@Test
@@ -196,14 +196,14 @@ class MetricsEndpointTests {
 		assertThat(endpoint.metric(metricName, Collections.emptyList())
 			.getMeasurements()
 			.stream()
-			.filter((sample) -> sample.getStatistic().equals(stat))
-			.findAny()).hasValueSatisfying((sample) -> assertThat(sample.getValue()).isEqualTo(value));
+			.filter(sample -> sample.getStatistic().equals(stat))
+			.findAny()).hasValueSatisfying(sample -> assertThat(sample.getValue()).isEqualTo(value));
 	}
 
 	private Optional<Double> getCount(MetricsEndpoint.MetricDescriptor response) {
 		return response.getMeasurements()
 			.stream()
-			.filter((sample) -> sample.getStatistic().equals(Statistic.COUNT))
+			.filter(sample -> sample.getStatistic().equals(Statistic.COUNT))
 			.findAny()
 			.map(MetricsEndpoint.Sample::getValue);
 	}

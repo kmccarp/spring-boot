@@ -132,7 +132,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	}
 
 	ConfigurationPropertiesDescriptor getConfigurationProperties(boolean showUnsanitized) {
-		return getConfigurationProperties(this.context, (bean) -> true, showUnsanitized);
+		return getConfigurationProperties(this.context, bean -> true, showUnsanitized);
 	}
 
 	@ReadOperation
@@ -142,7 +142,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	}
 
 	ConfigurationPropertiesDescriptor getConfigurationProperties(String prefix, boolean showUnsanitized) {
-		return getConfigurationProperties(this.context, (bean) -> bean.getAnnotation().prefix().startsWith(prefix),
+		return getConfigurationProperties(this.context, bean -> bean.getAnnotation().prefix().startsWith(prefix),
 				showUnsanitized);
 	}
 
@@ -210,7 +210,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 			.stream()
 			.filter(beanFilterPredicate)
 			.collect(Collectors.toMap(ConfigurationPropertiesBean::getName,
-					(bean) -> describeBean(mapper, bean, showUnsanitized)));
+					bean -> describeBean(mapper, bean, showUnsanitized)));
 		return new ContextConfigurationPropertiesDescriptor(descriptors,
 				(context.getParent() != null) ? context.getParent().getId() : null);
 	}
@@ -404,6 +404,8 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	 */
 	private static class ConfigurationPropertiesAnnotationIntrospector extends JacksonAnnotationIntrospector {
 
+		private static final long serialVersionUID = 1;
+
 		@Override
 		public Object findFilterId(Annotated a) {
 			Object id = super.findFilterId(a);
@@ -473,6 +475,8 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	 * {@link SimpleModule} for configuring the serializer.
 	 */
 	private static final class ConfigurationPropertiesModule extends SimpleModule {
+
+		private static final long serialVersionUID = 1;
 
 		private ConfigurationPropertiesModule() {
 			addSerializer(DataSize.class, ToStringSerializer.instance);

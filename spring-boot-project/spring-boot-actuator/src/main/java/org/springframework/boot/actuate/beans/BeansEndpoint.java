@@ -137,8 +137,8 @@ public class BeansEndpoint {
 		}
 
 		private static boolean isBeanEligible(String beanName, BeanDefinition bd, ConfigurableBeanFactory bf) {
-			return (bd.getRole() != BeanDefinition.ROLE_INFRASTRUCTURE
-					&& (!bd.isLazyInit() || bf.containsSingleton(beanName)));
+			return bd.getRole() != BeanDefinition.ROLE_INFRASTRUCTURE
+					&& (!bd.isLazyInit() || bf.containsSingleton(beanName));
 		}
 
 	}
@@ -160,7 +160,7 @@ public class BeansEndpoint {
 
 		private BeanDescriptor(String[] aliases, String scope, Class<?> type, String resource, String[] dependencies) {
 			this.aliases = aliases;
-			this.scope = (StringUtils.hasText(scope) ? scope : BeanDefinition.SCOPE_SINGLETON);
+			this.scope = StringUtils.hasText(scope) ? scope : BeanDefinition.SCOPE_SINGLETON;
 			this.type = type;
 			this.resource = resource;
 			this.dependencies = dependencies;

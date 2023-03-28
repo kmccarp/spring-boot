@@ -133,7 +133,7 @@ class RequestPredicateFactory {
 
 	private boolean consumesRequestBody(Method method) {
 		return Stream.of(method.getParameters())
-			.anyMatch((parameter) -> parameter.getAnnotation(Selector.class) == null);
+			.anyMatch(parameter -> parameter.getAnnotation(Selector.class) == null);
 	}
 
 	private WebEndpointHttpMethod determineHttpMethod(OperationType operationType) {

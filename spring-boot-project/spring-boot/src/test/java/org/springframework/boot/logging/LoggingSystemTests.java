@@ -58,7 +58,7 @@ class LoggingSystemTests {
 	@Test
 	void listLoggerConfigurationsIsUnsupported() {
 		assertThatExceptionOfType(UnsupportedOperationException.class)
-			.isThrownBy(() -> new StubLoggingSystem().getLoggerConfigurations());
+			.isThrownBy(new StubLoggingSystem()::getLoggerConfigurations);
 	}
 
 	private static final class StubLoggingSystem extends LoggingSystem {

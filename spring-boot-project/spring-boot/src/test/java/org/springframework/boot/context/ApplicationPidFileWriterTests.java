@@ -131,7 +131,7 @@ class ApplicationPidFileWriterTests {
 
 	@Test
 	void continueWhenPidFileIsReadOnly() throws Exception {
-		withReadOnlyPidFile((file) -> {
+		withReadOnlyPidFile(file -> {
 			ApplicationPidFileWriter listener = new ApplicationPidFileWriter(file);
 			listener.onApplicationEvent(EVENT);
 			assertThat(contentOf(file)).isEmpty();
@@ -140,7 +140,7 @@ class ApplicationPidFileWriterTests {
 
 	@Test
 	void throwWhenPidFileIsReadOnly() throws Exception {
-		withReadOnlyPidFile((file) -> {
+		withReadOnlyPidFile(file -> {
 			System.setProperty("PID_FAIL_ON_WRITE_ERROR", "true");
 			ApplicationPidFileWriter listener = new ApplicationPidFileWriter(file);
 			assertThatIllegalStateException().isThrownBy(() -> listener.onApplicationEvent(EVENT))
@@ -150,7 +150,7 @@ class ApplicationPidFileWriterTests {
 
 	@Test
 	void throwWhenPidFileIsReadOnlyWithSpring() throws Exception {
-		withReadOnlyPidFile((file) -> {
+		withReadOnlyPidFile(file -> {
 			SpringApplicationEvent event = createPreparedEvent("spring.pid.fail-on-write-error", "true");
 			ApplicationPidFileWriter listener = new ApplicationPidFileWriter(file);
 			assertThatIllegalStateException().isThrownBy(() -> listener.onApplicationEvent(event))

@@ -45,7 +45,7 @@ class DataSourceBuilderRuntimeHintsTests {
 					org.postgresql.ds.PGSimpleDataSource.class,
 					org.springframework.jdbc.datasource.SimpleDriverDataSource.class,
 					org.apache.tomcat.jdbc.pool.DataSource.class)
-			.forEach((dataSourceType) -> {
+			.forEach(dataSourceType -> {
 				TypeHint typeHint = hints.getTypeHint(dataSourceType);
 				assertThat(typeHint).withFailMessage(() -> "No hints found for data source type " + dataSourceType)
 					.isNotNull();

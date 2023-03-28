@@ -152,7 +152,7 @@ class ConfigurationPropertiesScanTests {
 
 		@Override
 		public boolean equals(Object o) {
-			return (this == o);
+			return this == o;
 		}
 
 		@Override

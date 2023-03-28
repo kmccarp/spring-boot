@@ -70,7 +70,7 @@ class HealthEndpointWebIntegrationTests {
 	void whenHealthIsUpAndAcceptsV3Request200ResponseIsReturned(WebTestClient client) {
 		client.get()
 			.uri("/actuator/health")
-			.headers((headers) -> headers.set(HttpHeaders.ACCEPT, V3_JSON))
+			.headers(headers -> headers.set(HttpHeaders.ACCEPT, V3_JSON))
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -87,7 +87,7 @@ class HealthEndpointWebIntegrationTests {
 	void whenHealthIsUpAndAcceptsAllRequest200ResponseIsReturned(WebTestClient client) {
 		client.get()
 			.uri("/actuator/health")
-			.headers((headers) -> headers.set(HttpHeaders.ACCEPT, "*/*"))
+			.headers(headers -> headers.set(HttpHeaders.ACCEPT, "*/*"))
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -104,7 +104,7 @@ class HealthEndpointWebIntegrationTests {
 	void whenHealthIsUpAndV2Request200ResponseIsReturnedInV2Format(WebTestClient client) {
 		client.get()
 			.uri("/actuator/health")
-			.headers((headers) -> headers.set(HttpHeaders.ACCEPT, V2_JSON))
+			.headers(headers -> headers.set(HttpHeaders.ACCEPT, V2_JSON))
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -252,7 +252,7 @@ class HealthEndpointWebIntegrationTests {
 				Map<String, ReactiveHealthContributor> reactiveHealthContributorBeans) {
 			Map<String, ReactiveHealthContributor> allIndicators = new LinkedHashMap<>(reactiveHealthContributorBeans);
 			healthContributorBeans.forEach((name, contributor) -> allIndicators.computeIfAbsent(name,
-					(key) -> ReactiveHealthContributor.adapt(contributor)));
+					key -> ReactiveHealthContributor.adapt(contributor)));
 			return new DefaultReactiveHealthContributorRegistry(allIndicators);
 		}
 
@@ -281,7 +281,7 @@ class HealthEndpointWebIntegrationTests {
 		@Bean
 		HealthEndpointGroups healthEndpointGroups() {
 			TestHealthEndpointGroup primary = new TestHealthEndpointGroup();
-			TestHealthEndpointGroup allTheAs = new TestHealthEndpointGroup((name) -> name.startsWith("a"));
+			TestHealthEndpointGroup allTheAs = new TestHealthEndpointGroup(name -> name.startsWith("a"));
 			return HealthEndpointGroups.of(primary, Collections.singletonMap("alltheas", allTheAs));
 		}
 

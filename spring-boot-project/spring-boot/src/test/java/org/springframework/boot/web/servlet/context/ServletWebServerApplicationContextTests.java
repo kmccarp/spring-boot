@@ -191,7 +191,7 @@ class ServletWebServerApplicationContextTests {
 	void cannotSecondRefresh() {
 		addWebServerFactoryBean();
 		this.context.refresh();
-		assertThatIllegalStateException().isThrownBy(() -> this.context.refresh());
+		assertThatIllegalStateException().isThrownBy(this.context::refresh);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ class ServletWebServerApplicationContextTests {
 
 	@Test
 	void missingServletWebServerFactory() {
-		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(() -> this.context.refresh())
+		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(this.context::refresh)
 			.havingRootCause()
 			.withMessageContaining("Unable to start ServletWebServerApplicationContext due to missing "
 					+ "ServletWebServerFactory bean");
@@ -216,7 +216,7 @@ class ServletWebServerApplicationContextTests {
 		addWebServerFactoryBean();
 		this.context.registerBeanDefinition("webServerFactory2",
 				new RootBeanDefinition(MockServletWebServerFactory.class));
-		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(() -> this.context.refresh())
+		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(this.context::refresh)
 			.havingRootCause()
 			.withMessageContaining("Unable to start ServletWebServerApplicationContext due to "
 					+ "multiple ServletWebServerFactory beans");
@@ -455,7 +455,7 @@ class ServletWebServerApplicationContextTests {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(WithAutowiredServletRequest.class);
 		beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 		this.context.registerBeanDefinition("withAutowiredServletRequest", beanDefinition);
-		this.context.addBeanFactoryPostProcessor((beanFactory) -> {
+		this.context.addBeanFactoryPostProcessor(beanFactory -> {
 			WithAutowiredServletRequest bean = beanFactory.getBean(WithAutowiredServletRequest.class);
 			assertThat(bean.getRequest()).isNotNull();
 		});

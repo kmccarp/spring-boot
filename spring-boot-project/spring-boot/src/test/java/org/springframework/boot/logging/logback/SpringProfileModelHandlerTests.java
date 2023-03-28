@@ -62,7 +62,7 @@ class SpringProfileModelHandlerTests {
 		ArgumentCaptor<Profiles> profiles = ArgumentCaptor.forClass(Profiles.class);
 		then(this.environment).should().acceptsProfiles(profiles.capture());
 		List<String> profileNames = new ArrayList<>();
-		profiles.getValue().matches((profile) -> {
+		profiles.getValue().matches(profile -> {
 			profileNames.add(profile);
 			return false;
 		});
@@ -77,7 +77,7 @@ class SpringProfileModelHandlerTests {
 		ArgumentCaptor<Profiles> profiles = ArgumentCaptor.forClass(Profiles.class);
 		then(this.environment).should().acceptsProfiles(profiles.capture());
 		List<String> profileNames = new ArrayList<>();
-		profiles.getValue().matches((profile) -> {
+		profiles.getValue().matches(profile -> {
 			profileNames.add(profile);
 			return false;
 		});
@@ -93,7 +93,7 @@ class SpringProfileModelHandlerTests {
 		ArgumentCaptor<Profiles> profiles = ArgumentCaptor.forClass(Profiles.class);
 		then(this.environment).should().acceptsProfiles(profiles.capture());
 		List<String> profileNames = new ArrayList<>();
-		profiles.getValue().matches((profile) -> {
+		profiles.getValue().matches(profile -> {
 			profileNames.add(profile);
 			return false;
 		});
@@ -111,7 +111,7 @@ class SpringProfileModelHandlerTests {
 		ArgumentCaptor<Profiles> profiles = ArgumentCaptor.forClass(Profiles.class);
 		then(this.environment).should().acceptsProfiles(profiles.capture());
 		List<String> profileNames = new ArrayList<>();
-		profiles.getValue().matches((profile) -> {
+		profiles.getValue().matches(profile -> {
 			profileNames.add(profile);
 			return false;
 		});

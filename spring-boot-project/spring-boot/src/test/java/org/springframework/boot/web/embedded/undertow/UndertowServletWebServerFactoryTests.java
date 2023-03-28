@@ -111,7 +111,7 @@ class UndertowServletWebServerFactoryTests extends AbstractServletWebServerFacto
 	void builderCustomizers() {
 		UndertowServletWebServerFactory factory = getFactory();
 		UndertowBuilderCustomizer[] customizers = new UndertowBuilderCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(UndertowBuilderCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(UndertowBuilderCustomizer.class));
 		factory.setBuilderCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addBuilderCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer();
@@ -140,7 +140,7 @@ class UndertowServletWebServerFactoryTests extends AbstractServletWebServerFacto
 	void deploymentInfo() {
 		UndertowServletWebServerFactory factory = getFactory();
 		UndertowDeploymentInfoCustomizer[] customizers = new UndertowDeploymentInfoCustomizer[4];
-		Arrays.setAll(customizers, (i) -> mock(UndertowDeploymentInfoCustomizer.class));
+		Arrays.setAll(customizers, i -> mock(UndertowDeploymentInfoCustomizer.class));
 		factory.setDeploymentInfoCustomizers(Arrays.asList(customizers[0], customizers[1]));
 		factory.addDeploymentInfoCustomizers(customizers[2], customizers[3]);
 		this.webServer = factory.getWebServer();
@@ -159,7 +159,7 @@ class UndertowServletWebServerFactoryTests extends AbstractServletWebServerFacto
 	void defaultContextPath() {
 		UndertowServletWebServerFactory factory = getFactory();
 		final AtomicReference<String> contextPath = new AtomicReference<>();
-		factory.addDeploymentInfoCustomizers((deploymentInfo) -> contextPath.set(deploymentInfo.getContextPath()));
+		factory.addDeploymentInfoCustomizers(deploymentInfo -> contextPath.set(deploymentInfo.getContextPath()));
 		this.webServer = factory.getWebServer();
 		assertThat(contextPath.get()).isEqualTo("/");
 	}
@@ -191,7 +191,7 @@ class UndertowServletWebServerFactoryTests extends AbstractServletWebServerFacto
 		AbstractServletWebServerFactory factory = getFactory();
 		factory.setShutdown(Shutdown.GRACEFUL);
 		BlockingServlet blockingServlet = new BlockingServlet();
-		this.webServer = factory.getWebServer((context) -> {
+		this.webServer = factory.getWebServer(context -> {
 			Dynamic registration = context.addServlet("blockingServlet", blockingServlet);
 			registration.addMapping("/blocking");
 			registration.setAsyncSupported(true);
@@ -231,7 +231,7 @@ class UndertowServletWebServerFactoryTests extends AbstractServletWebServerFacto
 	@Override
 	protected void addConnector(int port, AbstractServletWebServerFactory factory) {
 		((UndertowServletWebServerFactory) factory)
-			.addBuilderCustomizers((builder) -> builder.addHttpListener(port, "0.0.0.0"));
+			.addBuilderCustomizers(builder -> builder.addHttpListener(port, "0.0.0.0"));
 	}
 
 	@Test

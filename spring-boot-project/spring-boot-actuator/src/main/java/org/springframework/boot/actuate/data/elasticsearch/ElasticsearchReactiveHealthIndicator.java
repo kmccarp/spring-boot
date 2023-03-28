@@ -46,7 +46,7 @@ public class ElasticsearchReactiveHealthIndicator extends AbstractReactiveHealth
 
 	@Override
 	protected Mono<Health> doHealthCheck(Health.Builder builder) {
-		return this.client.cluster().health((b) -> b).map((response) -> processResponse(builder, response));
+		return this.client.cluster().health(b -> b).map(response -> processResponse(builder, response));
 	}
 
 	private Health processResponse(Health.Builder builder, HealthResponse response) {

@@ -62,7 +62,7 @@ public class NettyWebServer implements WebServer {
 	 */
 	private static final int ERROR_NO_EACCES = -13;
 
-	private static final Predicate<HttpServerRequest> ALWAYS = (request) -> true;
+	private static final Predicate<HttpServerRequest> ALWAYS = request -> true;
 
 	private static final Log logger = LogFactory.getLog(NettyWebServer.class);
 
@@ -100,7 +100,7 @@ public class NettyWebServer implements WebServer {
 				this.disposableServer = startHttpServer();
 			}
 			catch (Exception ex) {
-				PortInUseException.ifCausedBy(ex, ChannelBindException.class, (bindException) -> {
+				PortInUseException.ifCausedBy(ex, ChannelBindException.class, bindException -> {
 					if (bindException.localPort() > 0 && !isPermissionDenied(bindException.getCause())) {
 						throw new PortInUseException(bindException.localPort(), ex);
 					}

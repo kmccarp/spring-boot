@@ -125,7 +125,7 @@ class ReflectiveOperationInvokerTests {
 		String reverseNullable(ApiVersion apiVersion, SecurityContext securityContext, @Nullable String name) {
 			assertThat(apiVersion).isEqualTo(ApiVersion.LATEST);
 			assertThat(securityContext).isNotNull();
-			return new StringBuilder(String.valueOf(name)).reverse().toString();
+			return new StringBuilder(name).reverse().toString();
 		}
 
 	}

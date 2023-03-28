@@ -28,12 +28,12 @@ import org.springframework.util.unit.DataSize;
  */
 public class Compression {
 
-	private boolean enabled = false;
+	private boolean enabled;
 
 	private String[] mimeTypes = new String[] { "text/html", "text/xml", "text/plain", "text/css", "text/javascript",
 			"application/javascript", "application/json", "application/xml" };
 
-	private String[] excludedUserAgents = null;
+	private String[] excludedUserAgents;
 
 	private DataSize minResponseSize = DataSize.ofKilobytes(2);
 

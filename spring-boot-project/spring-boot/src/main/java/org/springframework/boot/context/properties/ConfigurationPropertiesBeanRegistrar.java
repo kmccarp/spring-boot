@@ -64,7 +64,7 @@ final class ConfigurationPropertiesBeanRegistrar {
 
 	private String getName(Class<?> type, MergedAnnotation<ConfigurationProperties> annotation) {
 		String prefix = annotation.isPresent() ? annotation.getString("prefix") : "";
-		return (StringUtils.hasText(prefix) ? prefix + "-" + type.getName() : type.getName());
+		return StringUtils.hasText(prefix) ? prefix + "-" + type.getName() : type.getName();
 	}
 
 	private boolean containsBeanDefinition(String name) {

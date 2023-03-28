@@ -58,7 +58,7 @@ class ConfigurationPropertiesReportEndpointProxyTests {
 	void testWithProxyClass() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class,
 				SqlExecutor.class);
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesDescriptor applicationProperties = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class)
 				.configurationProperties();
@@ -78,7 +78,7 @@ class ConfigurationPropertiesReportEndpointProxyTests {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withUserConfiguration(ValidatedConfiguration.class)
 			.withPropertyValues("validated.name=baz");
-		contextRunner.run((context) -> {
+		contextRunner.run(context -> {
 			ConfigurationPropertiesDescriptor applicationProperties = context
 				.getBean(ConfigurationPropertiesReportEndpoint.class)
 				.configurationProperties();

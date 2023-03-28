@@ -31,6 +31,8 @@ import org.springframework.util.Assert;
  */
 public class AuditApplicationEvent extends ApplicationEvent {
 
+	private static final long serialVersionUID = 1;
+
 	private final AuditEvent auditEvent;
 
 	/**

@@ -74,7 +74,7 @@ final class CompressionCustomizer implements NettyServerCustomizer {
 			}
 			try {
 				MimeType contentMimeType = MimeTypeUtils.parseMimeType(contentType);
-				return mimeTypes.stream().anyMatch((candidate) -> candidate.isCompatibleWith(contentMimeType));
+				return mimeTypes.stream().anyMatch(candidate -> candidate.isCompatibleWith(contentMimeType));
 			}
 			catch (InvalidMimeTypeException ex) {
 				return false;
@@ -89,7 +89,7 @@ final class CompressionCustomizer implements NettyServerCustomizer {
 		return (request, response) -> {
 			HttpHeaders headers = request.requestHeaders();
 			return Arrays.stream(excludedUserAgents)
-				.noneMatch((candidate) -> headers.contains(HttpHeaderNames.USER_AGENT, candidate, true));
+				.noneMatch(candidate -> headers.contains(HttpHeaderNames.USER_AGENT, candidate, true));
 		};
 	}
 

@@ -52,8 +52,8 @@ class EnableConfigurationPropertiesRegistrar implements ImportBeanDefinitionRegi
 	private Set<Class<?>> getTypes(AnnotationMetadata metadata) {
 		return metadata.getAnnotations()
 			.stream(EnableConfigurationProperties.class)
-			.flatMap((annotation) -> Arrays.stream(annotation.getClassArray(MergedAnnotation.VALUE)))
-			.filter((type) -> void.class != type)
+			.flatMap(annotation -> Arrays.stream(annotation.getClassArray(MergedAnnotation.VALUE)))
+			.filter(type -> void.class != type)
 			.collect(Collectors.toSet());
 	}
 

@@ -123,36 +123,43 @@ class WebServletHandlerTests {
 
 	@WebServlet
 	class DefaultConfigurationServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 
 	@WebServlet(asyncSupported = true)
 	class AsyncSupportedServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 
 	@WebServlet(initParams = { @WebInitParam(name = "a", value = "alpha"), @WebInitParam(name = "b", value = "bravo") })
 	class InitParametersServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 
 	@WebServlet(urlPatterns = { "alpha", "bravo" })
 	class UrlPatternsServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 
 	@WebServlet({ "alpha", "bravo" })
 	class UrlPatternsFromValueServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 
 	@WebServlet(value = { "alpha", "bravo" }, urlPatterns = { "alpha", "bravo" })
 	class UrlPatternsDeclaredTwiceServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 
 	@WebServlet(name = "custom")
 	class CustomNameServlet extends HttpServlet {
+		private static final long serialVersionUID = 1;
 
 	}
 

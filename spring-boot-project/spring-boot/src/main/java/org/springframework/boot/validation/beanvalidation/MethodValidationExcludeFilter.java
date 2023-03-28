@@ -58,7 +58,7 @@ public interface MethodValidationExcludeFilter {
 	 */
 	static MethodValidationExcludeFilter byAnnotation(Class<? extends Annotation> annotationType,
 			SearchStrategy searchStrategy) {
-		return (type) -> MergedAnnotations.from(type, searchStrategy).isPresent(annotationType);
+		return type -> MergedAnnotations.from(type, searchStrategy).isPresent(annotationType);
 	}
 
 }

@@ -157,7 +157,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 	private void configureServer(io.rsocket.core.RSocketServer server) {
 		PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
 		map.from(this.fragmentSize).asInt(DataSize::toBytes).to(server::fragment);
-		this.rSocketServerCustomizers.forEach((customizer) -> customizer.customize(server));
+		this.rSocketServerCustomizers.forEach(customizer -> customizer.customize(server));
 	}
 
 	private ServerTransport<CloseableChannel> createTransport() {
@@ -222,7 +222,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 
 		private TcpServer apply(TcpServer server) {
 			AbstractProtocolSslContextSpec<?> sslContextSpec = createSslContextSpec();
-			return server.secure((spec) -> spec.sslContext(sslContextSpec));
+			return server.secure(spec -> spec.sslContext(sslContextSpec));
 		}
 
 	}

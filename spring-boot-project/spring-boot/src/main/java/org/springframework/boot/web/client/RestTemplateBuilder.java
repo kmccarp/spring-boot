@@ -307,7 +307,7 @@ public class RestTemplateBuilder {
 	 */
 	public RestTemplateBuilder requestFactory(Class<? extends ClientHttpRequestFactory> requestFactoryType) {
 		Assert.notNull(requestFactoryType, "RequestFactoryType must not be null");
-		return requestFactory((settings) -> ClientHttpRequestFactories.get(requestFactoryType, settings));
+		return requestFactory(settings -> ClientHttpRequestFactories.get(requestFactoryType, settings));
 	}
 
 	/**
@@ -319,7 +319,7 @@ public class RestTemplateBuilder {
 	 */
 	public RestTemplateBuilder requestFactory(Supplier<ClientHttpRequestFactory> requestFactorySupplier) {
 		Assert.notNull(requestFactorySupplier, "RequestFactorySupplier must not be null");
-		return requestFactory((settings) -> ClientHttpRequestFactories.get(requestFactorySupplier, settings));
+		return requestFactory(settings -> ClientHttpRequestFactories.get(requestFactorySupplier, settings));
 	}
 
 	/**

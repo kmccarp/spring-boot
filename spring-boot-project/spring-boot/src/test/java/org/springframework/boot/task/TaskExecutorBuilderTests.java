@@ -115,7 +115,7 @@ class TaskExecutorBuilderTests {
 			.awaitTerminationPeriod(Duration.ofSeconds(30))
 			.threadNamePrefix("test-")
 			.taskDecorator(taskDecorator)
-			.additionalCustomizers((taskExecutor) -> {
+			.additionalCustomizers(taskExecutor -> {
 				then(taskExecutor).should().setQueueCapacity(10);
 				then(taskExecutor).should().setCorePoolSize(4);
 				then(taskExecutor).should().setMaxPoolSize(8);

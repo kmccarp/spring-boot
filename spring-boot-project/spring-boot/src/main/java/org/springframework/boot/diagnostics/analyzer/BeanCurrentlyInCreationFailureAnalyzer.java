@@ -92,8 +92,7 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 
 	private String buildMessage(DependencyCycle dependencyCycle) {
 		StringBuilder message = new StringBuilder();
-		message.append(
-				String.format("The dependencies of some of the beans in the application context form a cycle:%n%n"));
+		message.append(String.format("The dependencies of some of the beans in the application context form a cycle:%n%n"));
 		List<BeanInCycle> beansInCycle = dependencyCycle.getBeansInCycle();
 		boolean singleBean = beansInCycle.size() == 1;
 		int cycleStart = dependencyCycle.getCycleStart();

@@ -91,7 +91,7 @@ final class DispatcherServletHandlerMappings {
 		}
 
 		void initializeServlet(String name) {
-			findContext().ifPresent((context) -> initializeServlet(context, name));
+			findContext().ifPresent(context -> initializeServlet(context, name));
 		}
 
 		private Optional<Context> findContext() {

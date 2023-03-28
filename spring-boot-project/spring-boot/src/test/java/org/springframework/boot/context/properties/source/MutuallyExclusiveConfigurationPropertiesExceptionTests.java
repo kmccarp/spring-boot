@@ -93,7 +93,7 @@ class MutuallyExclusiveConfigurationPropertiesExceptionTests {
 	@Test
 	void throwIfMultipleNonNullValuesInWhenEntriesHasAllNullsDoesNotThrowException() {
 		assertThatNoException().isThrownBy(
-				() -> MutuallyExclusiveConfigurationPropertiesException.throwIfMultipleNonNullValuesIn((entries) -> {
+				() -> MutuallyExclusiveConfigurationPropertiesException.throwIfMultipleNonNullValuesIn(entries -> {
 					entries.put("a", null);
 					entries.put("b", null);
 					entries.put("c", null);
@@ -103,7 +103,7 @@ class MutuallyExclusiveConfigurationPropertiesExceptionTests {
 	@Test
 	void throwIfMultipleNonNullValuesInWhenEntriesHasSingleNonNullDoesNotThrowException() {
 		assertThatNoException().isThrownBy(
-				() -> MutuallyExclusiveConfigurationPropertiesException.throwIfMultipleNonNullValuesIn((entries) -> {
+				() -> MutuallyExclusiveConfigurationPropertiesException.throwIfMultipleNonNullValuesIn(entries -> {
 					entries.put("a", null);
 					entries.put("b", "B");
 					entries.put("c", null);
@@ -113,12 +113,12 @@ class MutuallyExclusiveConfigurationPropertiesExceptionTests {
 	@Test
 	void throwIfMultipleNonNullValuesInWhenEntriesHasTwoNonNullsThrowsException() {
 		assertThatExceptionOfType(MutuallyExclusiveConfigurationPropertiesException.class).isThrownBy(
-				() -> MutuallyExclusiveConfigurationPropertiesException.throwIfMultipleNonNullValuesIn((entries) -> {
+				() -> MutuallyExclusiveConfigurationPropertiesException.throwIfMultipleNonNullValuesIn(entries -> {
 					entries.put("a", "a");
 					entries.put("b", "B");
 					entries.put("c", null);
 				}))
-			.satisfies((ex) -> {
+			.satisfies(ex -> {
 				assertThat(ex.getConfiguredNames()).containsExactly("a", "b");
 				assertThat(ex.getMutuallyExclusiveNames()).containsExactly("a", "b", "c");
 			});

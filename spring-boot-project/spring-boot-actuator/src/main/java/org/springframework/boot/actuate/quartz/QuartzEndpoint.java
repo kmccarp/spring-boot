@@ -100,7 +100,7 @@ public class QuartzEndpoint {
 		for (String groupName : this.scheduler.getJobGroupNames()) {
 			List<String> jobs = this.scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))
 				.stream()
-				.map((key) -> key.getName())
+				.map(Key::getName)
 				.toList();
 			result.put(groupName, Collections.singletonMap("jobs", jobs));
 		}
@@ -121,7 +121,7 @@ public class QuartzEndpoint {
 			groupDetails.put("triggers",
 					this.scheduler.getTriggerKeys(GroupMatcher.triggerGroupEquals(groupName))
 						.stream()
-						.map((key) -> key.getName())
+						.map(Key::getName)
 						.toList());
 			result.put(groupName, groupDetails);
 		}
@@ -169,10 +169,10 @@ public class QuartzEndpoint {
 			return null;
 		}
 		Map<TriggerType, Map<String, Object>> result = new LinkedHashMap<>();
-		triggers.forEach((trigger) -> {
+		triggers.forEach(trigger -> {
 			TriggerDescriptor triggerDescriptor = TriggerDescriptor.of(trigger);
 			Map<String, Object> triggerTypes = result.computeIfAbsent(triggerDescriptor.getType(),
-					(key) -> new LinkedHashMap<>());
+					key -> new LinkedHashMap<>());
 			triggerTypes.put(trigger.getKey().getName(), triggerDescriptor.buildSummary(true));
 		});
 		boolean paused = this.scheduler.getPausedTriggerGroups().contains(group);
@@ -215,7 +215,7 @@ public class QuartzEndpoint {
 		List<Trigger> triggersToSort = new ArrayList<>(triggers);
 		triggersToSort.sort(TRIGGER_COMPARATOR);
 		List<Map<String, Object>> result = new ArrayList<>();
-		triggersToSort.forEach((trigger) -> {
+		triggersToSort.forEach(trigger -> {
 			Map<String, Object> triggerSummary = new LinkedHashMap<>();
 			triggerSummary.put("group", trigger.getKey().getGroup());
 			triggerSummary.put("name", trigger.getKey().getName());
@@ -562,12 +562,12 @@ public class QuartzEndpoint {
 		private static final Map<Class<? extends Trigger>, Function<Trigger, TriggerDescriptor>> DESCRIBERS = new LinkedHashMap<>();
 
 		static {
-			DESCRIBERS.put(CronTrigger.class, (trigger) -> new CronTriggerDescriptor((CronTrigger) trigger));
-			DESCRIBERS.put(SimpleTrigger.class, (trigger) -> new SimpleTriggerDescriptor((SimpleTrigger) trigger));
+			DESCRIBERS.put(CronTrigger.class, trigger -> new CronTriggerDescriptor((CronTrigger) trigger));
+			DESCRIBERS.put(SimpleTrigger.class, trigger -> new SimpleTriggerDescriptor((SimpleTrigger) trigger));
 			DESCRIBERS.put(DailyTimeIntervalTrigger.class,
-					(trigger) -> new DailyTimeIntervalTriggerDescriptor((DailyTimeIntervalTrigger) trigger));
+					trigger -> new DailyTimeIntervalTriggerDescriptor((DailyTimeIntervalTrigger) trigger));
 			DESCRIBERS.put(CalendarIntervalTrigger.class,
-					(trigger) -> new CalendarIntervalTriggerDescriptor((CalendarIntervalTrigger) trigger));
+					trigger -> new CalendarIntervalTriggerDescriptor((CalendarIntervalTrigger) trigger));
 		}
 
 		private final Trigger trigger;
@@ -577,8 +577,8 @@ public class QuartzEndpoint {
 		private static TriggerDescriptor of(Trigger trigger) {
 			return DESCRIBERS.entrySet()
 				.stream()
-				.filter((entry) -> entry.getKey().isInstance(trigger))
-				.map((entry) -> entry.getValue().apply(trigger))
+				.filter(entry -> entry.getKey().isInstance(trigger))
+				.map(entry -> entry.getValue().apply(trigger))
 				.findFirst()
 				.orElse(new CustomTriggerDescriptor(trigger));
 		}

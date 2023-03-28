@@ -231,7 +231,7 @@ class WebServiceTemplateBuilderTests {
 	void customizersShouldBeAppliedLast() {
 		WebServiceTemplate template = spy(new WebServiceTemplate());
 		this.builder.additionalCustomizers(
-				((webServiceTemplate) -> then(webServiceTemplate).should().setMessageSenders(any())));
+				(webServiceTemplate -> then(webServiceTemplate).should().setMessageSenders(any())));
 		this.builder.configure(template);
 	}
 

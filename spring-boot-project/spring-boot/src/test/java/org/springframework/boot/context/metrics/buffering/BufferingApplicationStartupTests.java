@@ -49,7 +49,7 @@ class BufferingApplicationStartupTests {
 	@Test
 	void shouldNotRecordEventsWhenFiltered() {
 		BufferingApplicationStartup applicationStartup = new BufferingApplicationStartup(5);
-		applicationStartup.addFilter((step) -> step.getName().startsWith("spring"));
+		applicationStartup.addFilter(step -> step.getName().startsWith("spring"));
 		applicationStartup.start("spring.first").end();
 		StartupStep filtered = applicationStartup.start("filtered.second");
 		applicationStartup.start("spring.third").end();
